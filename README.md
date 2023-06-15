@@ -1,9 +1,9 @@
 # STA Pipeline
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Scripts and procedures for a subtomogram averaging (STA) pipeline used in the CZI-funded project "Correlative cryo-electron tomography pipeline of plasma membrane complexes."
 
-## Software requirements
+## Software requirements*
+
 
 - Python 3+
 - IMOD (alignframes, batchruntomo, ctfplotter)
@@ -12,35 +12,11 @@ Let people know what your project can do specifically. Provide context and add a
 - EMAN2
 - RELION-4.0
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://git.lobos.nih.gov/dmichalak/sta_pipeline.git
-git branch -M main
-git push -uf origin main
-```
+*Scripts and the above software have only been tested on a Linux-based system so far
 
 ## Integrate with your tools
 
 - [ ] [Set up project integrations](https://git.lobos.nih.gov/taraskalab/sta_pipeline/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
 
 ## Test and Deploy
 
