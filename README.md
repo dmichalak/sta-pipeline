@@ -7,18 +7,18 @@ Scripts and procedures for a subtomogram averaging (STA) pipeline used in the CZ
 
 ## Software requirements*
 
-- Python 3+
-- IMOD (alignframes, batchruntomo, ctfplotter)
-- fidder
-- IsoNet
-- EMAN2
-- RELION-4.0
+- ``Python 3+``
+- ``IMOD`` (``alignframes``, ``batchruntomo``, ``ctfplotter``)
+- ``fidder``
+- ``IsoNet``
+- ``EMAN2``
+- ``RELION``
 
 *Scripts and the above software have only been tested on a Linux-based system so far
 
 ## I. Preprocessing
 
-Software: IMOD, fidder
+Software: ``IMOD``, ``fidder``
 
 - Align and sum tilt movies to generate a tilt stack.
 - Fiducial-based tilt series alignment
@@ -28,7 +28,7 @@ Software: IMOD, fidder
 
 ## II. Particle picking
 
-Software: IsoNet, EMAN2, Dynamo, RELION-4.0 
+Software: ``IsoNet``, ``EMAN2``, ``Dynamo``, ``RELION`` 
 
 - Prepare tomograms for particle picking via denoising and modeling the missing wedge
 - Train a neural network to automatically locate densities of interest in tomograms
@@ -37,7 +37,7 @@ Software: IsoNet, EMAN2, Dynamo, RELION-4.0
 
 ## III. Refinement
 
-Software: RELION-4.0
+Software: ``RELION``
 
 - Extract subtomograms using the cleaned dataset
 - Iteratively
@@ -48,7 +48,7 @@ Software: RELION-4.0
 - Postprocessing
 
 ***
-
+<!---
 ## Installation
 Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
