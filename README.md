@@ -1,6 +1,13 @@
 # STA Pipeline
 
+## Software requirements
 
+- Python 3+
+- IMOD (alignframes, batchruntomo, ctfplotter)
+- fidder
+- IsoNet
+- EMAN2
+- RELION-4.0
 
 ## Getting started
 
