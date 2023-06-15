@@ -2,8 +2,10 @@
 
 Scripts and procedures for a subtomogram averaging (STA) pipeline used in the CZI-funded project "Correlative cryo-electron tomography pipeline of plasma membrane complexes."
 
-## Software requirements*
+![tomogram example](images/tomo_image_cropped.png)
+(placeholder image)
 
+## Software requirements*
 
 - Python 3+
 - IMOD (alignframes, batchruntomo, ctfplotter)
@@ -15,12 +17,37 @@ Scripts and procedures for a subtomogram averaging (STA) pipeline used in the CZ
 *Scripts and the above software have only been tested on a Linux-based system so far
 
 ## I. Preprocessing
+
+Software: IMOD, fidder
+
 - Align and sum tilt movies to generate a tilt stack.
 - Fiducial-based tilt series alignment
-***
+- CTF correction
+- Mask and erase fiducials prior to reconstruction
+- Reconstruct tomograms with R-weighting
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## II. Particle picking
+
+Software: IsoNet, EMAN2, Dynamo, RELION-4.0 
+
+- Prepare tomograms for particle picking via denoising and modeling the missing wedge
+- Train a neural network to automatically locate densities of interest in tomograms
+- Sample subtomogram positions from the trained model predictions
+- Clean the subtomogram dataset by removing duplicates, alignment, classification, etc.
+
+## III. Refinement
+
+Software: RELION-4.0
+
+- Extract subtomograms using the cleaned dataset
+- Iteratively
+    - Refine alignments
+    - Classify
+    - Refine CTF parameters
+    - Refine tilt series alignments
+- Postprocessing
+
+***
 
 ## Installation
 Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
