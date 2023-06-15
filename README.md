@@ -8,11 +8,12 @@ Scripts and procedures for a subtomogram averaging (STA) pipeline used in the CZ
 ## Software requirements*
 
 - ``Python 3+``
-- ``IMOD`` (``alignframes``, ``batchruntomo``, ``ctfplotter``)
-- ``fidder``
-- ``IsoNet``
-- ``EMAN2``
-- ``RELION``
+- [``IMOD``](https://bio3d.colorado.edu/imod/)
+- [``fidder``](https://github.com/teamtomo/fidder)
+- [``IsoNet``](https://github.com/IsoNet-cryoET/IsoNet)
+- [``EMAN2``](https://blake.bcm.edu/emanwiki/EMAN2)
+- [``Dynamo``](https://wiki.dynamo.biozentrum.unibas.ch/w/index.php/Main_Page)
+- [``RELION``](https://relion.readthedocs.io/en/release-4.0/)
 
 *Scripts and the above software have only been tested on a Linux-based system so far
 
