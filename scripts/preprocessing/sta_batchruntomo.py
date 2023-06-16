@@ -28,9 +28,9 @@ def sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep,
         if st_dir == None:
             for st_dir in Path().glob("ts*"):
                 stack_rootname = None
-                for stack in st_dir.glob("*.st"):
+                for stack in st_dir.glob("*.mrc"):
                     if stack_rootname is not None:
-                        print("There is more than one .st file in the stack directory.")
+                        print("There is more than one .mrc file in the stack directory.")
                         raise SystemExit(0)
                     stack_rootname = stack.stem
     

@@ -15,12 +15,35 @@ Open a command-line terminal in the folder you wish to create a directory contai
 
 `git clone https://git.lobos.nih.gov/dmichalak/sta_pipeline.git`
 
-After moving into the cloned directory with ``cd sta_pipeline``, the package can be installed with ``pip`` as shown below.
+After moving into the cloned directory with ``cd sta_pipeline``, create a new Python environment for using the pipeline and install the package with ``pip``.
 
 `pip install -e .`
 
 After running this, the scripts referenced in ``setup.py`` will be callable from the command-line (**incomplete**).
+## Directory structure
 
+data/
+    batch001/
+        frames/
+        mdoc/
+
+``frames/`` contains all tilt movies in the data batch.
+``mdoc/`` contains all of the mdoc files for each tilt series dataset.
+
+After running ``sta_alignframes``, the structure within ``data/batch001`` will be
+    frames/
+    mdoc/
+    ts001/
+    ts002/
+    ...
+
+where ``ts###`` will refer to each tilt series found in ``mdoc/``.
+
+## Example commands
+All commands should have help text available by calling the function with ``--help``.
+``sta_alignframes --batchdir ./ --framesdir ./frames/ -ab 8 -sb 8``
+``sta_batchruntomo -d ./directives.adoc -b . -n 48 -s 0 -e 8 -bin 8``
+``sta_fidder -i ts001/test_ts001_bin8_ali.mrc -o ts001/ -p 8.66``
 ## Software requirements*
 
 - ``Python 3+``

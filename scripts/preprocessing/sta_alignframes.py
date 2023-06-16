@@ -67,9 +67,7 @@ def sta_alignframes(batch_dir, frames_dir, align_binning, sum_binning):
 
                 #output_image_file.replace(output_image_file.with_suffix(f"_bin{align_binning}.st"))
                 if int(align_binning) * int(sum_binning) > 1:
-                    output_image_file.rename(st_dir / (output_image_file.stem + f"_bin{int(align_binning) * int(sum_binning)}.st"))
-                else:
-                    output_image_file.rename(st_dir / (output_image_file.stem + f".st"))
+                    output_image_file.rename(st_dir / (output_image_file.stem + f"_bin{int(sum_binning)}.mrc"))
                 command = [
                     "cp",
                     mdoc.as_posix(),
