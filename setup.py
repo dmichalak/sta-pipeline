@@ -10,8 +10,10 @@ setup(
     ],
     entry_points={
         "console_scripts" : [
-            "sta_alignframes=scripts.preprocessing.run_alignframes:cli",
-            "sta_batchruntomo=scripts.preprocessing.run_batchruntomo:cli",
+            "sta_alignframes=scripts.preprocessing.sta_alignframes:cli",
+            "sta_batchruntomo=scripts.preprocessing.sta_batchruntomo:cli",
+            "sta_fidder=scripts.preprocessing.sta_fidder:cli",
+            #"sta_ctfplotter=scripts.preprocessing.sta_ctfplotter:cli",
         ]
     }
     )

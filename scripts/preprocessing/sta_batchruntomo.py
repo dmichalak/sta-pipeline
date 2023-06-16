@@ -18,7 +18,7 @@ def cd(path):
 
 cwd_path = Path.cwd().absolute()
 
-def run_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep, alignbinning, st_dir=None):
+def sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep, alignbinning, st_dir=None):
     """
     """
     batchdir_path = Path(batchdir).absolute()
@@ -134,6 +134,6 @@ def run_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep,
 
 def cli(directivefile, batchdir, numcpus, ctf, startingstep, endingstep, alignbinning, stackdir):
     if not ctf:
-        run_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep, alignbinning, stackdir)
+        sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep, alignbinning, stackdir)
     else:
-        run_batchruntomo(directivefile, batchdir, numcpus, 9, 9, alignbinning, stackdir)
+        sta_batchruntomo(directivefile, batchdir, numcpus, 9, 9, alignbinning, stackdir)

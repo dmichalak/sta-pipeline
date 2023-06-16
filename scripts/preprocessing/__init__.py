@@ -1,4 +1,4 @@
-from .run_alignframes import run_alignframes
-from .run_batchruntomo import run_batchruntomo
+from .sta_alignframes import sta_alignframes
+from .sta_batchruntomo import sta_batchruntomo
 __version__ = "0.1"
 __author__ = "dmichalak"

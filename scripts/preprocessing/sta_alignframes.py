@@ -29,7 +29,7 @@ def cd(path):
     return
 
 
-def run_alignframes(batch_dir, frames_dir, align_binning, sum_binning):
+def sta_alignframes(batch_dir, frames_dir, align_binning, sum_binning):
     batch_dir_path = Path(batch_dir).absolute()
     frames_dir_path = Path(frames_dir).absolute()
 
@@ -105,4 +105,4 @@ def run_alignframes(batch_dir, frames_dir, align_binning, sum_binning):
 def cli(batchdir, framesdir, alignbinning, sumbinning):
     if framesdir == None:
         framesdir = batchdir + "/frames/"
-    run_alignframes(batchdir, framesdir, alignbinning, sumbinning)
+    sta_alignframes(batchdir, framesdir, alignbinning, sumbinning)
