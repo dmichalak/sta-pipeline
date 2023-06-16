@@ -5,7 +5,7 @@ Scripts and procedures for a subtomogram averaging (STA) pipeline used in the CZ
 ![tomogram example](images/tomo_image_cropped.png)
 (placeholder image)
 
-## Installation
+## Installation (Linux-based system)
 
 Open a command-line terminal in the folder you wish to create a directory containing this package. Run the code below to clone the repository. 
 
