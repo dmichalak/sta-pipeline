@@ -1,0 +1,1 @@
+ctfplotter -input wws1_ts002.st -AxisAngle 178.9 -AngleFile wws1_ts002_fid.tlt -DefocusFile wws1_ts002.defocus -pixelSize 0.1083 -CropToPixelSize 0.4 -volt 300 -cs 2.7 -expDef 6000 -autoFit 0,1 -UseExpectedDefForAuto -vary -sAstig -save
