@@ -5,6 +5,18 @@ Scripts and procedures for a subtomogram averaging (STA) pipeline used in the CZ
 ![tomogram example](images/tomo_image_cropped.png)
 (placeholder image)
 
+## Installation
+
+Open a command-line terminal in the folder you wish to create a directory containing this package. Run the code below to clone the repository. 
+
+`git clone https://git.lobos.nih.gov/dmichalak/sta_pipeline.git`
+
+After moving into the cloned directory with ``cd sta_pipeline``, the package can be installed with ``pip`` as shown below.
+
+`pip install -e .`
+
+After running this, the scripts referenced in ``setup.py`` will be callable from the command-line (**incomplete**).
+
 ## Software requirements*
 
 - ``Python 3+``
@@ -50,7 +62,6 @@ Software: ``RELION``
 
 ***
 <!---
-## Installation
 Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
 ## Usage
