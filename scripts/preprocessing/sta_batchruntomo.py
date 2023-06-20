@@ -2,6 +2,7 @@ import click
 import subprocess
 import os                                                                                     
 from pathlib import Path
+import shutil
 from contextlib import contextmanager
 
 @contextmanager
@@ -18,29 +19,45 @@ def cd(path):
 
 cwd_path = Path.cwd().absolute()
 
-def sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep, alignbinning, st_dir=None):
+def sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep, alignbinning, nofid, st_dir=None):
     """
     """
     batchdir_path = Path(batchdir).absolute()
     if st_dir is not None:
         st_dir = Path(st_dir)
+
     with cd(batchdir_path):
         if st_dir == None:
             for st_dir in Path().glob("ts*"):
                 stack_rootname = None
-                for stack in st_dir.glob("*.mrc"):
-                    if stack_rootname is not None:
+                for stack in st_dir.glob("*[!_ali]*.mrc"):
+                    if stack_rootname is not None and startingstep < 9:
                         print("There is more than one .mrc file in the stack directory.")
                         raise SystemExit(0)
                     stack_rootname = stack.stem
-    
+                rootname = f"{stack_rootname}"
+                if nofid == True and startingstep < 9:
+                    print("Using nofid is only meant for reconstruction steps.")
+                    raise SystemExit(0)
+                elif nofid == True and startingstep  >= 9:
+                    fid_ali_mrc = st_dir / Path(rootname + "_ali.mrc")
+                    nofid_ali_mrc = st_dir / Path(rootname + "_nofid_ali.mrc")
+                    fid_ali_mrc = fid_ali_mrc.rename(st_dir / Path(rootname + "_fid_ali.mrc"))
+                    nofid_ali_mrc = nofid_ali_mrc.rename(st_dir / Path(rootname + "_ali.mrc"))
+#                    old_edf = st_dir / Path(old_rootname + ".edf")
+#                    new_edf = st_dir / Path(rootname + ".edf")
+#                    shutil.copy(st_dir / Path(old_rootname + ".edf"), st_dir / Path(rootname + ".edf"))
+#                    pathlib.rename(st_dir / Path(rootname + ".mrc"), st_dir / Path(old_rootname + ".mrc"))
+                else:
+                    continue
+
                 command = [
                     "batchruntomo",
                     "-DirectiveFile",
                     cwd_path / directivefile, 
                     "-RootName",
                     #f"{batchdir_path.name}_{st_dir}",
-                    f"{stack_rootname}",
+                    rootname,
                     "-CurrentLocation",
                     f"{st_dir.absolute()}",
                     "-NamingStyle",
@@ -59,15 +76,25 @@ def sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep,
                 ]
                 with open(f"batchruntomo_{batchdir_path.name}_{st_dir}.log", "w") as log:
                     subprocess.run(command, stdout=log, stderr=log)
-                for rec in st_dir.glob("*rec*.mrc"):
-                    rec.rename( st_dir / Path(rec.stem + f"_bin{alignbinning}" + rec.suffix))
+                if nofid == True:
+                    nofid_ali_mrc = nofid_ali_mrc.rename(st_dir / Path(rootname + "_nofid_ali.mrc"))
+                    fid_ali_mrc = fid_ali_mrc.rename(st_dir / Path(rootname + "_ali.mrc"))
+                    bool_fid_renamed = True
+                if bool_fid_renamed == False:
+                    print("WARNING: Aligned stacks were NOT renamed back to their original names.")
+
         else:
+                if nofid == True:
+                    rootname = f"{stack_rootname}_{st_dir}_nofid"
+                else:
+                    rootname = f"{stack_rootname}_{st_dir}"
+
                 command = [
                     "batchruntomo",
                     "-DirectiveFile",
                     cwd_path / directivefile,
                     "-RootName",
-                    f"{batchdir_path.name}_{st_dir}",
+                    rootname,
                     "-CurrentLocation",
                     f"{st_dir.absolute()}",
                     "-NamingStyle",
@@ -86,8 +113,6 @@ def sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep,
                 ]
                 with open(f"batchruntomo_{batchdir_path.name}_{st_dir}.log", "w") as log:
                     subprocess.run(command, stdout=log, stderr=log) 
-                for rec in st_dir.glob("*rec*.mrc"):
-                    rec.rename( st_dir / Path(rec.stem + f"_bin{alignbinning}" + rec.suffix))
 
 @click.command()
 @click.option(
@@ -129,11 +154,12 @@ def sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep,
                  22: Cleanup""")
 @click.option("--endingstep", "-e", default=20, help=".")
 @click.option("--alignbinning", "-bin", help="Indicate the binning, as defined in the directives.adoc,  of the aligned stack and any subsequent tomograms." )
-@click.option("--stackdir", "-sd", help=".")
+@click.option("--nofid", "-nf", is_flag=True, help="Indicates that the tilt series with fiducials erased by fidder should be used.")
+@click.option("--stackdir", "-sd", help="Specify this if you only want to process one stack within the batch directory.")
 
 
-def cli(directivefile, batchdir, numcpus, ctf, startingstep, endingstep, alignbinning, stackdir):
+def cli(directivefile, batchdir, numcpus, ctf, startingstep, endingstep, alignbinning, nofid, stackdir):
     if not ctf:
-        sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep, alignbinning, stackdir)
+        sta_batchruntomo(directivefile, batchdir, numcpus, startingstep, endingstep, alignbinning, nofid, stackdir)
     else:
-        sta_batchruntomo(directivefile, batchdir, numcpus, 9, 9, alignbinning, stackdir)
+        sta_batchruntomo(directivefile, batchdir, numcpus, 9, 9, alignbinning, nofid, stackdir)
