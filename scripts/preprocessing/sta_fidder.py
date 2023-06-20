@@ -1,25 +1,10 @@
 import click
 import subprocess
 from pathlib import Path
-from fidder.predict import predict_fiducial_mask
-from fidder.erase import erase_masked_region
 from ..utils import *
 
 def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
-#    # load the mrc
-#    image = torch.tensor(mrcfile.read(input_mrc))
-#
-#    # use a pretrained model to predict a mask
-#    mask, probabilities = predict_fiducial_mask(
-#        image, 
-#        pixel_spacing=pixel_spacing, 
-#        probability_threshold=probability_threshold,
-#    )
-#
-#    erased_image = erase_masked_region(
-#        image = image,
-#        mask = mask
-#    )
+
     input_mrc = Path(input_mrc).absolute()
     output_dir = Path(output_dir).absolute()
     output_mask_name = input_mrc.stem + "_fidmask.mrc"

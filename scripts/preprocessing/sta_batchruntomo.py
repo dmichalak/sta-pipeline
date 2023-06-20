@@ -1,14 +1,14 @@
 import click
 import subprocess
 from pathlib import Path
+from .sta_fidder import sta_fidder
 from ..utils import *
 
-def sta_batchruntomo(directivefile, tiltdir, batchdir, numcpus, startingstep, endingstep, nofid, binning):
+def sta_batchruntomo(directivefile, tiltdir, batchdir, numcpus, startingstep, endingstep, nofid, binning, fullnofid, pixelspacing, probabilitythreshold):
     """
     """
 
     directivefile = Path(directivefile).absolute()
-
     if batchdir is None and tiltdir is None: 
         print("Specifying either a batch directory (--batchdir) or a single tilt series directory (--tiltdir) is required.")
         raise SystemExit(0)
@@ -32,52 +32,96 @@ def sta_batchruntomo(directivefile, tiltdir, batchdir, numcpus, startingstep, en
         print("Something has gone terribly wrong.")
         raise SystemExit(0)
 
+    if fullnofid is None:
+        for directory in dirs_to_process:
+            rootname = f"{directory.parent.name}_{directory.name}_bin{binning}"
 
-    for directory in dirs_to_process:
-        rootname = f"{directory.parent.name}_{directory.name}_bin{binning}"
+            if nofid == True and startingstep < 9:
+                print("Using nofid is only meant for reconstruction steps.")
+                raise SystemExit(0)
+            elif nofid == True and startingstep >= 9:
+                # rename aligned stacks so batchruntomo reconstructs a tomogram from the tilt series with fiducials erased
+                aligned_stack_with_fiducials = directory / Path(rootname + "_ali.mrc")
+                aligned_stack_without_fiducials = directory / Path(rootname + "_nofid_ali.mrc")
+                aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_fid_ali.mrc"))
+                aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
 
-        if nofid == True and startingstep < 9:
-            print("Using nofid is only meant for reconstruction steps.")
-            raise SystemExit(0)
-        elif nofid == True and startingstep >= 9:
-            # rename aligned stacks so batchruntomo reconstructs a tomogram from the tilt series with fiducials erased
-            aligned_stack_with_fiducials = directory / Path(rootname + "_ali.mrc")
-            aligned_stack_without_fiducials = directory / Path(rootname + "_nofid_ali.mrc")
-            aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_fid_ali.mrc"))
-            aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
+            command = [
+                "batchruntomo",
+                "-DirectiveFile",
+                directivefile, 
+                "-RootName",
+                rootname,
+                "-CurrentLocation",
+                f"{directory}",
+                "-NamingStyle",
+                "1",
+                "-CPUMachineList",
+                f"localhost:{numcpus}",
+                "-GPUMachineList",
+                "1",
+                "-StartingStep",
+                str(startingstep),
+                "-EndingStep",
+                str(endingstep),
+                "-MakeComExtensionPcm",
+                "0",
+            ]
 
-        command = [
-            "batchruntomo",
-            "-DirectiveFile",
-            directivefile, 
-            "-RootName",
-            rootname,
-            "-CurrentLocation",
-            f"{directory}",
-            "-NamingStyle",
-            "1",
-            "-CPUMachineList",
-            f"localhost:{numcpus}",
-            "-GPUMachineList",
-            "1",
-            "-StartingStep",
-            str(startingstep),
-            "-EndingStep",
-            str(endingstep),
-            "-MakeComExtensionPcm",
-            "0",
-        ]
+            with open(f"batchruntomo_{directory.name}.log", "w") as log:
+                        subprocess.run(command, stdout=log, stderr=log)
 
-        with open(f"batchruntomo_{directory.name}.log", "w") as log:
-                    subprocess.run(command, stdout=log, stderr=log)
+            if nofid == True:
+                aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_nofid_ali.mrc"))
+                aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
+                aligned_stacks_renamed = True
+            if aligned_stacks_renamed == False:
+                print("WARNING: Aligned stacks were NOT renamed back to their original names.")
+    else:
+        if startingstep is None and endingstep is None:
+            for directory in dirs_to_process:
+                rootname = f"{directory.parent.name}_{directory.name}_bin{binning}"
+                startingstep = 0
+                endingstep = 9
 
-        if nofid == True:
-            aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_nofid_ali.mrc"))
-            aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
-            aligned_stacks_renamed = True
-        if aligned_stacks_renamed == False:
-            print("WARNING: Aligned stacks were NOT renamed back to their original names.")
+                batchruntomo_command = [
+                    "batchruntomo",
+                    "-DirectiveFile",
+                    directivefile, 
+                    "-RootName",
+                    rootname,
+                    "-CurrentLocation",
+                    f"{directory}",
+                    "-NamingStyle",
+                    "1",
+                    "-CPUMachineList",
+                    f"localhost:{numcpus}",
+                    "-GPUMachineList",
+                    "1",
+                    "-StartingStep",
+                    str(startingstep),
+                    "-EndingStep",
+                    str(endingstep),
+                    "-MakeComExtensionPcm",
+                    "0",
+                ]
+                with open(f"batchruntomo_{directory.name}.log", "w") as log:
+                    subprocess.run(batchruntomo_command, stdout=log, stderr=log)
+                
+                sta_fidder(rootname + "_ali.mrc", directory, pixelspacing, probabilitythreshold)
 
+                aligned_stack_with_fiducials = directory / Path(rootname + "_ali.mrc")
+                aligned_stack_without_fiducials = directory / Path(rootname + "_nofid_ali.mrc")
+                aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_fid_ali.mrc"))
+                aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
+
+                startingstep = 10
+                endingstep = 20
+
+                with open(f"batchruntomo_{directory.name}.log", "a") as log:
+                    subprocess.run(batchruntomo_command, stdout=log, stderr=log)
+                aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_nofid_ali.mrc"))
+                aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
 @click.command()
 @click.option(
     "--directivefile",
@@ -89,7 +133,7 @@ def sta_batchruntomo(directivefile, tiltdir, batchdir, numcpus, startingstep, en
 @click.option("--tiltdir", "-td", default=None, help="The path to the directory of a single tilt series.")
 @click.option("--batchdir", "-bd", default=None, help="The path to the batch of tilt stacks, each in its own directory.")
 @click.option("--numcpus", "-n", default=2, help=".")
-@click.option("--startingstep", "-s", default=0, help="""Step to end processing with in each set and axis.  Steps are numbered as... \
+@click.option("--startingstep", "-s", default=None, help="""Step to end processing with in each set and axis.  Steps are numbered as... \
                  \n 0: Setup
                  \n 1: Preprocessing
                  \n 2: Cross-correlation alignment
@@ -113,10 +157,11 @@ def sta_batchruntomo(directivefile, tiltdir, batchdir, numcpus, startingstep, en
                  \n 20: Postprocessing with Trimvol
                  \n 21: NAD (Nonlinear anistropic diffusion)
                  \n 22: Cleanup""")
-@click.option("--endingstep", "-e", default=20, help=".")
+@click.option("--endingstep", "-e", default=None, help=".")
 @click.option("--nofid", "-nf", is_flag=True, help="Indicates that the tilt series with fiducials erased by fidder should be used.")
 @click.option("--binning", "-bin", help="Indicate the binning, as defined in the directives.adoc,  of the aligned stack and any subsequent tomograms." )
+@click.option("--fullnofid", is_flag=True, help="Process the tilt series from steps 0 to 20 and include fiducial erasing with fidder.")
 
 
-def cli(directivefile, tiltdir, batchdir, numcpus, startingstep, endingstep, nofid, binning):
-    sta_batchruntomo(directivefile, tiltdir, batchdir, numcpus, startingstep, endingstep, nofid, binning)
+def cli(directivefile, tiltdir, batchdir, numcpus, startingstep, endingstep, nofid, binning, fullnofid):
+    sta_batchruntomo(directivefile, tiltdir, batchdir, numcpus, startingstep, endingstep, nofid, binning, fullnofid)

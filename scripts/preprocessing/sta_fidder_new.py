@@ -1,27 +1,29 @@
 import click
-import subprocess
 from pathlib import Path
+import torch
+import mrcfile
 from fidder.predict import predict_fiducial_mask
 from fidder.erase import erase_masked_region
 from ..utils import *
 
 def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
-#    # load the mrc
-#    image = torch.tensor(mrcfile.read(input_mrc))
-#
-#    # use a pretrained model to predict a mask
-#    mask, probabilities = predict_fiducial_mask(
-#        image, 
-#        pixel_spacing=pixel_spacing, 
-#        probability_threshold=probability_threshold,
-#    )
-#
-#    erased_image = erase_masked_region(
-#        image = image,
-#        mask = mask
-#    )
     input_mrc = Path(input_mrc).absolute()
     output_dir = Path(output_dir).absolute()
+
+    # load the mrc
+    image = torch.tensor(mrcfile.read(input_mrc))
+
+    # use a pretrained model to predict a mask
+    mask, probabilities = predict_fiducial_mask(
+        image, 
+        pixel_spacing=pixel_spacing, 
+        probability_threshold=probability_threshold,
+    )
+
+    erased_image = erase_masked_region(
+        image = image,
+        mask = mask
+    )
     output_mask_name = input_mrc.stem + "_fidmask.mrc"
     output_mrc_name = input_mrc.stem + "_nofid.mrc"
     predict_command = [
@@ -46,22 +48,9 @@ def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
         "--output-image",
         output_mrc_name,
     ]
-    newstack_command = [
-        "newstack",
-        "-input",
-        output_mrc_name,
-        "-output",
-        output_mrc_name,
-        "-mode",
-        "1"
-    ]
     print("Starting prediction...")
-    subprocess.run(predict_command)
     print("Starting erasing...")
-    subprocess.run(erase_command)
     print("Converting the output .mrc from 32bit to 16bit...")
-    subprocess.run(newstack_command)
-
 
 @click.command()
 @click.option(
