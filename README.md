@@ -46,7 +46,7 @@ All commands should have help text available by calling the function with ``--he
 ``sta_batchruntomo -d ./directives.adoc -b . -n 48 -s 0 -e 8``\
 ``sta_fidder -i ts001/test_ts001_bin8_ali.mrc -o ts001/ -p 8.66``\
 ``sta_batchruntomo -d ./directives.adoc -b . -n 48 -s 9 -e 20``\
-``3dmod ts001/test_ts001_bin8_rec.mrc``\
+``3dmod ts001/test_ts001_bin8_rec.mrc``
 ## Software requirements*
 
 - ``Python 3+``
