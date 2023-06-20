@@ -117,7 +117,27 @@ def sta_batchruntomo(directivefile, tiltdir, batchdir, numcpus, startingstep, en
 
                 startingstep = 10
                 endingstep = 20
-
+                batchruntomo_command = [
+                    "batchruntomo",
+                    "-DirectiveFile",
+                    directivefile, 
+                    "-RootName",
+                    rootname,
+                    "-CurrentLocation",
+                    f"{directory}",
+                    "-NamingStyle",
+                    "1",
+                    "-CPUMachineList",
+                    f"localhost:{numcpus}",
+                    "-GPUMachineList",
+                    "1",
+                    "-StartingStep",
+                    str(startingstep),
+                    "-EndingStep",
+                    str(endingstep),
+                    "-MakeComExtensionPcm",
+                    "0",
+                ]
                 with open(f"batchruntomo_{directory.name}.log", "a") as log:
                     subprocess.run(batchruntomo_command, stdout=log, stderr=log)
                 aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_nofid_ali.mrc"))
