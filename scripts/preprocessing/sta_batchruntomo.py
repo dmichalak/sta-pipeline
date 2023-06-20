@@ -1,21 +1,9 @@
 import click
 import subprocess
-import os                                                                                     
 from pathlib import Path
-import shutil
-from contextlib import contextmanager
+from ..utils import *
 
-@contextmanager
-def cd(path):
-    """Changes working directory and returns to previous on exit."""
-    prev_cwd = os.getcwd()
-    os.chdir(path)
-    try:
-        yield
-    finally:
-        os.chdir(prev_cwd)
 
-    return
 
 cwd_path = Path.cwd().absolute()
 

@@ -1,9 +1,9 @@
 import click
 import subprocess
-import os
 from pathlib import Path
 from fidder.predict import predict_fiducial_mask
 from fidder.erase import erase_masked_region
+from ..utils import *
 
 def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
 #    # load the mrc

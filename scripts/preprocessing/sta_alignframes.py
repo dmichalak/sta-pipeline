@@ -12,21 +12,8 @@ TO DO
 """
 import subprocess
 import click
-import os
 from pathlib import Path
-from contextlib import contextmanager
-
-@contextmanager
-def cd(path):
-    """Changes working directory and returns to previous on exit."""
-    prev_cwd = os.getcwd()
-    os.chdir(path)
-    try:
-        yield
-    finally:
-        os.chdir(prev_cwd)
-
-    return
+from ..utils import *
 
 
 def sta_alignframes(batch_dir, frames_dir, align_binning, sum_binning):

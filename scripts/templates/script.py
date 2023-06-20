@@ -1,7 +1,7 @@
 import click
 import subprocess
-import os
 from pathlib import Path
+from ..utils import *
 
 def function(var1, var2):
     return var1, var2
