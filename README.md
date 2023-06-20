@@ -40,7 +40,8 @@ After running ``sta_alignframes``, the structure within ``data/batch001`` will b
 where ``ts###`` will refer to each tilt series found in ``mdoc/``.
 
 ## Example commands
-All commands should have help text available by calling the function with ``--help``.
+All commands should have help text available by calling the function with ``--help``.\
+\
 ``sta_alignframes --batchdir ./ --framesdir ./frames/ -ab 8 -sb 8``\
 ``sta_batchruntomo -d ./directives.adoc -b . -n 48 -s 0 -e 8``\
 ``sta_fidder -i ts001/test_ts001_bin8_ali.mrc -o ts001/ -p 8.66``\
