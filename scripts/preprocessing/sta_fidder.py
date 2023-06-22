@@ -19,7 +19,7 @@ def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
         "--probability-threshold",
         probability_threshold,
         "--output-mask",
-        output_mask_name
+        output_dir / output_mask_name,
     ]
     erase_command = [
         "fidder",
@@ -29,14 +29,14 @@ def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
         "--input-mask",
         output_mask_name,
         "--output-image",
-        output_mrc_name,
+        output_dir / output_mrc_name,
     ]
     newstack_command = [
         "newstack",
         "-input",
-        output_mrc_name,
+        output_dir / output_mrc_name,
         "-output",
-        output_mrc_name,
+        output_dir / output_mrc_name,
         "-mode",
         "1"
     ]

@@ -45,6 +45,8 @@ All commands should have help text available by calling the function with ``--he
 ``sta_alignframes --batchdir ./ --framesdir ./frames/ -ab 8 -sb 8``\
 ``sta_batchruntomo -d ./directives.adoc -b . -n 48 -s 0 -e 8``\
 ``sta_fidder -i ts001/test_ts001_bin8_ali.mrc -o ts001/ -p 8.66``\
+
+For one tilt series, alignframes -> batchruntomo -> fidder took 1 hour 9 min 10 sec.
 ``sta_batchruntomo -d ./directives.adoc -b . -n 48 -s 9 -e 20``\
 ``3dmod ts001/test_ts001_bin8_rec.mrc``
 ## Software requirements*

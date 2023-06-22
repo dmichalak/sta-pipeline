@@ -9,3 +9,4 @@ __author__ = "dmichalak"
 from .sta_alignframes import sta_alignframes
 from .sta_batchruntomo import sta_batchruntomo
 from .sta_fidder import sta_fidder
+from .sta_ctfplotter import sta_ctfplotter
