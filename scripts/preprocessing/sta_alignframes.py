@@ -16,9 +16,9 @@ from pathlib import Path
 from ..utils import *
 
 
-def sta_alignframes(batch_dir, frames_dir, align_binning, sum_binning):
+def sta_alignframes(batch_dir, stack_dir, align_binning, sum_binning):
     batch_dir_path = Path(batch_dir).absolute()
-    frames_dir_path = Path(frames_dir).absolute()
+    stack_dir_path = Path(stack_dir).absolute()
 
     with cd(batch_dir_path):
         mdoc_dir = Path.cwd() / "mdoc"
@@ -42,7 +42,7 @@ def sta_alignframes(batch_dir, frames_dir, align_binning, sum_binning):
                     "-MetadataFile",
                     f"{mdoc}",
                     "-PathToFramesInMdoc",
-                    frames_dir_path.as_posix(),
+                    stack_dir_path.as_posix(),
                     "-OutputImageFile",
                     output_image_file.as_posix(),
                     "-binning",
@@ -64,30 +64,30 @@ def sta_alignframes(batch_dir, frames_dir, align_binning, sum_binning):
                 ts_number += 1
 @click.command()
 @click.option(
-    "--batchdir",
+    "--batch_dir",
     "-b",
     required=True,
     help="Path to the batch directory.",
 )
 @click.option(
-    "--framesdir",
+    "--stack_dir",
     "-f",
     help="",
 )
 @click.option(
-    "--alignbinning",
+    "--align_binning",
     "-ab",
     default=5,
     help="Binning to be used for movie frame alignment."
 )
 @click.option(
-    "--sumbinning",
+    "--sum_binning",
     "-sb",
     default=5,
-    help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sumbinning=5 will result in a final binning of 10."
+    help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10."
 )
 
-def cli(batchdir, framesdir, alignbinning, sumbinning):
-    if framesdir == None:
-        framesdir = batchdir + "/frames/"
-    sta_alignframes(batchdir, framesdir, alignbinning, sumbinning)
+def cli(batch_dir, stack_dir, align_binning, sum_binning):
+    if stack_dir == None:
+        stack_dir = batch_dir + "/frames/"
+    sta_alignframes(batch_dir, stack_dir, align_binning, sum_binning)

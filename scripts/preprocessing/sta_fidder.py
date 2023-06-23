@@ -3,17 +3,17 @@ import subprocess
 from pathlib import Path
 from ..utils import *
 
-def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
+def sta_fidder(input_stack, output_dir, pixel_spacing, probability_threshold):
 
-    input_mrc = Path(input_mrc).absolute()
+    input_stack = Path(input_stack).absolute()
     output_dir = Path(output_dir).absolute()
-    output_mask_name = input_mrc.stem + "_fidmask.mrc"
-    output_mrc_name = input_mrc.stem + "_nofid.mrc"
+    output_mask_name = input_stack.stem + "_fidmask.mrc"
+    output_mrc_name = input_stack.stem + "_nofid.mrc"
     predict_command = [
         "fidder",
         "predict",
-        "--input-image",
-        input_mrc,
+        "--input_stack-image",
+        input_stack,
         "--pixel-spacing",
         pixel_spacing,
         "--probability-threshold",
@@ -24,16 +24,16 @@ def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
     erase_command = [
         "fidder",
         "erase",
-        "--input-image",
-        input_mrc,
-        "--input-mask",
+        "--input_stack-image",
+        input_stack,
+        "--input_stack-mask",
         output_mask_name,
         "--output-image",
         output_dir / output_mrc_name,
     ]
     newstack_command = [
         "newstack",
-        "-input",
+        "-input_stack",
         output_dir / output_mrc_name,
         "-output",
         output_dir / output_mrc_name,
@@ -50,11 +50,11 @@ def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
 
 @click.command()
 @click.option(
-    "--input",
+    "--input_stack",
     "-i",
     required=True,
     default=None,
-    help="The input mrc stack to process.",
+    help="The input_stack mrc stack to process.",
 )
 @click.option(
     "--output_dir",
@@ -76,5 +76,5 @@ def sta_fidder(input_mrc, output_dir, pixel_spacing, probability_threshold):
     help="Probability threshold. Default = 0.5"
 )
 
-def cli(input, output_dir, pixel_spacing, probability_threshold):
-    sta_fidder(input_mrc=input, output_dir=output_dir, pixel_spacing=pixel_spacing, probability_threshold=probability_threshold)
+def cli(input_stack, output_dir, pixel_spacing, probability_threshold):
+    sta_fidder(input_stack=input_stack, output_dir=output_dir, pixel_spacing=pixel_spacing, probability_threshold=probability_threshold)
