@@ -6,9 +6,6 @@ For now, add a new file and command for each new function. Later, this can be cl
 
 Scripts and procedures for a subtomogram averaging (STA) pipeline.
 
-![tomogram example](images/tomo_image_cropped.png)
-(placeholder image)
-
 ## Installation (Linux-based system)
 
 Open a command-line terminal in the folder you wish to create a directory containing this package. Run the code below to clone the repository. 
