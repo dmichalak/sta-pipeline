@@ -4,7 +4,7 @@ For now, add a new file and command for each new function. Later, this can be cl
  
 # STA Pipeline
 
-Scripts and procedures for a subtomogram averaging (STA) pipeline used in the CZI-funded project "Correlative cryo-electron tomography pipeline of plasma membrane complexes."
+Scripts and procedures for a subtomogram averaging (STA) pipeline.
 
 ![tomogram example](images/tomo_image_cropped.png)
 (placeholder image)
