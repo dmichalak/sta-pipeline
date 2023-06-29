@@ -35,8 +35,12 @@ def sta_batchruntomo(directive_file, stack_dir, batch_dir, n_cpus, starting_step
         print("Something has gone terribly wrong.")
         raise SystemExit(0)
 
-    if fullnofid is False:
-        for directory in dirs_to_process:
+    for directory in dirs_to_process:
+        if "sta_batchruntomo.success" in check_job_success(directory):
+            print(f"The file \"sta_batchruntomo.success\" was found. Skipping {directory.name}.")
+            continue
+
+        if fullnofid is False:
             rootname = f"{directory.parent.name}_{directory.name}_bin{binning}"
 
             if nofid == True and starting_step < 9:
@@ -81,76 +85,78 @@ def sta_batchruntomo(directive_file, stack_dir, batch_dir, n_cpus, starting_step
                 aligned_stacks_renamed = True
             if nofid == True and aligned_stacks_renamed == False:
                 print("WARNING: Aligned stacks were NOT renamed back to their original names.")
-    else:
-        if starting_step is None and ending_step is None:
-            for directory in dirs_to_process:
-                rootname = f"{directory.parent.name}_{directory.name}_bin{binning}"
-                starting_step = 0
-                ending_step = 9
+            job_success(directory, "sta_batchruntomo")
+        else:
+            if starting_step is None and ending_step is None:
+                for directory in dirs_to_process:
+                    rootname = f"{directory.parent.name}_{directory.name}_bin{binning}"
+                    starting_step = 0
+                    ending_step = 9
 
-                batchruntomo_command = [
-                    "batchruntomo",
-                    "-directive_file",
-                    directive_file, 
-                    "-RootName",
-                    rootname,
-                    "-CurrentLocation",
-                    f"{directory}",
-                    "-NamingStyle",
-                    "1",
-                    "-CPUMachineList",
-                    f"localhost:{n_cpus}",
-                    "-GPUMachineList",
-                    "1",
-                    "-starting_step",
-                    str(starting_step),
-                    "-ending_step",
-                    str(ending_step),
-                    "-MakeComExtensionPcm",
-                    "0",
-                ]
-                with open(f"batchruntomo_{directory.name}.log", "w") as log:
-                    subprocess.run(batchruntomo_command, stdout=log, stderr=log)
-                
-                sta_fidder(directory / Path(rootname + "_ali.mrc"), directory, pixel_spacing, probability_threshold)
+                    batchruntomo_command = [
+                        "batchruntomo",
+                        "-directive_file",
+                        directive_file, 
+                        "-RootName",
+                        rootname,
+                        "-CurrentLocation",
+                        f"{directory}",
+                        "-NamingStyle",
+                        "1",
+                        "-CPUMachineList",
+                        f"localhost:{n_cpus}",
+                        "-GPUMachineList",
+                        "1",
+                        "-starting_step",
+                        str(starting_step),
+                        "-ending_step",
+                        str(ending_step),
+                        "-MakeComExtensionPcm",
+                        "0",
+                    ]
+                    with open(f"batchruntomo_{directory.name}.log", "w") as log:
+                        subprocess.run(batchruntomo_command, stdout=log, stderr=log)
 
-                aligned_stack_with_fiducials = directory / Path(rootname + "_ali.mrc")
-                aligned_stack_without_fiducials = directory / Path(rootname + "_ali_nofid.mrc")
-                aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_ali_fid.mrc"))
-                aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
+                    sta_fidder(directory / Path(rootname + "_ali.mrc"), directory, pixel_spacing, probability_threshold)
 
-                starting_step = 10
-                ending_step = 20
-                batchruntomo_command = [
-                    "batchruntomo",
-                    "-directive_file",
-                    directive_file, 
-                    "-RootName",
-                    rootname,
-                    "-CurrentLocation",
-                    f"{directory}",
-                    "-NamingStyle",
-                    "1",
-                    "-CPUMachineList",
-                    f"localhost:{n_cpus}",
-                    "-GPUMachineList",
-                    "1",
-                    "-starting_step",
-                    str(starting_step),
-                    "-ending_step",
-                    str(ending_step),
-                    "-MakeComExtensionPcm",
-                    "0",
-                ]
-                with open(f"batchruntomo_{directory.name}.log", "a") as log:
-                    subprocess.run(batchruntomo_command, stdout=log, stderr=log)
-                aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_ali_nofid.mrc"))
-                aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
+                    aligned_stack_with_fiducials = directory / Path(rootname + "_ali.mrc")
+                    aligned_stack_without_fiducials = directory / Path(rootname + "_ali_nofid.mrc")
+                    aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_ali_fid.mrc"))
+                    aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
 
-                nofid_sl_tomo = directory / Path(rootname + "_rec.mrc")
-                nofid_bp_tomo = directory / Path(rootname + "_rec_BP_rec.mrc")
-                nofid_sl_tomo = nofid_sl_tomo.rename(directory / Path(rootname + "_rec_nofid.mrc"))
-                nofid_bp_tomo = nofid_bp_tomo.rename(directory / Path(rootname + "_rec_BP_rec_nofid.mrc"))
+                    starting_step = 10
+                    ending_step = 20
+                    batchruntomo_command = [
+                        "batchruntomo",
+                        "-directive_file",
+                        directive_file, 
+                        "-RootName",
+                        rootname,
+                        "-CurrentLocation",
+                        f"{directory}",
+                        "-NamingStyle",
+                        "1",
+                        "-CPUMachineList",
+                        f"localhost:{n_cpus}",
+                        "-GPUMachineList",
+                        "1",
+                        "-starting_step",
+                        str(starting_step),
+                        "-ending_step",
+                        str(ending_step),
+                        "-MakeComExtensionPcm",
+                        "0",
+                    ]
+                    with open(f"batchruntomo_{directory.name}.log", "a") as log:
+                        subprocess.run(batchruntomo_command, stdout=log, stderr=log)
+                    aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_ali_nofid.mrc"))
+                    aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
+
+                    nofid_sl_tomo = directory / Path(rootname + "_rec.mrc")
+                    nofid_bp_tomo = directory / Path(rootname + "_rec_BP_rec.mrc")
+                    nofid_sl_tomo = nofid_sl_tomo.rename(directory / Path(rootname + "_rec_nofid.mrc"))
+                    nofid_bp_tomo = nofid_bp_tomo.rename(directory / Path(rootname + "_rec_BP_rec_nofid.mrc"))
+                    job_success(directory, "sta_batchruntomo")
 @click.command()
 @click.option(
     "--directive_file",

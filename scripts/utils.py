@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from contextlib import contextmanager
 
 @contextmanager
@@ -12,3 +13,15 @@ def cd(path):
         os.chdir(prev_cwd)
 
     return
+
+def job_success(directory, job_name):
+    directory = Path(directory).absolute()
+    with open(directory / f"{job_name}.success"):
+        pass
+
+def check_job_success(directory):
+    extension = ".success"
+    directory = Path(directory).absolute()
+
+    files = [file.name for file in directory.glob(f"*{extension}")]
+    return files

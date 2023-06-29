@@ -34,6 +34,8 @@ def sta_alignframes(batch_dir, stack_dir, align_binning, sum_binning):
                 """
                 output_image_file = Path(f"{batch_dir_path.name}_ts{ts_number:03}.mrc")
                 st_dir = Path(f"ts{ts_number:03}").absolute()
+                if check_job_success(st_dir):
+                    continue
                 output_image_file = st_dir / Path(f"{batch_dir_path.name}_ts{ts_number:03}.mrc")
                 if not st_dir.exists():
                     Path.mkdir(st_dir)
@@ -62,6 +64,7 @@ def sta_alignframes(batch_dir, stack_dir, align_binning, sum_binning):
                 ]
                 result = subprocess.run(command)
                 ts_number += 1
+                job_success(st_dir, "sta_alignframes")
 @click.command()
 @click.option(
     "--batch_dir",
