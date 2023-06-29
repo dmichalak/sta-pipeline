@@ -14,12 +14,19 @@ def cd(path):
 
     return
 
-def job_success(directory, job_name):
+def job_success(
+    directory: Path,
+    job_name: str,
+    ) -> None:
+
     directory = Path(directory).absolute()
     with open(directory / f"{job_name}.success"):
         pass
 
-def check_job_success(directory):
+def check_job_success(
+    directory: Path,
+    ) -> list:
+
     extension = ".success"
     directory = Path(directory).absolute()
 

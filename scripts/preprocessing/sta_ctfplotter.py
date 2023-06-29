@@ -3,7 +3,15 @@ import subprocess
 from pathlib import Path
 from ..utils import *
 
-def sta_ctfplotter(batch_dir, stack_dir, stack_extension, axis_angle, pixel_size):
+
+def sta_ctfplotter(
+    batch_dir: Path, 
+    stack_dir: Path, 
+    stack_extension: str, 
+    axis_angle: float, 
+    pixel_size: float,
+    ) -> None:
+
     if batch_dir is None:
         stack_dir = Path(stack_dir).absolute()
         dirs_to_process = [stack_dir]
@@ -12,7 +20,9 @@ def sta_ctfplotter(batch_dir, stack_dir, stack_extension, axis_angle, pixel_size
         dirs_to_process = [dir for dir in batch_dir.glob("ts*")]
     for directory in dirs_to_process:
         with cd(directory):
-            input_stack = directory.parent.name + "_" + directory.name + "." + stack_extension
+            input_stack = (
+                directory.parent.name + "_" + directory.name + "." + stack_extension
+            )
             command = [
                 "ctfplotter",
                 "-InputStack",
@@ -40,8 +50,9 @@ def sta_ctfplotter(batch_dir, stack_dir, stack_extension, axis_angle, pixel_size
                 "-SearchAstigmatism",
                 "-SaveAndExit",
             ]
-            with open(f"sta_ctfplotter_{directory.name}.log","w") as log:
+            with open(f"sta_ctfplotter_{directory.name}.log", "w") as log:
                 result = subprocess.run(command, stdout=log, stderr=log)
+
 
 @click.command()
 @click.option(
@@ -72,6 +83,5 @@ def sta_ctfplotter(batch_dir, stack_dir, stack_extension, axis_angle, pixel_size
     default=1.0825,
     help="Help text",
 )
-
 def cli(batch_dir, stack_dir, stack_extension, axis_angle, pixel_size):
     sta_ctfplotter(batch_dir, stack_dir, stack_extension, axis_angle, pixel_size)

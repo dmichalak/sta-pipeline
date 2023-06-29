@@ -4,11 +4,25 @@ from pathlib import Path
 from .sta_fidder import sta_fidder
 from ..utils import *
 
-def sta_batchruntomo(directive_file, stack_dir, batch_dir, n_cpus, starting_step, ending_step, nofid, binning, fullnofid, pixel_spacing, probability_threshold):
+def sta_batchruntomo(
+        directive_file: Path,
+        stack_dir: Path,
+        batch_dir: Path,
+        n_cpus: int,
+        starting_step: float,
+        ending_step: float,
+        nofid: bool,
+        binning: int,
+        fullnofid: bool,
+        pixel_spacing: float,
+        probability_threshold: float,
+        ) -> None:
     """
     """
-
     directive_file = Path(directive_file).absolute()
+    stack_dir = Path(stack_dir).absolute()
+    batch_dir = Path(batch_dir).absolute()
+
     if batch_dir is None and stack_dir is None: 
         print("Specifying either a batch directory (--batch_dir) or a single tilt series directory (--stack_dir) is required.")
         raise SystemExit(0)

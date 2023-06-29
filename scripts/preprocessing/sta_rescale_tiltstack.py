@@ -4,7 +4,14 @@ from pathlib import Path
 from ..utils import *
 import mrcfile
 
-def sta_rescale_tiltstack(input_stack, output_stack, output_pixel_size, bin_factor, n_cpus):
+def sta_rescale_tiltstack(
+    input_stack: Path, 
+    output_stack: Path, 
+    output_pixel_size: float, 
+    bin_factor: float, 
+    n_cpus: int,
+    ) -> None:
+
     input_stack = Path(input_stack).absolute()
     output_stack = Path(output_stack).absolute()
 
