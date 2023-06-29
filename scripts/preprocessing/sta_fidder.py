@@ -3,7 +3,12 @@ import subprocess
 from pathlib import Path
 from ..utils import *
 
-def sta_fidder(input_stack, output_dir, pixel_spacing, probability_threshold):
+def sta_fidder(
+    input_stack: Path, 
+    output_dir: Path, 
+    pixel_spacing: float, 
+    probability_threshold: float,
+    ) -> None:
 
     input_stack = Path(input_stack).absolute()
     output_dir = Path(output_dir).absolute()
