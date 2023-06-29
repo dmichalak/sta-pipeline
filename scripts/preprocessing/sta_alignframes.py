@@ -17,48 +17,56 @@ def sta_alignframes(
 
     ts_number = 1
     for mdoc in mdoc_directory.glob("*.mrc.mdoc"):
-        if mdoc.stat().st_size > 10 * 1024:  # if the mdoc file is bigger than 10 kB, to make sure it corresponds to a full tilt series
-            """
-            for each mrc.mdoc file describing a tilt series, create a subdirectory for the tilt series,
-            align the movie frames, put them into a .st stack, move the stack and copy the mdoc into the
-            tilt series subdirectory
-            """
-            st_dir = Path(f"ts{ts_number:03}").absolute()
-            output_image_file = st_dir / Path(f"ts{ts_number:03}.mrc")
+        """
+        for each mrc.mdoc file describing a tilt series, create a subdirectory for the tilt series,
+        align the movie frames, put them into a .st stack, move the stack and copy the mdoc into the
+        tilt series subdirectory
+        """
+        if mdoc.stat().st_size < 10 * 1024:  
+            # if the mdoc file is bigger than 10 kB, to make sure it corresponds to a full tilt series
+            print("This mdoc doesn't seem to correspond to a tilt series. Skipping it...")
+            continue
 
-            if not st_dir.exists():
-                Path.mkdir(st_dir)
-            # Check if this tilt stack has already been processed
-            if check_job_success(st_dir):
-                continue
+        st_dir = Path(f"ts{ts_number:03}").absolute()
+        output_image_file = st_dir / Path(f"ts{ts_number:03}.mrc")
 
-            command = [
-                "alignframes",
-                "-MetadataFile",
-                f"{mdoc}",
-                "-PathToFramesInMdoc",
-                frames_directory,
-                "-OutputImageFile",
-                output_image_file,
-                "-binning",
-                str(align_binning)+" "+str(sum_binning),
-            ]
+        if not st_dir.exists():
+            Path.mkdir(st_dir)
 
-            with open(f"{st_dir.name}/sta_alignframes.out","w") as out, open(f"{st_dir.name}/sta_alignframes.err","w") as err:
-                result = subprocess.run(command, stdout=out, stderr=err)
+        # Check if this tilt stack has already been processed
+        if check_job_success(st_dir):
+            continue
 
-            #output_image_file.replace(output_image_file.with_suffix(f"_bin{align_binning}.st"))
-            if int(align_binning) * int(sum_binning) > 1:
-                output_image_file.rename(st_dir / (output_image_file.stem + f"_bin{int(sum_binning)}.mrc"))
+        command = [
+            "alignframes",
+            "-MetadataFile",
+            f"{mdoc}",
+            "-PathToFramesInMdoc",
+            frames_directory,
+            "-OutputImageFile",
+            output_image_file,
+            "-binning",
+            str(align_binning)+" "+str(sum_binning),
+        ]
 
-            command = [
-                "cp",
-                mdoc.as_posix(),
-                st_dir.as_posix()
-            ]
-            result = subprocess.run(command)
-            ts_number += 1
-            job_success(st_dir, "sta_alignframes")
+        with open(f"{st_dir.name}/sta_alignframes.out","w") as out, open(f"{st_dir.name}/sta_alignframes.err","w") as err:
+            result = subprocess.run(command, stdout=out, stderr=err)
+
+        #output_image_file.replace(output_image_file.with_suffix(f"_bin{align_binning}.st"))
+        if int(align_binning) * int(sum_binning) > 1:
+            output_image_file.rename(st_dir / (output_image_file.stem + f"_bin{int(sum_binning)}.mrc"))
+
+        command = [
+            "cp",
+            mdoc.as_posix(),
+            st_dir.as_posix()
+        ]
+        result = subprocess.run(command)
+        ts_number += 1
+        job_success(st_dir, "sta_alignframes")
+
+
+
 @click.command()
 @click.option(
     "--batch_dir",
