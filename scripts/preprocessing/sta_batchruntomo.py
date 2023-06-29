@@ -89,8 +89,8 @@ def sta_batchruntomo(
                 "0",
             ]
 
-            with open(f"batchruntomo_{directory.name}.log", "w") as log:
-                        subprocess.run(command, stdout=log, stderr=log)
+            with open("sta_batchruntomo.out", "w") as out, open("sta_batchruntomo.err", "w") as err:
+                        subprocess.run(command, stdout=out, stderr=err)
             
             aligned_stacks_renamed = False
             if nofid == True:
@@ -128,8 +128,8 @@ def sta_batchruntomo(
                         "-MakeComExtensionPcm",
                         "0",
                     ]
-                    with open(f"batchruntomo_{directory.name}.log", "w") as log:
-                        subprocess.run(batchruntomo_command, stdout=log, stderr=log)
+                    with open("sta_batchruntomo.out", "w") as out, open("sta_batchruntomo.err", "w") as err:
+                        subprocess.run(batchruntomo_command, stdout=out, stderr=err)
 
                     sta_fidder(directory / Path(rootname + "_ali.mrc"), directory, pixel_spacing, probability_threshold)
 
@@ -161,8 +161,8 @@ def sta_batchruntomo(
                         "-MakeComExtensionPcm",
                         "0",
                     ]
-                    with open(f"batchruntomo_{directory.name}.log", "a") as log:
-                        subprocess.run(batchruntomo_command, stdout=log, stderr=log)
+                    with open(f"sta_batchruntomo.out", "a") as out, open(f"sta_batchruntomo.err", "a") as err:
+                        subprocess.run(batchruntomo_command, stdout=out, stderr=err)
                     aligned_stack_without_fiducials = aligned_stack_without_fiducials.rename(directory / Path(rootname + "_ali_nofid.mrc"))
                     aligned_stack_with_fiducials = aligned_stack_with_fiducials.rename(directory / Path(rootname + "_ali.mrc"))
 

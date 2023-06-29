@@ -44,8 +44,8 @@ def sta_alignframes(
                 str(align_binning)+" "+str(sum_binning),
             ]
 
-            with open(f"{st_dir.name}/alignframes_ts{ts_number:03}.log","w") as log:
-                result = subprocess.run(command, stdout=log, stderr=log)
+            with open(f"{st_dir.name}/sta_alignframes.out","w") as out, open(f"{st_dir.name}/sta_alignframes.err","w") as err:
+                result = subprocess.run(command, stdout=out, stderr=err)
 
             #output_image_file.replace(output_image_file.with_suffix(f"_bin{align_binning}.st"))
             if int(align_binning) * int(sum_binning) > 1:
