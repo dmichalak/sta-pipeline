@@ -1,8 +1,18 @@
+# Table of Contents
+
+- [Development notes](#development-notes)
+- [STA Pipeline description](#sta-pipeline-description)
+- [Installation (Linux-based system)](#installation)
+- [Directory structure](#directory-structure)
+- [Example commmands](#example-commands)
+- [Software requirements](#software-requirements)
+- [Outline of the pipeline](#outline-of-the-pipeline)
+
 # Development notes
 
 For now, add a new file and command for each new function. Later, this can be cleaned up.
  
-# STA Pipeline
+# STA Pipeline description
 
 Scripts and procedures for a subtomogram averaging (STA) pipeline.
 
@@ -57,6 +67,8 @@ For one tilt series, alignframes -> batchruntomo -> fidder took 1 hour 9 min 10 
 - [``RELION``](https://relion.readthedocs.io/en/release-4.0/)
 
 *Scripts and the above software have only been tested on a Linux-based system so far
+# Outline of the pipeline
+
 
 ## I. Preprocessing
 
