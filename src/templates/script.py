@@ -3,8 +3,10 @@ import subprocess
 from pathlib import Path
 from ..utils import *
 
+
 def function(var1, var2):
     return var1, var2
+
 
 @click.command()
 @click.option(
@@ -21,6 +23,5 @@ def function(var1, var2):
     default=None,
     help="Help text",
 )
-
 def cli(option1, option2):
     function(option1, option2)

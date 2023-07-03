@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from contextlib import contextmanager
 
+
 @contextmanager
 def cd(path):
     """Changes working directory and returns to previous on exit."""
@@ -14,19 +15,19 @@ def cd(path):
 
     return
 
+
 def job_success(
     directory: Path,
     job_name: str,
-    ) -> None:
-
+) -> None:
     directory = Path(directory).absolute()
     with open(directory / f"{job_name}.success", "w"):
         pass
 
+
 def check_job_success(
     directory: Path,
-    ) -> list:
-
+) -> list:
     extension = ".success"
     directory = Path(directory).absolute()
 

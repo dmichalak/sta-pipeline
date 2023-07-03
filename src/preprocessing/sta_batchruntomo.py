@@ -3,16 +3,16 @@ import subprocess
 from pathlib import Path
 from ..utils import *
 
+
 def sta_batchruntomo(
-        directive_file: Path,
-        batch_dir: Path,
-        n_cpus: int,
-        starting_step: float,
-        ending_step: float,
-        binning: int,
-        ) -> None:
-    """
-    """
+    directive_file: Path,
+    batch_dir: Path,
+    n_cpus: int,
+    starting_step: float,
+    ending_step: float,
+    binning: int,
+) -> None:
+    """ """
     directive_file = directive_file.absolute()
     batch_dir = batch_dir.absolute()
 
@@ -20,7 +20,9 @@ def sta_batchruntomo(
 
     for directory in dirs_to_process:
         if "sta_batchruntomo.success" in check_job_success(directory):
-            print(f"The file \"sta_batchruntomo.success\" was found. Skipping {directory.name}.")
+            print(
+                f'The file "sta_batchruntomo.success" was found. Skipping {directory.name}.'
+            )
             continue
 
         rootname = f"{directory.parent.name}_{directory.name}_bin{binning}"
@@ -28,7 +30,7 @@ def sta_batchruntomo(
         command = [
             "batchruntomo",
             "-directive_file",
-            directive_file, 
+            directive_file,
             "-RootName",
             rootname,
             "-CurrentLocation",
@@ -47,8 +49,10 @@ def sta_batchruntomo(
             "0",
         ]
 
-        with open("sta_batchruntomo.out", "w") as out, open("sta_batchruntomo.err", "w") as err:
-                    subprocess.run(command, stdout=out, stderr=err)
+        with open("sta_batchruntomo.out", "w") as out, open(
+            "sta_batchruntomo.err", "w"
+        ) as err:
+            subprocess.run(command, stdout=out, stderr=err)
         job_success(directory, "sta_batchruntomo")
 
 
@@ -59,23 +63,18 @@ def sta_batchruntomo(
     required=True,
     default=Path("directives.adoc"),
     help="The path to the .adoc file.",
-    )
+)
 @click.option(
     "--batch_dir",
     "-bd",
     default=None,
-    help="The path to the batch of tilt stacks, each in its own directory."
-    )
-@click.option(
-    "--n_cpus",
-    "-n",
-    default=2,
-    help="."
-    )
+    help="The path to the batch of tilt stacks, each in its own directory.",
+)
+@click.option("--n_cpus", "-n", default=2, help=".")
 @click.option(
     "--starting_step",
     "-s",
-    default=None, 
+    default=None,
     help="""Processing step number to start with in batchruntomo. Steps are numbered as... \
                  \n 0: Setup
                  \n 1: Preprocessing
@@ -99,19 +98,32 @@ def sta_batchruntomo(
                  \n 19: Volcombine
                  \n 20: Postprocessing with Trimvol
                  \n 21: NAD (Nonlinear anistropic diffusion)
-                 \n 22: Cleanup"""
-    )
+                 \n 22: Cleanup""",
+)
 @click.option(
     "--ending_step",
     "-e",
     default=None,
     help="Processing step number to end with in batchruntomo.",
-    )
+)
 @click.option(
     "--binning",
     "-bin",
     help="Indicate the binning, as defined in the directives.adoc,  of the aligned stack and any subsequent tomograms.",
+)
+def cli(
+    directive_file,
+    batch_dir,
+    n_cpus,
+    starting_step,
+    ending_step,
+    binning,
+):
+    sta_batchruntomo(
+        directive_file,
+        batch_dir,
+        n_cpus,
+        starting_step,
+        ending_step,
+        binning,
     )
-
-def cli(directive_file, batch_dir, n_cpus, starting_step, ending_step, binning,):
-    sta_batchruntomo(directive_file, batch_dir, n_cpus, starting_step, ending_step, binning,)

@@ -5,13 +5,12 @@ from ..utils import *
 
 
 def sta_ctfplotter(
-    batch_dir: Path, 
-    stack_dir: Path, 
-    stack_extension: str, 
-    axis_angle: float, 
+    batch_dir: Path,
+    stack_dir: Path,
+    stack_extension: str,
+    axis_angle: float,
     pixel_size: float,
-    ) -> None:
-
+) -> None:
     if batch_dir is None:
         stack_dir = Path(stack_dir).absolute()
         dirs_to_process = [stack_dir]
@@ -50,7 +49,9 @@ def sta_ctfplotter(
                 "-SearchAstigmatism",
                 "-SaveAndExit",
             ]
-            with open(f"sta_ctfplotter_{directory.name}.out", "w") as out, open(f"sta_ctfplotter_{directory.name}.err", "w") as err:
+            with open(f"sta_ctfplotter_{directory.name}.out", "w") as out, open(
+                f"sta_ctfplotter_{directory.name}.err", "w"
+            ) as err:
                 result = subprocess.run(command, stdout=out, stderr=err)
 
 

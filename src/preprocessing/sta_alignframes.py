@@ -6,12 +6,8 @@ from ..utils import *
 
 
 def sta_alignframes(
-    mdoc_directory: Path,
-    frames_directory: Path,
-    align_binning: int, 
-    sum_binning: int
-    ) -> None:
-
+    mdoc_directory: Path, frames_directory: Path, align_binning: int, sum_binning: int
+) -> None:
     mdoc_directory = Path(mdoc_directory).absolute()
     frames_directory = Path(frames_directory).absolute()
 
@@ -22,9 +18,11 @@ def sta_alignframes(
         align the movie frames, put them into a .st stack, move the stack and copy the mdoc into the
         tilt series subdirectory
         """
-        if mdoc.stat().st_size < 10 * 1024:  
+        if mdoc.stat().st_size < 10 * 1024:
             # if the mdoc file is bigger than 10 kB, to make sure it corresponds to a full tilt series
-            print("This mdoc doesn't seem to correspond to a tilt series. Skipping it...")
+            print(
+                "This mdoc doesn't seem to correspond to a tilt series. Skipping it..."
+            )
             continue
 
         st_dir = Path(f"ts{ts_number:03}").absolute()
@@ -46,25 +44,24 @@ def sta_alignframes(
             "-OutputImageFile",
             output_image_file,
             "-binning",
-            str(align_binning)+" "+str(sum_binning),
+            str(align_binning) + " " + str(sum_binning),
         ]
 
-        with open(f"{st_dir.name}/sta_alignframes.out","w") as out, open(f"{st_dir.name}/sta_alignframes.err","w") as err:
+        with open(f"{st_dir.name}/sta_alignframes.out", "w") as out, open(
+            f"{st_dir.name}/sta_alignframes.err", "w"
+        ) as err:
             result = subprocess.run(command, stdout=out, stderr=err)
 
-        #output_image_file.replace(output_image_file.with_suffix(f"_bin{align_binning}.st"))
+        # output_image_file.replace(output_image_file.with_suffix(f"_bin{align_binning}.st"))
         if int(align_binning) * int(sum_binning) > 1:
-            output_image_file.rename(st_dir / (output_image_file.stem + f"_bin{int(sum_binning)}.mrc"))
+            output_image_file.rename(
+                st_dir / (output_image_file.stem + f"_bin{int(sum_binning)}.mrc")
+            )
 
-        command = [
-            "cp",
-            mdoc.as_posix(),
-            st_dir.as_posix()
-        ]
+        command = ["cp", mdoc.as_posix(), st_dir.as_posix()]
         result = subprocess.run(command)
         ts_number += 1
         job_success(st_dir, "sta_alignframes")
-
 
 
 @click.command()
@@ -83,15 +80,14 @@ def sta_alignframes(
     "--align_binning",
     "-ab",
     default=5,
-    help="Binning to be used for movie frame alignment."
+    help="Binning to be used for movie frame alignment.",
 )
 @click.option(
     "--sum_binning",
     "-sb",
     default=5,
-    help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10."
+    help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10.",
 )
-
 def cli(mdoc_dir, stack_dir, align_binning, sum_binning):
     if stack_dir == None:
         stack_dir = mdoc_dir + "/frames/"
