@@ -19,14 +19,21 @@ def sta_batchruntomo(
     frames_directory = input_directory / "frames"
     mdoc_directory = input_directory / "mdoc"
     if frames_directory.is_dir() and mdoc_directory.is_dir():
-        print(f"Found 'frames' and 'mdoc' directories: processing all tilt series within {input_directory}...")
+        print(
+            f"Found 'frames' and 'mdoc' directories: processing all tilt series within {input_directory}..."
+        )
         dirs_to_process = [dir for dir in input_directory.glob("ts*")]
     # Look for a .mrc in input_directory
-    elif Path(input_directory / f"{input_directory}.mrc").is_file() or Path(input_directory / f"{input_directory}_bin{binning}.mrc").is_file():
+    elif (
+        Path(input_directory / f"{input_directory}.mrc").is_file()
+        or Path(input_directory / f"{input_directory}_bin{binning}.mrc").is_file()
+    ):
         dirs_to_process = input_directory
     # If couldn't find either, exit script
     else:
-        print(f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {input_directory}.")
+        print(
+            f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {input_directory}."
+        )
         raise SystemExit(0)
 
     for directory in dirs_to_process:
@@ -49,7 +56,7 @@ def sta_batchruntomo(
             "-RootName",
             rootname,
             "-CurrentLocation",
-           f"{directory}",
+            f"{directory}",
             "-NamingStyle",
             "1",
             "-CPUMachineList",

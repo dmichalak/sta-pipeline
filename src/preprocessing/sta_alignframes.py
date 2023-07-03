@@ -6,17 +6,23 @@ from ..utils import *
 
 
 def sta_alignframes(
-    input_directory: Path, align_binning: int, sum_binning: int,
+    input_directory: Path,
+    align_binning: int,
+    sum_binning: int,
 ) -> None:
     input_directory = Path(input_directory).absolute()
     # Look for the "frames" and "mdoc" directories
     frames_directory = input_directory / "frames"
     mdoc_directory = input_directory / "mdoc"
     if frames_directory.is_dir() and mdoc_directory.is_dir():
-        print(f"Found 'frames' and 'mdoc' directories: processing all tilt series within {mdoc_directory}...")
+        print(
+            f"Found 'frames' and 'mdoc' directories: processing all tilt series within {mdoc_directory}..."
+        )
     # If couldn't find, exit script
     else:
-        print(f"Error: Did not find 'frames' and 'mdoc' directories in {input_directory}.")
+        print(
+            f"Error: Did not find 'frames' and 'mdoc' directories in {input_directory}."
+        )
         raise SystemExit(0)
 
     ts_number = 1
