@@ -1,5 +1,6 @@
 import click
 import subprocess
+import time
 from pathlib import Path
 from ..utils import *
 
@@ -29,6 +30,7 @@ def sta_ctfplotter(
 
     for directory in dirs_to_process:
         with cd(directory):
+            start_time = time.time()
             input_stack = directory.name + ".mrc"
             command = [
                 "ctfplotter",
@@ -61,6 +63,11 @@ def sta_ctfplotter(
                 f"sta_ctfplotter_{directory.name}.err", "w"
             ) as err:
                 result = subprocess.run(command, stdout=out, stderr=err)
+            
+            end_time = time.time()  # Stop measuring the time for this iteration
+            processing_time = end_time - start_time
+            minutes, seconds = divmod(processing_time, 60)
+            print(f"{directory.name} took {int(minutes)} min {int(seconds)} sec.")
 
 
 @click.command()

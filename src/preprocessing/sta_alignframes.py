@@ -1,5 +1,6 @@
 import subprocess
 import click
+import time
 from pathlib import Path
 from typing import Optional
 from ..utils import *
@@ -21,7 +22,7 @@ def sta_alignframes(
     # If couldn't find, exit script
     else:
         print(
-            f"Error: Did not find 'frames' and 'mdoc' directories in {input_directory}."
+            f"Error: Did not find 'frames' and 'mdoc' directories in {input_directory.name}."
         )
         raise SystemExit(0)
 
@@ -46,9 +47,14 @@ def sta_alignframes(
             Path.mkdir(ts_directory)
 
         # Check if this tilt stack has already been processed
-        if check_job_success(ts_directory):
+        if "sta_alignframes.success" in check_job_success(ts_directory):
+            print(
+                f'The file "sta_alignframes.success" was found. Skipping {ts_directory.name}.'
+            )
+            ts_number += 1
             continue
-
+        print(f"Processing {ts_directory.name}.")
+        start_time = time.time()  # Start measuring the time for this iteration
         command = [
             "alignframes",
             "-MetadataFile",
@@ -76,6 +82,10 @@ def sta_alignframes(
         result = subprocess.run(command)
         ts_number += 1
         job_success(ts_directory, "sta_alignframes")
+        end_time = time.time()  # Stop measuring the time for this iteration
+        processing_time = end_time - start_time
+        minutes, seconds = divmod(processing_time, 60)
+        print(f"{ts_directory.name} took {int(minutes)} min {int(seconds)} sec.")
 
 
 @click.command()

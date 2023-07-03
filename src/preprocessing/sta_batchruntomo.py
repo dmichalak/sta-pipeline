@@ -1,5 +1,6 @@
 import click
 import subprocess
+import time
 from pathlib import Path
 from ..utils import *
 
@@ -48,7 +49,8 @@ def sta_batchruntomo(
             rootname = rootname_binned
         else:
             rootname = f"{directory.name}"
-
+        print(f"Processing {rootname}.")
+        start_time = time.time()
         command = [
             "batchruntomo",
             "-directive_file",
@@ -76,7 +78,10 @@ def sta_batchruntomo(
         ) as err:
             subprocess.run(command, stdout=out, stderr=err)
         job_success(directory, "sta_batchruntomo")
-
+        end_time = time.time()  # Stop measuring the time for this iteration
+        processing_time = end_time - start_time
+        minutes, seconds = divmod(processing_time, 60)
+        print(f"{rootname} took {int(minutes)} min {int(seconds)} sec.")
 
 @click.command()
 @click.option(
