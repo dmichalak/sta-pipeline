@@ -20,7 +20,7 @@ def job_success(
     ) -> None:
 
     directory = Path(directory).absolute()
-    with open(directory / f"{job_name}.success"):
+    with open(directory / f"{job_name}.success", "w"):
         pass
 
 def check_job_success(

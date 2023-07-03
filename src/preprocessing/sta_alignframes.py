@@ -12,8 +12,8 @@ def sta_alignframes(
     sum_binning: int
     ) -> None:
 
-    mdoc_directory = mdoc_directory.absolute()
-    frames_directory = frames_directory.absolute()
+    mdoc_directory = Path(mdoc_directory).absolute()
+    frames_directory = Path(frames_directory).absolute()
 
     ts_number = 1
     for mdoc in mdoc_directory.glob("*.mrc.mdoc"):
@@ -69,14 +69,14 @@ def sta_alignframes(
 
 @click.command()
 @click.option(
-    "--batch_dir",
-    "-b",
+    "--mdoc_dir",
+    "-mdoc",
     required=True,
-    help="Path to the batch directory.",
+    help="Path to the mdoc directory.",
 )
 @click.option(
     "--stack_dir",
-    "-f",
+    "-s",
     help="",
 )
 @click.option(
@@ -92,7 +92,7 @@ def sta_alignframes(
     help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10."
 )
 
-def cli(batch_dir, stack_dir, align_binning, sum_binning):
+def cli(mdoc_dir, stack_dir, align_binning, sum_binning):
     if stack_dir == None:
-        stack_dir = batch_dir + "/frames/"
-    sta_alignframes(batch_dir, stack_dir, align_binning, sum_binning)
+        stack_dir = mdoc_dir + "/frames/"
+    sta_alignframes(mdoc_dir, stack_dir, align_binning, sum_binning)
