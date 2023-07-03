@@ -5,22 +5,21 @@ from ..utils import *
 
 
 def sta_ctfplotter(
-    batch_dir: Path,
-    stack_dir: Path,
-    stack_extension: str,
+    batch_directory: Path,
+    stack_directory: Path,
     axis_angle: float,
     pixel_size: float,
 ) -> None:
-    if batch_dir is None:
-        stack_dir = Path(stack_dir).absolute()
-        dirs_to_process = [stack_dir]
+    if batch_directory is None:
+        stack_directory = Path(stack_directory).absolute()
+        dirs_to_process = [stack_directory]
     else:
-        batch_dir = Path(batch_dir).absolute()
-        dirs_to_process = [dir for dir in batch_dir.glob("ts*")]
+        batch_directory = Path(batch_directory).absolute()
+        dirs_to_process = [dir for dir in batch_directory.glob("ts*")]
     for directory in dirs_to_process:
         with cd(directory):
             input_stack = (
-                directory.parent.name + "_" + directory.name + "." + stack_extension
+                directory.parent.name + "_" + directory.name + ".mrc"
             )
             command = [
                 "ctfplotter",
@@ -57,19 +56,13 @@ def sta_ctfplotter(
 
 @click.command()
 @click.option(
-    "--batch_dir",
+    "--batch_directory",
     "-b",
     help="Path to the batch directory.",
 )
 @click.option(
-    "--stack_dir",
+    "--stack_directory",
     "-s",
-    help="Help text",
-)
-@click.option(
-    "--stack_extension",
-    "-ext",
-    default=".mrc",
     help="Help text",
 )
 @click.option(
@@ -84,5 +77,5 @@ def sta_ctfplotter(
     default=1.0825,
     help="Help text",
 )
-def cli(batch_dir, stack_dir, stack_extension, axis_angle, pixel_size):
-    sta_ctfplotter(batch_dir, stack_dir, stack_extension, axis_angle, pixel_size)
+def cli(batch_directory, stack_directory, axis_angle, pixel_size):
+    sta_ctfplotter(batch_directory, stack_directory, axis_angle, pixel_size)
