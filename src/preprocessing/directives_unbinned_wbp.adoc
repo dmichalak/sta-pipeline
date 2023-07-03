@@ -51,10 +51,10 @@ runtime.AlignedStack.any.correctCTF = 0
 runtime.AlignedStack.any.eraseGold = 0
 
 ##### Aligned stack parameters
-runtime.AlignedStack.any.binByFactor = 2
+runtime.AlignedStack.any.binByFactor = 1
 comparam.newst.newstack.TaperAtFill = 1,1
 comparam.newst.newstack.AntialiasFilter = -1
-runtime.GoldErasing.any.thickness = 5000
+runtime.GoldErasing.any.thickness = 3000
 comparam.golderaser.ccderaser.ExpandCircleIterations = 3
 comparam.golderaser.ccderaser.PolynomialOrder = -1
 
@@ -76,12 +76,12 @@ comparam.ctfplotter.ctfplotter.CropToPixelSize =
 comparam.ctfplotter.ctfplotter.SearchAstigmatism = 1
 
 ##### Reconstruction
-comparam.tilt.tilt.THICKNESS = 5000
-comparam.tilt.tilt.FakeSIRTiterations = 10
-runtime.Reconstruction.any.doBackprojAlso = 1
+comparam.tilt.tilt.THICKNESS = 3000
+comparam.tilt.tilt.FakeSIRTiterations = 
+runtime.Reconstruction.any.doBackprojAlso = 
 runtime.Reconstruction.any.noXAxisTilt = 1
 
 ##### Post-processing
 runtime.Postprocess.any.doTrimvol = 1
-runtime.Trimvol.any.thickness = 0.6
-runtime.Trimvol.any.doSIRTifBoth = 2
+runtime.Trimvol.any.thickness = 
+runtime.Trimvol.any.doSIRTifBoth = 

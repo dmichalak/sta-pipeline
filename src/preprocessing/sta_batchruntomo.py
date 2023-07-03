@@ -53,7 +53,7 @@ def sta_batchruntomo(
         start_time = time.time()
         command = [
             "batchruntomo",
-            "-directive_file",
+            "-DirectiveFile",
             directive_file,
             "-RootName",
             rootname,
@@ -65,18 +65,18 @@ def sta_batchruntomo(
             f"localhost:{n_cpus}",
             "-GPUMachineList",
             "1",
-            "-starting_step",
+            "-StartingStep",
             str(starting_step),
-            "-ending_step",
+            "-EndingStep",
             str(ending_step),
             "-MakeComExtensionPcm",
             "0",
         ]
 
-        with open("sta_batchruntomo.out", "w") as out, open(
-            "sta_batchruntomo.err", "w"
+        with open(directory / "sta_batchruntomo.out", "w") as out, open(
+            directory / "sta_batchruntomo.err", "w"
         ) as err:
-            subprocess.run(command, stdout=out, stderr=err)
+            result = subprocess.run(command, stdout=out, stderr=err)
         job_success(directory, "sta_batchruntomo")
         end_time = time.time()  # Stop measuring the time for this iteration
         processing_time = end_time - start_time

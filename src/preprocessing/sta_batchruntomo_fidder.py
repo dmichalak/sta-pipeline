@@ -85,7 +85,7 @@ def sta_batchruntomo(
 
             command = [
                 "batchruntomo",
-                "-directive_file",
+                "-DirectiveFile",
                 directive_file,
                 "-RootName",
                 rootname,
@@ -97,9 +97,9 @@ def sta_batchruntomo(
                 f"localhost:{n_cpus}",
                 "-GPUMachineList",
                 "1",
-                "-starting_step",
+                "-StartingStep",
                 str(starting_step),
-                "-ending_step",
+                "-EndingStep",
                 str(ending_step),
                 "-MakeComExtensionPcm",
                 "0",
@@ -135,7 +135,7 @@ def sta_batchruntomo(
 
                     batchruntomo_command = [
                         "batchruntomo",
-                        "-directive_file",
+                        "-DirectiveFile",
                         directive_file,
                         "-RootName",
                         rootname,
@@ -147,9 +147,9 @@ def sta_batchruntomo(
                         f"localhost:{n_cpus}",
                         "-GPUMachineList",
                         "1",
-                        "-starting_step",
+                        "-StartingStep",
                         str(starting_step),
-                        "-ending_step",
+                        "-EndingStep",
                         str(ending_step),
                         "-MakeComExtensionPcm",
                         "0",
@@ -185,7 +185,7 @@ def sta_batchruntomo(
                     ending_step = 20
                     batchruntomo_command = [
                         "batchruntomo",
-                        "-directive_file",
+                        "-DirectiveFile",
                         directive_file,
                         "-RootName",
                         rootname,
@@ -197,9 +197,9 @@ def sta_batchruntomo(
                         f"localhost:{n_cpus}",
                         "-GPUMachineList",
                         "1",
-                        "-starting_step",
+                        "-StartingStep",
                         str(starting_step),
-                        "-ending_step",
+                        "-EndingStep",
                         str(ending_step),
                         "-MakeComExtensionPcm",
                         "0",
