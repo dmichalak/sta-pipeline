@@ -5,22 +5,27 @@ from ..utils import *
 
 
 def sta_ctfplotter(
-    batch_directory: Path,
-    stack_directory: Path,
+    input_directory: Path,
     axis_angle: float,
     pixel_size: float,
 ) -> None:
-    if batch_directory is None:
-        stack_directory = Path(stack_directory).absolute()
-        dirs_to_process = [stack_directory]
+    # Look for the "frames" and "mdoc" directories
+    frames_directory = input_directory / "frames"
+    mdoc_directory = input_directory / "mdoc"
+    if frames_directory.is_dir() and mdoc_directory.is_dir():
+        print(f"Found 'frames' and 'mdoc' directories: processing all tilt series within {input_directory}...")
+        dirs_to_process = [dir for dir in input_directory.glob("ts*")]
+    # Look for a .mrc in input_directory
+    elif Path(input_directory / f"{input_directory}.mrc").is_file():
+        dirs_to_process = input_directory
+    # If couldn't find either, exit script
     else:
-        batch_directory = Path(batch_directory).absolute()
-        dirs_to_process = [dir for dir in batch_directory.glob("ts*")]
+        print(f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {input_directory}.")
+        raise SystemExit(0)
+    
     for directory in dirs_to_process:
         with cd(directory):
-            input_stack = (
-                directory.parent.name + "_" + directory.name + ".mrc"
-            )
+            input_stack = directory.name + ".mrc"
             command = [
                 "ctfplotter",
                 "-InputStack",
@@ -56,14 +61,10 @@ def sta_ctfplotter(
 
 @click.command()
 @click.option(
-    "--batch_directory",
-    "-b",
-    help="Path to the batch directory.",
-)
-@click.option(
-    "--stack_directory",
-    "-s",
-    help="Help text",
+    "--input_directory",
+    "-i",
+    required=True,
+    help="Input directory containing either an MRC tilt series or, for batch processing, 'frames', 'mdoc', and aligned tilt series directories.",
 )
 @click.option(
     "--axis_angle",
@@ -75,7 +76,7 @@ def sta_ctfplotter(
     "--pixel_size",
     "-ps",
     default=1.0825,
-    help="Help text",
+    help="Pixel size in ångströms.",
 )
-def cli(batch_directory, stack_directory, axis_angle, pixel_size):
-    sta_ctfplotter(batch_directory, stack_directory, axis_angle, pixel_size)
+def cli(input_directory, axis_angle, pixel_size):
+    sta_ctfplotter(input_directory, axis_angle, pixel_size)

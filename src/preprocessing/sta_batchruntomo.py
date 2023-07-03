@@ -5,18 +5,29 @@ from ..utils import *
 
 
 def sta_batchruntomo(
+    input_directory: Path,
     directive_file: Path,
-    batch_dir: Path,
     n_cpus: int,
     starting_step: float,
     ending_step: float,
     binning: int,
 ) -> None:
-    """ """
-    directive_file = directive_file.absolute()
-    batch_dir = batch_dir.absolute()
+    # Look for the "frames" and "mdoc" directories
+    input_directory = Path(input_directory).absolute()
+    directive_file = Path(directive_file).absolute()
 
-    dirs_to_process = [dir for dir in batch_dir.glob("ts*")]
+    frames_directory = input_directory / "frames"
+    mdoc_directory = input_directory / "mdoc"
+    if frames_directory.is_dir() and mdoc_directory.is_dir():
+        print(f"Found 'frames' and 'mdoc' directories: processing all tilt series within {input_directory}...")
+        dirs_to_process = [dir for dir in input_directory.glob("ts*")]
+    # Look for a .mrc in input_directory
+    elif Path(input_directory / f"{input_directory}.mrc").is_file() or Path(input_directory / f"{input_directory}_bin{binning}.mrc").is_file():
+        dirs_to_process = input_directory
+    # If couldn't find either, exit script
+    else:
+        print(f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {input_directory}.")
+        raise SystemExit(0)
 
     for directory in dirs_to_process:
         if "sta_batchruntomo.success" in check_job_success(directory):
@@ -25,7 +36,11 @@ def sta_batchruntomo(
             )
             continue
 
-        rootname = f"{directory.parent.name}_{directory.name}_bin{binning}"
+        rootname_binned = f"{directory.name}_bin{binning}"
+        if Path(rootname_binned + ".mrc").is_file():
+            rootname = rootname_binned
+        else:
+            rootname = f"{directory.name}"
 
         command = [
             "batchruntomo",
@@ -34,7 +49,7 @@ def sta_batchruntomo(
             "-RootName",
             rootname,
             "-CurrentLocation",
-            f"{directory}",
+           f"{directory}",
             "-NamingStyle",
             "1",
             "-CPUMachineList",
@@ -58,17 +73,17 @@ def sta_batchruntomo(
 
 @click.command()
 @click.option(
+    "--input_directory",
+    "-i",
+    default=None,
+    help="The path to the batch of tilt stacks, each in its own directory.",
+)
+@click.option(
     "--directive_file",
     "-d",
     required=True,
     default=Path("directives.adoc"),
     help="The path to the .adoc file.",
-)
-@click.option(
-    "--batch_dir",
-    "-bd",
-    default=None,
-    help="The path to the batch of tilt stacks, each in its own directory.",
 )
 @click.option("--n_cpus", "-n", default=2, help=".")
 @click.option(
@@ -112,16 +127,16 @@ def sta_batchruntomo(
     help="Indicate the binning, as defined in the directives.adoc,  of the aligned stack and any subsequent tomograms.",
 )
 def cli(
+    input_directory,
     directive_file,
-    batch_dir,
     n_cpus,
     starting_step,
     ending_step,
     binning,
 ):
     sta_batchruntomo(
+        input_directory,
         directive_file,
-        batch_dir,
         n_cpus,
         starting_step,
         ending_step,
