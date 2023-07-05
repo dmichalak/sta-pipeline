@@ -38,6 +38,10 @@ def sta_batchruntomo(
         )
         raise SystemExit(0)
 
+    number_to_process = len(dirs_to_process)
+    print(f"Found {number_to_process} tilt series to process.")
+    init_time = time.time()
+    number_processed = 0
     for directory in dirs_to_process:
         if "sta_batchruntomo.success" in check_job_success(directory) and force == False:
             print(
@@ -79,10 +83,22 @@ def sta_batchruntomo(
         ) as err:
             result = subprocess.run(command, stdout=out, stderr=err)
         job_success(directory, "sta_batchruntomo")
+        number_processed += 1
+
         end_time = time.time()  # Stop measuring the time for this iteration
         processing_time = end_time - start_time
         minutes, seconds = divmod(processing_time, 60)
-        print(f"{rootname} took {int(minutes)} min {int(seconds)} sec.")
+        print(f"{directory.name} took {int(minutes)} min {int(seconds)} sec.")
+        # Report how long the job has been running
+        current_time = time.time() - init_time 
+        minutes, seconds = divmod(current_time, 60)
+        print(f"{number_processed} of {number_to_process} completed.")
+        print(f"Total time elapsed: {int(minutes)} min {int(seconds)} sec")
+        # Report how long the job is expected to run
+        expected_time = number_to_process / (number_processed / current_time)
+        minutes, seconds = divmod(expected_time, 60)
+        print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
+
 
 @click.command()
 @click.option(
