@@ -47,6 +47,7 @@ def sta_batchruntomo(
             print(
                 f'The file "sta_batchruntomo.success" was found. Skipping {directory.name}.'
             )
+            number_processed+=1
             continue
 
         rootname_binned = f"{directory.name}_bin{binning}"
@@ -88,7 +89,7 @@ def sta_batchruntomo(
         end_time = time.time()  # Stop measuring the time for this iteration
         processing_time = end_time - start_time
         minutes, seconds = divmod(processing_time, 60)
-        print(f"{directory.name} took {int(minutes)} min {int(seconds)} sec.")
+        print(f"Done. {directory.name} took {int(minutes)} min {int(seconds)} sec.")
         # Report how long the job has been running
         current_time = time.time() - init_time 
         minutes, seconds = divmod(current_time, 60)
@@ -98,6 +99,7 @@ def sta_batchruntomo(
         expected_time = number_to_process / (number_processed / current_time)
         minutes, seconds = divmod(expected_time, 60)
         print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
+        print("----")
 
 
 @click.command()
