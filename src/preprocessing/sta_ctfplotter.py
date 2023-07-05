@@ -30,6 +30,7 @@ def sta_ctfplotter(
         raise SystemExit(0)
     number_to_process = len(dirs_to_process)
     print(f"Found {number_to_process} tilt series to process.")
+    print("----")
     init_time = time.time()
     number_processed = 0
     for directory in dirs_to_process:
@@ -38,7 +39,7 @@ def sta_ctfplotter(
                 print(
                     f'The file "sta_ctfplotter.success" was found. Skipping {directory.name}.'
                 )
-                number_processed+=1
+                number_processed += 1
                 continue
 
             start_time = time.time()
@@ -71,8 +72,9 @@ def sta_ctfplotter(
                 "-SearchAstigmatism",
                 "-SaveAndExit",
             ]
-            with open(f"sta_ctfplotter_{directory.name}.out", "a") as out, open(
-                f"sta_ctfplotter_{directory.name}.err", "a",
+            with open(f"sta_ctfplotter.out", "a") as out, open(
+                f"sta_ctfplotter.err",
+                "a",
             ) as err:
                 result = subprocess.run(command, stdout=out, stderr=err)
             job_success(directory, "sta_ctfplotter")
@@ -82,7 +84,7 @@ def sta_ctfplotter(
             minutes, seconds = divmod(processing_time, 60)
             print(f"{directory.name} took {int(minutes)} min {int(seconds)} sec.")
             # Report how long the job has been running
-            current_time = time.time() - init_time 
+            current_time = time.time() - init_time
             minutes, seconds = divmod(current_time, 60)
             print(f"{number_processed} of {number_to_process} completed.")
             print(f"Total time elapsed: {int(minutes)} min {int(seconds)} sec")
@@ -91,7 +93,6 @@ def sta_ctfplotter(
             minutes, seconds = divmod(expected_time, 60)
             print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
             print("----")
-
 
 
 @click.command()

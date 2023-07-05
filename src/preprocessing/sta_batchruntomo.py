@@ -40,14 +40,19 @@ def sta_batchruntomo(
 
     number_to_process = len(dirs_to_process)
     print(f"Found {number_to_process} tilt series to process.")
+    print("----")
     init_time = time.time()
     number_processed = 0
+    number_found = 0
     for directory in dirs_to_process:
-        if "sta_batchruntomo.success" in check_job_success(directory) and force == False:
+        if (
+            "sta_batchruntomo.success" in check_job_success(directory)
+            and force == False
+        ):
             print(
                 f'The file "sta_batchruntomo.success" was found. Skipping {directory.name}.'
             )
-            number_processed+=1
+            number_found += 1
             continue
 
         rootname_binned = f"{directory.name}_bin{binning}"
@@ -80,7 +85,8 @@ def sta_batchruntomo(
         ]
 
         with open(directory / "sta_batchruntomo.out", "a") as out, open(
-            directory / "sta_batchruntomo.err", "a",
+            directory / "sta_batchruntomo.err",
+            "a",
         ) as err:
             result = subprocess.run(command, stdout=out, stderr=err)
         job_success(directory, "sta_batchruntomo")
@@ -91,12 +97,12 @@ def sta_batchruntomo(
         minutes, seconds = divmod(processing_time, 60)
         print(f"Done. {directory.name} took {int(minutes)} min {int(seconds)} sec.")
         # Report how long the job has been running
-        current_time = time.time() - init_time 
+        current_time = time.time() - init_time
         minutes, seconds = divmod(current_time, 60)
-        print(f"{number_processed} of {number_to_process} completed.")
+        print(f"{number_found} of {number_to_process} completed.")
         print(f"Total time elapsed: {int(minutes)} min {int(seconds)} sec")
         # Report how long the job is expected to run
-        expected_time = number_to_process / (number_processed / current_time)
+        expected_time = (number_to_process - number_found) / (number_processed / current_time)
         minutes, seconds = divmod(expected_time, 60)
         print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
         print("----")
@@ -161,7 +167,7 @@ def sta_batchruntomo(
     "--force",
     is_flag=True,
     default=False,
-    help="Force processing even if sta_batchruntomo.success is found. BE CAREFUL!"
+    help="Force processing even if sta_batchruntomo.success is found. BE CAREFUL!",
 )
 def cli(
     input_directory,
