@@ -21,7 +21,7 @@ def sta_isonet_setup(
     ts_defoci_dict = sta_defoci(data_directory)
 
     isonet_star_df = pd.DataFrame()
-    isonet_star_df["rlnIndex"] = range(len(ts_defoci_dict))
+    isonet_star_df["rlnIndex"] = range(1,len(ts_defoci_dict))
     isonet_star_df["rlnMicrographName"] = ts_defoci_dict.keys()
     isonet_star_df["rlnPixelSize"] = pixel_size
     isonet_star_df["rlnDefocus"] = ts_defoci_dict.values()
