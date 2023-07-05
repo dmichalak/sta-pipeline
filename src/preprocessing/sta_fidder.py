@@ -3,13 +3,13 @@ import subprocess
 from pathlib import Path
 from ..utils import *
 
-def sta_fidder(
-    input_stack: Path, 
-    output_dir: Path, 
-    pixel_spacing: float, 
-    probability_threshold: float,
-    ) -> None:
 
+def sta_fidder(
+    input_stack: Path,
+    output_dir: Path,
+    pixel_spacing: float,
+    probability_threshold: float,
+) -> None:
     input_stack = Path(input_stack).absolute()
     output_dir = Path(output_dir).absolute()
     output_mask_name = input_stack.stem + "_fidmask.mrc"
@@ -43,7 +43,7 @@ def sta_fidder(
         "-output",
         output_dir / output_mrc_name,
         "-mode",
-        "1"
+        "1",
     ]
     print("Starting prediction...")
     subprocess.run(predict_command)
@@ -51,7 +51,6 @@ def sta_fidder(
     subprocess.run(erase_command)
     print("Converting the output .mrc from 32bit to 16bit...")
     subprocess.run(newstack_command)
-
 
 
 @click.command()
@@ -71,16 +70,20 @@ def sta_fidder(
 @click.option(
     "--pixel_spacing",
     "-p",
-    required=True, 
+    required=True,
     default=None,
-    help="Pixel spacing in Angstroms/px."
+    help="Pixel spacing in Angstroms/px.",
 )
 @click.option(
     "--probability_threshold",
     "-t",
     default=str(0.5),
-    help="Probability threshold. Default = 0.5"
+    help="Probability threshold. Default = 0.5",
 )
-
 def cli(input_stack, output_dir, pixel_spacing, probability_threshold):
-    sta_fidder(input_stack=input_stack, output_dir=output_dir, pixel_spacing=pixel_spacing, probability_threshold=probability_threshold)
+    sta_fidder(
+        input_stack=input_stack,
+        output_dir=output_dir,
+        pixel_spacing=pixel_spacing,
+        probability_threshold=probability_threshold,
+    )
