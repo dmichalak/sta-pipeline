@@ -99,7 +99,7 @@ def sta_batchruntomo(
         # Report how long the job has been running
         current_time = time.time() - init_time
         minutes, seconds = divmod(current_time, 60)
-        print(f"{number_found} of {number_to_process} completed.")
+        print(f"{number_found + number_processed} of {number_to_process} completed.")
         print(f"Total time elapsed: {int(minutes)} min {int(seconds)} sec")
         # Report how long the job is expected to run
         expected_time = (number_to_process - number_found) / (number_processed / current_time)
