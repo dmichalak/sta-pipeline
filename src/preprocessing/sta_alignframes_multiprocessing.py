@@ -96,7 +96,7 @@ def sta_alignframes_multiprocessing(
     stacks_to_process = []
     ts_number = 1
 
-    for mdoc_file in mdoc_directory.glob("*.mrc.mdoc"):
+    for mdoc_file in sorted(mdoc_directory.glob("*.mrc.mdoc")):
         stacks_to_process.append([input_directory, mdoc_file, align_binning, sum_binning, ts_number])
         ts_number+=1
 

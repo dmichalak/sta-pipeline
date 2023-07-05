@@ -33,7 +33,7 @@ def sta_ctfplotter(
     print("----")
     init_time = time.time()
     number_processed = 0
-    for directory in dirs_to_process:
+    for directory in sorted(dirs_to_process):
         with cd(directory):
             if "sta_ctfplotter.success" in check_job_success(directory):
                 print(

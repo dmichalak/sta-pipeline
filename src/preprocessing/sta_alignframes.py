@@ -27,7 +27,7 @@ def sta_alignframes(
         raise SystemExit(0)
 
     ts_number = 1
-    for mdoc in mdoc_directory.glob("*.mrc.mdoc"):
+    for mdoc in sorted(mdoc_directory.glob("*.mrc.mdoc")):
         """
         for each mrc.mdoc file describing a tilt series, create a subdirectory for the tilt series,
         align the movie frames, put them into a .st stack, move the stack and copy the mdoc into the

@@ -44,7 +44,7 @@ def sta_batchruntomo(
     init_time = time.time()
     number_processed = 0
     number_found = 0
-    for directory in dirs_to_process:
+    for directory in sorted(dirs_to_process):
         if (
             "sta_batchruntomo.success" in check_job_success(directory)
             and force == False
