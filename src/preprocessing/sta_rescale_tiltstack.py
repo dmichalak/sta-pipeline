@@ -4,14 +4,14 @@ from pathlib import Path
 from ..utils import *
 import mrcfile
 
-def sta_rescale_tiltstack(
-    input_stack: Path, 
-    output_stack: Path, 
-    output_pixel_size: float, 
-    bin_factor: float, 
-    n_cpus: int,
-    ) -> None:
 
+def sta_rescale_tiltstack(
+    input_stack: Path,
+    output_stack: Path,
+    output_pixel_size: float,
+    bin_factor: float,
+    n_cpus: int,
+) -> None:
     input_stack = Path(input_stack).absolute()
     output_stack = Path(output_stack).absolute()
 
@@ -23,16 +23,16 @@ def sta_rescale_tiltstack(
     else:
         new_apix = voxel_size.x * float(bin_factor)
         pixelsize = f"{new_apix},{new_apix},{new_apix}"
-    
+
     command = [
         "relion_tomo_bin_stack",
         "--i",
         input_stack,
         "--o",
         output_stack,
-        "--bin", 
+        "--bin",
         str(bin_factor),
-        "--j", 
+        "--j",
         str(n_cpus),
     ]
     result = subprocess.run(command)
@@ -43,7 +43,6 @@ def sta_rescale_tiltstack(
         pixelsize,
     ]
     result = subprocess.run(command)
-
 
 
 @click.command()
@@ -75,6 +74,7 @@ def sta_rescale_tiltstack(
     default=1,
     help="Help text",
 )
-
 def cli(input_stack, output_stack, output_pixel_size, bin_factor, n_cpus):
-    sta_rescale_tiltstack(input_stack, output_stack, output_pixel_size, bin_factor, n_cpus)
+    sta_rescale_tiltstack(
+        input_stack, output_stack, output_pixel_size, bin_factor, n_cpus
+    )
