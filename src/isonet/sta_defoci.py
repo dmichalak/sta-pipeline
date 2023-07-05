@@ -28,15 +28,13 @@ def sta_defoci(input_directory):
             with open(input_directory / "no_defocus.txt", "a") as f:
                 f.write(ts_directory.name + "\n")
 
-    ts_names = list(ts_defoci_dict.keys())
-    ts_names.sort()
-    ts_defoci_dict_sorted = {ts: defocus for ts, defocus in ts_defoci_dict.items()}
+    ts_defoci_dict_sorted = dict(sorted(ts_defoci_dict.items()))
     with open(input_directory / f"{input_directory.name}.defocus", "a") as defoci_file:
         # write the mean defocus to a file 
         for ts, defocus in ts_defoci_dict_sorted.items():
             defoci_file.write(ts + "\t" + str(defocus) + "\n")
     
-    return ts_defoci_dict
+    return ts_defoci_dict_sorted
 
 
 
