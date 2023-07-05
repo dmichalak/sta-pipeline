@@ -59,7 +59,7 @@ runtime.AlignedStack.any.eraseGold = 0
 runtime.AlignedStack.any.binByFactor = 10
 comparam.newst.newstack.TaperAtFill = 1,1
 comparam.newst.newstack.AntialiasFilter = -1
-runtime.GoldErasing.any.thickness = 3000
+runtime.GoldErasing.any.thickness = 4000
 comparam.golderaser.ccderaser.ExpandCircleIterations = 3
 comparam.golderaser.ccderaser.PolynomialOrder = -1
 
@@ -81,7 +81,8 @@ comparam.ctfplotter.ctfplotter.CropToPixelSize = 0.8
 comparam.ctfplotter.ctfplotter.SearchAstigmatism = 1
 
 ##### Reconstruction
-comparam.tilt.tilt.THICKNESS = 3000
+# 4000 px * 1.0825 A/px = 4330 A = 433 nm thick 
+comparam.tilt.tilt.THICKNESS = 4000
 comparam.tilt.tilt.FakeSIRTiterations = 10
 #runtime.Reconstruction.any.doBackprojAlso = 1
 runtime.Reconstruction.any.noXAxisTilt = 1

@@ -12,6 +12,7 @@ def sta_batchruntomo(
     starting_step: float,
     ending_step: float,
     binning: int,
+    force: bool,
 ) -> None:
     # Look for the "frames" and "mdoc" directories
     input_directory = Path(input_directory).absolute()
@@ -38,7 +39,7 @@ def sta_batchruntomo(
         raise SystemExit(0)
 
     for directory in dirs_to_process:
-        if "sta_batchruntomo.success" in check_job_success(directory):
+        if "sta_batchruntomo.success" in check_job_success(directory) and force == False:
             print(
                 f'The file "sta_batchruntomo.success" was found. Skipping {directory.name}.'
             )
@@ -73,8 +74,8 @@ def sta_batchruntomo(
             "0",
         ]
 
-        with open(directory / "sta_batchruntomo.out", "w") as out, open(
-            directory / "sta_batchruntomo.err", "w"
+        with open(directory / "sta_batchruntomo.out", "a") as out, open(
+            directory / "sta_batchruntomo.err", "a",
         ) as err:
             result = subprocess.run(command, stdout=out, stderr=err)
         job_success(directory, "sta_batchruntomo")
@@ -138,6 +139,12 @@ def sta_batchruntomo(
     "-bin",
     help="Indicate the binning, as defined in the directives.adoc,  of the aligned stack and any subsequent tomograms.",
 )
+@click.option(
+    "--force",
+    is_flag=True,
+    default=False,
+    help="Force processing even if sta_batchruntomo.success is found. BE CAREFUL!"
+)
 def cli(
     input_directory,
     directive_file,
@@ -145,6 +152,7 @@ def cli(
     starting_step,
     ending_step,
     binning,
+    force,
 ):
     sta_batchruntomo(
         input_directory,
@@ -153,4 +161,5 @@ def cli(
         starting_step,
         ending_step,
         binning,
+        force,
     )

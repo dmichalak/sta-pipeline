@@ -51,8 +51,8 @@ def alignframes(
         str(align_binning) + " " + str(sum_binning),
     ]
 
-    with open(f"{ts_directory.name}/sta_alignframes.out", "w") as out, open(
-        f"{ts_directory.name}/sta_alignframes.err", "w"
+    with open(f"{ts_directory.name}/sta_alignframes.out", "a") as out, open(
+        f"{ts_directory.name}/sta_alignframes.err", "a",
     ) as err:
         result = subprocess.run(command, stdout=out, stderr=err)
 

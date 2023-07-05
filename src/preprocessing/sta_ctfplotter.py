@@ -59,8 +59,8 @@ def sta_ctfplotter(
                 "-SearchAstigmatism",
                 "-SaveAndExit",
             ]
-            with open(f"sta_ctfplotter_{directory.name}.out", "w") as out, open(
-                f"sta_ctfplotter_{directory.name}.err", "w"
+            with open(f"sta_ctfplotter_{directory.name}.out", "a") as out, open(
+                f"sta_ctfplotter_{directory.name}.err", "a",
             ) as err:
                 result = subprocess.run(command, stdout=out, stderr=err)
             
