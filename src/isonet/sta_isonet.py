@@ -175,26 +175,31 @@ def sta_isonet_extract(
 ):
     working_directory = Path(working_directory).absolute()
     isonet_star_file = Path(isonet_star_file).absolute()
-    subtomo_folder = working_directory / f"subtomo_dp{density_percentage}sp{std_percentage}_{project_name}"
-    subtomo_star_file = working_directory / f"subtomo_dp{density_percentage}sp{std_percentage}_{project_name}.star"
+    subtomo_folder = f"subtomo_dp{density_percentage}sp{std_percentage}_{project_name}"
+    subtomo_star_file = f"subtomo_dp{density_percentage}sp{std_percentage}_{project_name}.star"
     cube_size = 64
     crop_size = 64 + 16
 
     command = [
         "isonet.py",
         "extract",
-        f"{isonet_star_file,}",
+        f"{isonet_star_file}",
         "--subtomo_folder",
-        f"{subtomo_folder,}",
-	      "--subtomo_star",
-        f"{subtomo_star_file,}",
+        f"{subtomo_folder}",
+	    "--subtomo_star",
+        f"{subtomo_star_file}",
         "--cube_size",
-        f"{cube_size,}",
+        f"{cube_size}",
         "--crop_size",
-        f"{crop_size,}",
+        f"{crop_size}",
         "--tomo_idx",
-        f"{tomogram_idx_list,}",
+        f"{tomogram_idx_list}",
     ]
+
+    log_out = working_directory / "sta_isonet.out"
+    log_err = working_directory / "sta_isonet.err"
+    with open(log_out, "a") as out, open(log_err, "a") as err:
+        result = subprocess.run(command, stdout=out, stderr=err)
 
 def sta_isonet_refine(
     working_directory: PathLike,
@@ -205,7 +210,6 @@ def sta_isonet_refine(
     iterations: int,
     density_percentage: float,
     std_percentage: float,
-    tomogram_idx_list: str,
 ):
     working_directory = Path(working_directory).absolute()
     data_directory = Path(data_directory).absolute()
@@ -223,31 +227,29 @@ def sta_isonet_refine(
     command = [
         "isonet.py",
         "refine",
-        f"{subtomo_star_file,}",
+        f"{subtomo_star_file}",
         "--gpuID",
-        f"{gpu_ids,}",
+        f"{gpu_ids}",
         "--iterations",
-        f"{iterations,}",
+        f"{iterations}",
         "--result_dir",
-        f"{result_directory,}",
+        f"{result_directory}",
         "--log_level",
-        f"{log_level,}",
+        f"{log_level}",
         "--data_dir",
-        f"{data_directory,}",
+        f"{data_directory}",
         "--noise_level",
-        f"{noise_level,}",
+        f"{noise_level}",
         "--noise_start_iter",
-        f"{noise_start_iter,}",
+        f"{noise_start_iter}",
         "--learning_rate",
-        f"{learning_rate,}",
+        f"{learning_rate}",
         "--drop_out",
-        f"{drop_out,}",
+        f"{drop_out}",
         "--kernel",
-        f"{kernel,}",
+        f"{kernel}",
         "--unet_depth",
-        f"{unet_depth,}",
-        "--tomo_idx",
-        f"{tomogram_idx_list,}",
+        f"{unet_depth}",
     ]
 
     log_out = working_directory / "sta_isonet.out"
@@ -274,19 +276,24 @@ def sta_isonet_predict(
     command = [
         "isonet.py",
         'predict',
-        f"{isonet_star_file,}",
-        f"{trained_model,}",
+        f"{isonet_star_file}",
+        f"{trained_model}",
         '--output_dir',
-        f"{output_directory,}",
+        f"{output_directory}",
         '--gpuID',
-        f"{gpu_ids,}",
+        f"{gpu_ids}",
         '--cube_size',
-        f"{cube_size,}",
+        f"{cube_size}",
         '--crop_size',
-        f"{crop_size,}",
+        f"{crop_size}",
         '--tomo_idx',
-        f"{tomogram_idx_list,}",
+        f"{tomogram_idx_list}",
     ]
+
+    log_out = refine_directory / ".." / "sta_isonet.out"
+    log_err = refine_directory / ".." / "sta_isonet.err"
+    with open(log_out, "a") as out, open(log_err, "a") as err:
+        result = subprocess.run(command, stdout=out, stderr=err)
 
 
 def sta_isonet(
@@ -358,7 +365,6 @@ def sta_isonet(
             iterations,
             density_percentage,
             std_percentage,
-            tomogram_idx_list,
         )
     elif job == "predict":
         sta_isonet_predict(
@@ -409,7 +415,6 @@ def sta_isonet(
             iterations,
             density_percentage,
             std_percentage,
-            tomogram_idx_list,
         )
         sta_isonet_predict(
             project_name,
@@ -443,7 +448,7 @@ def sta_isonet(
 @click.option(
     "--data_directory",
     "-data",
-    required=True,
+    default="../tomograms",
     help="The path to the directory containing all ts directories.",
 )
 @click.option(
@@ -497,14 +502,14 @@ def sta_isonet(
 @click.option(
     "--density_percentage",
     "-dp",
-    default="0.5",
+    default="50",
     show_default=True,
     help="The density percentage.",
 )
 @click.option(
     "--std_percentage",
     "-sp",
-    default="0.5",
+    default="50",
     show_default=True,
     help="The standard deviation percentage.",
 )
