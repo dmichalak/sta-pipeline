@@ -3,6 +3,19 @@ import click
 
 
 def sta_defoci(input_directory):
+    """
+    Get the defocus values from the ctfplotter output files.
+
+    Parameters
+    ----------
+    input_directory : Path
+        The path to the directory containing all ts directories.
+
+    Returns
+    -------
+    ts_defocus_dict : dict
+        A dictionary of ts names and defocus values.
+    """
     input_directory = Path(input_directory).absolute()
     output_filepath = input_directory / f"{input_directory.name}.defocus"
     if output_filepath.is_file():

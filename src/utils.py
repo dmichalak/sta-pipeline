@@ -20,6 +20,7 @@ def job_success(
     directory: Path,
     job_name: str,
 ) -> None:
+    """Creates a file in the directory to indicate job success."""
     directory = Path(directory).absolute()
     with open(directory / f"{job_name}.success", "w"):
         pass
@@ -27,9 +28,7 @@ def job_success(
 
 def check_job_success(
     directory: Path,
-) -> list:
-    extension = ".success"
+):
+    """Checks if a job has been run successfully."""
     directory = Path(directory).absolute()
-
-    files = [file.name for file in directory.glob(f"*{extension}")]
-    return files
+    return directory.glob("*.success")       

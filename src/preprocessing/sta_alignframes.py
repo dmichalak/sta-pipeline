@@ -99,12 +99,14 @@ def sta_alignframes(
     "--align_binning",
     "-ab",
     default=5,
+    show_default=True,
     help="Binning to be used for movie frame alignment.",
 )
 @click.option(
     "--sum_binning",
     "-sb",
     default=5,
+    show_default=True,
     help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10.",
 )
 def cli(input_directory, align_binning, sum_binning):
