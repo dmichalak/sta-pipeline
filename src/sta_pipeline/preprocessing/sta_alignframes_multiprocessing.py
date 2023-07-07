@@ -49,6 +49,8 @@ def alignframes(
         output_image_file,
         "-binning",
         str(align_binning) + " " + str(sum_binning),
+        "-ModeToOutput",
+        "2",
     ]
 
     with open(f"{ts_directory.name}/sta_alignframes.out", "a") as out, open(

@@ -99,7 +99,7 @@ def sta_isonet_deconv(
     working_directory = Path(working_directory).absolute()
     isonet_star_file = Path(isonet_star_file).absolute()
 
-    highpass_nyquist = 0.2
+    highpass_nyquist = 0.02
 
     deconv_folder = working_directory / f"deconv_snr{snr_falloff}_{project_name}"
     deconv_folder.mkdir(exist_ok=True)
@@ -124,24 +124,58 @@ def sta_isonet_deconv(
         "--tomo_idx",
         f"{tomogram_idx_list}",
     ]
-
-    with open(working_directory / "sta_isonet.out", "a") as out, open(
-        working_directory / "sta_isonet.err", "a"
-    ) as err:
+    log_out = working_directory / "sta_isonet_deconv.out"
+    log_err = working_directory / "sta_isonet_deconv.err"
+    with open(log_out, "a") as out, open(log_err, "a") as err:
         result = subprocess.run(command, stdout=out, stderr=err)
+
 
 def sta_isonet_mask(
     working_directory: PathLike,
     isonet_star_file: PathLike,
     project_name: str,
-    density_percentage: float,
-    std_percentage: float,
+    density_percentage: int,
+    std_percentage: int,
     z_crop: float,
     tomogram_idx_list: str,
  ) -> None:
+    """
+    Create the mask for isonet.
 
+    Parameters
+    ----------
+    working_directory : PathLike
+        The directory to output all isonet files.
+    isonet_star_file : PathLike
+        The path to the star file.
+    project_name : str
+        The name of the project.
+    density_percentage : float
+        The density percentage.
+    std_percentage : float
+        The standard deviation percentage.
+    z_crop : float
+        The z crop.
+    tomogram_idx_list : list
+        The list of tomogram indices to use.
+
+    Returns
+    -------
+    None
+    """
+    working_directory = Path(working_directory).absolute()
     isonet_star_file = Path(isonet_star_file).absolute()
     mask_folder = working_directory / f"mask_dp{density_percentage}sp{std_percentage}_{project_name}"
+
+    """ 
+    patch_size: The size of the box from which the max-filter and std-filter are calculated
+
+    From IsoNet_v).2_Tutorial.md: "Since this demo tomogram has a bin-factor of 4, 
+    a smaller Gaussian filter can smooth out noise and keep the fine structure. We set patch_size to 2." 
+    patch_size = 2 was for 18.6 A/px, so for 10.825 A/px, we use patch_size = 4
+    """
+    patch_size = 4
+
     command = [
     	"isonet.py",
         "make_mask",
@@ -154,23 +188,23 @@ def sta_isonet_mask(
         f"{std_percentage}",
  		"--z_crop",
         f"{z_crop}",
+        "--patch_size",
+        f"{patch_size}",
         "--tomo_idx",
         f"{tomogram_idx_list}",
     ]
 
-    with open(
-        working_directory / "sta_isonet.out", "a"
-        ) as out, open(
-        working_directory / "sta_isonet.err", "a"
-    ) as err:
+    log_out = working_directory / "sta_isonet_mask.out"
+    log_err = working_directory / "sta_isonet_mask.err"
+    with open(log_out, "a") as out, open(log_err, "a") as err:
         result = subprocess.run(command, stdout=out, stderr=err)
 
 def sta_isonet_extract(
     working_directory: PathLike,
     project_name: str,
     isonet_star_file: PathLike,
-    density_percentage: float,
-    std_percentage: float,
+    density_percentage: int,
+    std_percentage: int,
     tomogram_idx_list: str,
 ):
     working_directory = Path(working_directory).absolute()
@@ -196,23 +230,24 @@ def sta_isonet_extract(
         f"{tomogram_idx_list}",
     ]
 
-    log_out = working_directory / "sta_isonet.out"
-    log_err = working_directory / "sta_isonet.err"
+    log_out = working_directory / "sta_isonet_extract.out"
+    log_err = working_directory / "sta_isonet_extract.err"
     with open(log_out, "a") as out, open(log_err, "a") as err:
         result = subprocess.run(command, stdout=out, stderr=err)
 
 def sta_isonet_refine(
     working_directory: PathLike,
-    data_directory: PathLike,
+    scratch_directory: PathLike,
     subtomo_star_file: PathLike,
     project_name: str,
     gpu_ids: str,
+    n_cpu: int,
     iterations: int,
-    density_percentage: float,
-    std_percentage: float,
+    density_percentage: int,
+    std_percentage: int,
 ):
     working_directory = Path(working_directory).absolute()
-    data_directory = Path(data_directory).absolute()
+    scratch_directory = Path(scratch_directory).absolute()
     subtomo_star_file = Path(subtomo_star_file).absolute()
     result_directory = working_directory / f"refine_dp{density_percentage}sp{std_percentage}_{project_name}"
 
@@ -230,6 +265,8 @@ def sta_isonet_refine(
         f"{subtomo_star_file}",
         "--gpuID",
         f"{gpu_ids}",
+        "--preprocessing_ncpus",
+        f"{n_cpu}",
         "--iterations",
         f"{iterations}",
         "--result_dir",
@@ -237,7 +274,7 @@ def sta_isonet_refine(
         "--log_level",
         f"{log_level}",
         "--data_dir",
-        f"{data_directory}",
+        f"{scratch_directory}",
         "--noise_level",
         f"{noise_level}",
         "--noise_start_iter",
@@ -252,8 +289,8 @@ def sta_isonet_refine(
         f"{unet_depth}",
     ]
 
-    log_out = working_directory / "sta_isonet.out"
-    log_err = working_directory / "sta_isonet.err"
+    log_out = working_directory / "sta_isonet_refine.out"
+    log_err = working_directory / "sta_isonet_refine.err"
     with open(log_out, "a") as out, open(log_err, "a") as err:
         result = subprocess.run(command, stdout=out, stderr=err)
 
@@ -261,8 +298,8 @@ def sta_isonet_predict(
     project_name: str,
     isonet_star_file: PathLike,
     refine_directory: PathLike,
-    density_percentage: float,
-    std_percentage: float,
+    density_percentage: int,
+    std_percentage: int,
     gpu_ids: str,
     tomogram_idx_list,
 ):
@@ -290,8 +327,8 @@ def sta_isonet_predict(
         f"{tomogram_idx_list}",
     ]
 
-    log_out = refine_directory / ".." / "sta_isonet.out"
-    log_err = refine_directory / ".." / "sta_isonet.err"
+    log_out = refine_directory / ".." / "sta_isonet_predict.out"
+    log_err = refine_directory / ".." / "sta_isonet_predict.err"
     with open(log_out, "a") as out, open(log_err, "a") as err:
         result = subprocess.run(command, stdout=out, stderr=err)
 
@@ -300,6 +337,7 @@ def sta_isonet(
     job: str,
     project_name: str,
     working_directory: PathLike,
+    scratch_directory: PathLike,
     data_directory: PathLike,
     isonet_star_file: PathLike,
     pixel_size: float,
@@ -308,8 +346,8 @@ def sta_isonet(
     snr_falloff: float,
     deconv_strength: float,
     n_cpu: int,
-    density_percentage: float,
-    std_percentage: float,
+    density_percentage: int,
+    std_percentage: int,
     z_crop: float,
     subtomo_star_file: PathLike,
     refine_directory: PathLike,
@@ -358,10 +396,11 @@ def sta_isonet(
     elif job == "refine":
         sta_isonet_refine(
             working_directory,
-            data_directory,
+            scratch_directory,
             subtomo_star_file,
             project_name,
             gpu_ids,
+            n_cpu,
             iterations,
             density_percentage,
             std_percentage,
@@ -408,7 +447,7 @@ def sta_isonet(
         )
         sta_isonet_refine(
             working_directory,
-            data_directory,
+            scratch_directory,
             subtomo_star_file,
             project_name,
             gpu_ids,
@@ -527,6 +566,12 @@ def sta_isonet(
     help="The path to the subtomo star file.",
 )
 @click.option(
+    "--scratch_directory",
+    "-scratch",
+    default=None,
+    help="The path to the scratch directory.",
+)
+@click.option(
     "--refine_directory",
     "-refine",
     default=None,
@@ -559,6 +604,7 @@ def cli(
     job: str,
     project_name: str,
     working_directory: PathLike,
+    scratch_directory: PathLike,
     data_directory: PathLike,
     isonet_star_file: PathLike,
     pixel_size: float,
@@ -567,8 +613,8 @@ def cli(
     snr_falloff: float,
     deconv_strength: float,
     n_cpu: int,
-    density_percentage: float,
-    std_percentage: float,
+    density_percentage: int,
+    std_percentage: int,
     z_crop: float,
     subtomo_star_file: PathLike,
     refine_directory: PathLike,
@@ -580,6 +626,7 @@ def cli(
         job,
         project_name,
         working_directory,
+        scratch_directory,
         data_directory,
         isonet_star_file,
         pixel_size,

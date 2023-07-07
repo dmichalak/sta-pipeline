@@ -65,7 +65,7 @@ def sta_batchruntomo(
         command = [
             "batchruntomo",
             "-DirectiveFile",
-            f"directive_file",
+            f"{directive_file}",
             "-RootName",
             f"{rootname}",
             "-CurrentLocation",

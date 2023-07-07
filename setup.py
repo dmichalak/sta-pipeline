@@ -13,16 +13,16 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "sta_alignframes=src.preprocessing.sta_alignframes:cli",
-            "sta_alignframes_multiprocessing=src.preprocessing.sta_alignframes_multiprocessing:cli",
-            "sta_batchruntomo=src.preprocessing.sta_batchruntomo:cli",
-            "sta_ctfplotter=src.preprocessing.sta_ctfplotter:cli",
-            "sta_fidder=src.preprocessing.sta_fidder:cli",
-            "sta_rescale_tiltstack=src.preprocessing.sta_rescale_tiltstack:cli",
-            "sta_defoci=src.isonet.sta_defoci:cli",
-            "sta_isonet=src.isonet.sta_isonet:cli",
-            "sta_eman2=src.eman2.sta_eman2:cli",
-
+            "sta_alignframes=src.sta_pipeline.preprocessing.sta_alignframes:cli",
+            "sta_alignframes_multiprocessing=src.sta_pipeline.preprocessing.sta_alignframes_multiprocessing:cli",
+            "sta_batchruntomo=src.sta_pipeline.preprocessing.sta_batchruntomo:cli",
+            "sta_ctfplotter=src.sta_pipeline.preprocessing.sta_ctfplotter:cli",
+            "sta_fidder=src.sta_pipeline.preprocessing.sta_fidder:cli",
+            "sta_rescale_tiltstack=src.sta_pipeline.preprocessing.sta_rescale_tiltstack:cli",
+            "sta_defoci=src.sta_pipeline.isonet.sta_defoci:cli",
+            "sta_isonet=src.sta_pipeline.isonet.sta_isonet:cli",
+            #"sta_viewmask=src.sta_pipeline.isonet.sta_viewmask:cli",
+            "sta_eman2=src.sta_pipeline.eman2.sta_eman2:cli",
         ]
     },
 )
