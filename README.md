@@ -20,13 +20,12 @@ Scripts and procedures for a subtomogram averaging (STA) pipeline.
 
 Open a command-line terminal in the folder you wish to create a directory containing this package. Run the code below to clone the repository. 
 
-`git clone https://git.lobos.nih.gov/dmichalak/sta_pipeline.git`
+`git clone https://git.lobos.nih.gov/dmichalak/sta-pipeline.git`
 
-After moving into the cloned directory with ``cd sta_pipeline``, create a new Python environment for using the pipeline and install the package with ``pip``.
+ Create a new virtual Python environment for using the pipeline and install the package with ``pip``.
 
-`pip install -e .`
+`pip install -e sta-pipeline`
 
-After running this, the scripts referenced in ``setup.py`` will be callable from the command-line (**incomplete**).
 ## Directory structure
 
 data/
