@@ -27,20 +27,20 @@ def sta_rescale_tiltstack(
     command = [
         "relion_tomo_bin_stack",
         "--i",
-        input_stack,
+        f"{input_stack}",
         "--o",
-        output_stack,
+        f"{output_stack}",
         "--bin",
-        str(bin_factor),
+        f"{bin_factor}",
         "--j",
-        str(n_cpus),
+        f"{n_cpus}",
     ]
     result = subprocess.run(command)
     command = [
         "alterheader",
-        output_stack,
+        f"{output_stack}",
         "-PixelSize",
-        pixelsize,
+        f"{pixelsize}",
     ]
     result = subprocess.run(command)
 
@@ -72,6 +72,7 @@ def sta_rescale_tiltstack(
     "--n_cpus",
     "-n",
     default=1,
+    show_default=True,
     help="Help text",
 )
 def cli(input_stack, output_stack, output_pixel_size, bin_factor, n_cpus):

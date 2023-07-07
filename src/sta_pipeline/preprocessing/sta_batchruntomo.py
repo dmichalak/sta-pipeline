@@ -65,9 +65,9 @@ def sta_batchruntomo(
         command = [
             "batchruntomo",
             "-DirectiveFile",
-            directive_file,
+            f"directive_file",
             "-RootName",
-            rootname,
+            f"{rootname}",
             "-CurrentLocation",
             f"{directory}",
             "-NamingStyle",
@@ -77,9 +77,9 @@ def sta_batchruntomo(
             "-GPUMachineList",
             "1",
             "-StartingStep",
-            str(starting_step),
+            f"{starting_step}",
             "-EndingStep",
-            str(ending_step),
+            f"{ending_step}",
             "-MakeComExtensionPcm",
             "0",
         ]
@@ -120,9 +120,10 @@ def sta_batchruntomo(
     "-d",
     required=True,
     default=Path("directives.adoc"),
+    show_default=True,
     help="The path to the .adoc file.",
 )
-@click.option("--n_cpus", "-n", default=2, help=".")
+@click.option("--n_cpus", "-n", default=2, show_default=True,help=".")
 @click.option(
     "--starting_step",
     "-s",

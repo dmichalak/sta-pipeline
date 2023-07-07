@@ -5,10 +5,11 @@ from ..utils import *
 
 
 def function(var1, var2):
+
     return var1, var2
 
 
-@click.command()
+@click.command( help="Help text", show_default=True)
 @click.option(
     "--option1",
     "-o1",

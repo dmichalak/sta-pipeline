@@ -7,8 +7,9 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "click",
-        "mrcfile",
         "pandas",
+        "mrcfile",
+        "starfile",
     ],
     entry_points={
         "console_scripts": [
@@ -21,6 +22,7 @@ setup(
             "sta_defoci=src.isonet.sta_defoci:cli",
             "sta_isonet=src.isonet.sta_isonet:cli",
             "sta_eman2=src.eman2.sta_eman2:cli",
+
         ]
     },
 )
