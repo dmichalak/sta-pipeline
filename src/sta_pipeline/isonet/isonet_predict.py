@@ -1,52 +1,19 @@
 
 from pathlib import Path
 
-import time
 import subprocess
-from typer import Option
-from os import PathLike
 
 from ..utils import *
-from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 
-@cli.command(name="isonet_predict", no_args_is_help=True)
 def isonet_predict(
-    project_name: str = Option(
-        default="isonet",
-        help="The name of the project.",
-        **PKWARGS,
-    ),
-    isonet_star_file: PathLike = Option(
-        default=...,
-        help="The path to the star file.",
-        **PKWARGS,
-    ),
-    refine_directory: PathLike = Option(
-        default=...,
-        help="The path to the refine directory.",
-        **PKWARGS,
-    ),
-    density_percentage: int = Option(
-        default=50,
-        help="The density percentage.",
-        **PKWARGS,
-    ),
-    std_percentage: int = Option(
-        default=50,
-        help="The standard deviation percentage.",
-        **PKWARGS,
-    ),
-    gpu_ids: str = Option(
-        default="0",
-        help="The GPU IDs to use.",
-        **PKWARGS,
-    ),
-    tomogram_idx_list: str = Option(
-        default="0,1,2,3,4",
-        help="The list of tomogram indices to use.",
-        **PKWARGS,
-    ),
+    project_name: str,
+    isonet_star_file: Path,
+    refine_directory: Path,
+    density_percentage: int,
+    std_percentage: int,
+    gpu_ids: str,
+    tomogram_idx_list: str,
 ):
     isonet_star_file = Path(isonet_star_file).absolute()
     refine_directory = Path(refine_directory).absolute()

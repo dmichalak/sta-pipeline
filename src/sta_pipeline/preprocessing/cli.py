@@ -1,0 +1,114 @@
+from typer import Option
+
+from ..utils import *
+from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
+
+from .alignframes import alignframes as _alignframes
+from .alignframes_mp import alignframes_mp as _alignframes_mp
+from .batchruntomo import batchruntomo as _batchruntomo
+from .ctfplotter import ctfplotter as _ctfplotter
+
+@cli.command(name="alignframes", no_args_is_help=True)
+def alignframes(
+    input_directory: Path = Option(
+        default=...,
+        help="The path to the directory containing all ts directories.",
+        **PKWARGS,
+    ),
+    align_binning: int = Option(
+        default=1,
+        help="Binning to be used for movie frame alignment.",
+        **PKWARGS,
+    ),
+    sum_binning: int = Option(
+        default=1,
+        help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10.",
+        **PKWARGS,
+    ),
+) -> None:
+    _alignframes(input_directory, align_binning, sum_binning)
+
+@cli.command(name="alignframes_mp", no_args_is_help=True)
+def alignframes_mp(
+    input_directory: Path = Option(
+        default=...,
+        help="The path to the directory containing all ts directories.",
+        **PKWARGS,
+    ),
+    align_binning: int = Option(
+        default=1,
+        help="Binning to be used for movie frame alignment.",
+        **PKWARGS,
+    ),
+    sum_binning: int = Option(
+        default=1,
+        help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10.",
+        **PKWARGS,
+    ),
+    num_processes: int = Option(
+        default=4,
+        help="Number of parallel processes.",
+        **PKWARGS,
+    ),
+) -> None:
+    _alignframes_mp(input_directory, align_binning, sum_binning, num_processes)
+
+@cli.command(name="batchruntomo", no_args_is_help=True)
+def batchruntomo(
+    input_directory: Path = Option(
+        default=...,
+        help="The path to the directory containing all ts directories.",
+        **PKWARGS,
+    ),
+    directive_file: Path = Option(
+        default=...,
+        help="The path to the batchruntomo directive file.",
+        **PKWARGS,
+    ),
+    n_cpus: int = Option(
+        default=1,
+        help="Number of parallel processes.",
+        **PKWARGS,
+    ),
+    starting_step: float = Option(
+        default=0,
+        help="Starting step for batchruntomo.",
+        **PKWARGS,
+    ),
+    ending_step: float = Option(
+        default=20,
+        help="Ending step for batchruntomo.",
+        **PKWARGS,
+    ),
+    binning: int = Option(
+        default=10,
+        help="Binning to be used for movie frame alignment.",
+        **PKWARGS,
+    ),
+    force: bool = Option(
+        default=False,
+        help="Force batchruntomo to run even if the success file is present.",
+        **PKWARGS,
+    ),
+) -> None:
+    _batchruntomo(input_directory, directive_file, n_cpus, starting_step, ending_step, binning, force)
+
+@cli.command(name="ctfplotter", no_args_is_help=True)
+def ctfplotter(
+    input_directory: Path = Option(
+        default=Path("../tomograms/"),
+        help="The path to the directory containing all ts directories.",
+        **PKWARGS,
+    ),
+    axis_angle: float = Option(
+        default=178.9,
+        help="Tilt axis angle in degrees.",
+        **PKWARGS,
+    ),
+    pixel_size: float = Option(
+        default=1.0825,
+        help="Pixel size in ångströms.",
+        **PKWARGS,
+    ),
+) -> None:
+    _ctfplotter(input_directory, axis_angle, pixel_size)

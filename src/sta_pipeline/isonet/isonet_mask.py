@@ -1,58 +1,26 @@
 from pathlib import Path
 
 import subprocess
-from typer import Option
-from os import PathLike
 
 from ..utils import *
-from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
-@cli.command(name="isonet_mask", no_args_is_help=True)
 def isonet_mask(
-    working_directory: PathLike = Option(
-        default=...,
-        help="The directory to output all isonet files.",
-        **PKWARGS,
-    ),
-    isonet_star_file: PathLike = Option(
-        default=...,
-        help="The path to the star file.",
-        **PKWARGS,
-    ),
-    project_name: str = Option(
-        default="isonet",
-        help="The name of the project.",
-        **PKWARGS,
-    ),
-    density_percentage: int = Option(
-        default=50,
-        help="The density percentage.",
-        **PKWARGS,
-    ),
-    std_percentage: int = Option(
-        default=50,
-        help="The standard deviation percentage.",
-        **PKWARGS,
-    ),
-    z_crop: float = Option(
-        default=0.1,
-        help="The z crop.",
-        **PKWARGS,
-    ),
-    tomogram_idx_list: str = Option(
-        default="0,1,2,3,4",
-        help="The list of tomogram indices to use.",
-        **PKWARGS,
-    ),
+    working_directory: Path,
+    isonet_star_file: Path,
+    project_name: str,
+    density_percentage: int,
+    std_percentage: int,
+    z_crop: float,
+    tomogram_idx_list: str,
  ) -> None:
     """
     Create the mask for isonet.
 
     Parameters
     ----------
-    working_directory : PathLike
+    working_directory : Path
         The directory to output all isonet files.
-    isonet_star_file : PathLike
+    isonet_star_file : Path
         The path to the star file.
     project_name : str
         The name of the project.

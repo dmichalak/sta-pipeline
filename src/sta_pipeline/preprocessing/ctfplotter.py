@@ -5,7 +5,7 @@ from pathlib import Path
 from ..utils import *
 
 
-def sta_ctfplotter(
+def ctfplotter(
     input_directory: Path,
     axis_angle: float,
     pixel_size: float,

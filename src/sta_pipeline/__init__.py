@@ -3,10 +3,7 @@
 """A subtomogram averaging pipeline."""
 from importlib.metadata import PackageNotFoundError, version
 
-try:
-    __version__ = version("sta_pipeline")
-except PackageNotFoundError:
-    __version__ = "uninstalled"
+__version__ = "0.1" #version("sta_pipeline")
 
 __author__ = "Dennis J. Michalak"
 __email__ = "dennis.michalak@nih.gov"
@@ -15,13 +12,7 @@ __all__ = ["__version__", "cli"]
 
 from ._cli import cli
 # cli tools
-from .isonet.isonet_setup import isonet_setup
-from .isonet.isonet_deconv import isonet_deconv
-from .isonet.isonet_mask import isonet_mask
-from .isonet.isonet_extract import isonet_extract
-from .isonet.isonet_refine import isonet_refine
-from .isonet.isonet_predict import isonet_predict
-
-
+from .preprocessing.cli import alignframes, alignframes_mp, batchruntomo, ctfplotter
+from .isonet.cli import isonet_setup, isonet_deconv, isonet_mask, isonet_extract, isonet_refine, isonet_predict
 # python things
 

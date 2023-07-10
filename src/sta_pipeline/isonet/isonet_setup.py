@@ -1,46 +1,25 @@
 from pathlib import Path
 
 import pandas as pd
-from typer import Option
-from os import PathLike
 import starfile
 
 from .get_defoci import get_defoci
-from ..utils import *
-from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 
-@cli.command(name="isonet_setup", no_args_is_help=True)
 def isonet_setup(
-    data_directory: PathLike = Option(
-        default=...,
-        help="The path to the directory containing all ts directories.",
-        **PKWARGS,
-    ),
-    working_directory: PathLike = Option(
-        default=...,
-        help="The directory to output all isonet files.",
-        **PKWARGS,
-    ),
-    project_name: str = Option(
-        default="isonet",
-        help="The name of the project.",
-        **PKWARGS,
-    ),
-    pixel_size: float = Option(
-        default=10.825,
-        help="The pixel size in angstrom.",
-        **PKWARGS,
-    ),
+    data_directory: Path,
+    working_directory: Path,
+    project_name: str,
+    pixel_size: float,
 ) -> None:
     """
     Create the star file for isonet.
 
     Parameters
     ----------
-    data_directory : PathLike
+    data_directory : Path
         The path to the directory containing all ts directories.
-    working_directory : PathLike
+    working_directory : Path
         The directory to output all isonet files.
     project_name : str
         The name of the project.
@@ -49,7 +28,7 @@ def isonet_setup(
 
     Returns
     -------
-    isonet_star_file : PathLike
+    isonet_star_file : Path
         The path to the star file.
     """
 

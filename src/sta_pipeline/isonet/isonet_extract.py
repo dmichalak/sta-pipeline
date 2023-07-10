@@ -1,45 +1,17 @@
 from pathlib import Path
 
 import subprocess
-from typer import Option
-from os import PathLike
 
 from ..utils import *
-from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 
-@cli.command(name="isonet_extract", no_args_is_help=True)
 def isonet_extract(
-    working_directory: PathLike = Option(
-        default=...,
-        help="The directory to output all isonet files.",
-        **PKWARGS,
-    ),
-    project_name: str = Option(
-        default="isonet",
-        help="The name of the project.",
-        **PKWARGS,
-    ),
-    isonet_star_file: PathLike = Option(
-        default=...,
-        help="The path to the star file.",
-        **PKWARGS,
-    ),
-    density_percentage: int = Option(
-        default=50,
-        help="The density percentage.",
-        **PKWARGS,
-    ),
-    std_percentage: int = Option(
-        default=50,
-        help="The standard deviation percentage.",
-        **PKWARGS,
-    ),
-    tomogram_idx_list: str = Option(
-        default="0,1,2,3,4",
-        help="The list of tomogram indices to use.",
-        **PKWARGS,
-    ),
+    working_directory: Path,
+    project_name: str,
+    isonet_star_file: Path,
+    density_percentage: int,
+    std_percentage: int,
+    tomogram_idx_list: str,
 ):
     working_directory = Path(working_directory).absolute()
     isonet_star_file = Path(isonet_star_file).absolute()

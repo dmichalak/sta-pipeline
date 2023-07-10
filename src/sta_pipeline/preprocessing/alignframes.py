@@ -2,11 +2,10 @@ import subprocess
 import click
 import time
 from pathlib import Path
-from typing import Optional
 from ..utils import *
 
 
-def sta_alignframes(
+def alignframes(
     input_directory: Path,
     align_binning: int,
     sum_binning: int,

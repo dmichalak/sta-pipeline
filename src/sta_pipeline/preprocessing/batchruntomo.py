@@ -5,7 +5,7 @@ from pathlib import Path
 from ..utils import *
 
 
-def sta_batchruntomo(
+def batchruntomo(
     input_directory: Path,
     directive_file: Path,
     n_cpus: int,
@@ -106,85 +106,3 @@ def sta_batchruntomo(
         minutes, seconds = divmod(expected_time, 60)
         print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
         print("----")
-
-
-@click.command()
-@click.option(
-    "--input_directory",
-    "-i",
-    default=None,
-    help="The path to the batch of tilt stacks, each in its own directory.",
-)
-@click.option(
-    "--directive_file",
-    "-d",
-    required=True,
-    default=Path("directives.adoc"),
-    show_default=True,
-    help="The path to the .adoc file.",
-)
-@click.option("--n_cpus", "-n", default=2, show_default=True,help=".")
-@click.option(
-    "--starting_step",
-    "-s",
-    default=None,
-    help="""Processing step number to start with in batchruntomo. Steps are numbered as... \
-                 \n 0: Setup
-                 \n 1: Preprocessing
-                 \n 2: Cross-correlation alignment
-                 \n 3: Prealigned stack
-                 \n 4: Patch tracking, autoseeding, or RAPTOR
-                 \n 5: Bead tracking
-                 \n 6: Alignment
-                 \n 7: Positioning
-                 \n 8: Aligned stack generation
-                 \n 9: CTF plotting
-                 \n 10: 3D gold detection
-                 \n 11: CTF correction
-                 \n 12: Gold erasing after transforming fiducial model or projecting 3D model
-                 \n 13: 2D filtering
-                 \n 14: Reconstruction
-                 \n 15: Combine setup
-                 \n 16: Solvematch
-                 \n 17: Initial matchvol
-                 \n 18: Autopatchfit
-                 \n 19: Volcombine
-                 \n 20: Postprocessing with Trimvol
-                 \n 21: NAD (Nonlinear anistropic diffusion)
-                 \n 22: Cleanup""",
-)
-@click.option(
-    "--ending_step",
-    "-e",
-    default=None,
-    help="Processing step number to end with in batchruntomo.",
-)
-@click.option(
-    "--binning",
-    "-bin",
-    help="Indicate the binning, as defined in the directives.adoc,  of the aligned stack and any subsequent tomograms.",
-)
-@click.option(
-    "--force",
-    is_flag=True,
-    default=False,
-    help="Force processing even if sta_batchruntomo.success is found. BE CAREFUL!",
-)
-def cli(
-    input_directory,
-    directive_file,
-    n_cpus,
-    starting_step,
-    ending_step,
-    binning,
-    force,
-):
-    sta_batchruntomo(
-        input_directory,
-        directive_file,
-        n_cpus,
-        starting_step,
-        ending_step,
-        binning,
-        force,
-    )

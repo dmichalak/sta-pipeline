@@ -1,61 +1,20 @@
-
 from pathlib import Path
 
 import subprocess
-from typer import Option
-from os import PathLike
 
 from ..utils import *
-from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 
-@cli.command(name="isonet_refine", no_args_is_help=True)
 def isonet_refine(
-    working_directory: PathLike = Option(
-        default=...,
-        help="The directory to output all isonet files.",
-        **PKWARGS,
-    ),
-    scratch_directory: PathLike = Option(
-        default=...,
-        help="The temporary directory used for training.",
-        **PKWARGS,
-    ),
-    subtomo_star_file: PathLike = Option(
-        default=...,
-        help="The path to the star file.",
-        **PKWARGS,
-    ),
-    project_name: str = Option(
-        default="isonet",
-        help="The name of the project.",
-        **PKWARGS,
-    ),
-    gpu_ids: str = Option(
-        default="0",
-        help="The GPU IDs to use.",
-        **PKWARGS,
-    ),
-    n_cpu: int = Option(
-        default=4,
-        help="The number of CPUs to use.",
-        **PKWARGS,
-    ),
-    iterations: int = Option(
-        default=30,
-        help="The number of iterations to train for.",
-        **PKWARGS,
-    ),
-    density_percentage: int = Option(
-        default=50,
-        help="The density percentage.",
-        **PKWARGS,
-    ),
-    std_percentage: int = Option(
-        default=50,
-        help="The standard deviation percentage.",
-        **PKWARGS,
-    ),
+    working_directory: Path,
+    scratch_directory: Path,
+    subtomo_star_file: Path,
+    project_name: str,
+    gpu_ids: str,
+    n_cpu: int,
+    iterations: int,
+    density_percentage: int,
+    std_percentage: int,
 ):
     working_directory = Path(working_directory).absolute()
     scratch_directory = Path(scratch_directory).absolute()

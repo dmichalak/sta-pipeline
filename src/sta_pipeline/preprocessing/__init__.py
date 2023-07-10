@@ -3,9 +3,9 @@ __author__ = "dmichalak"
 
 
 # scripts
-from .sta_alignframes import sta_alignframes
-from .sta_alignframes_multiprocessing import sta_alignframes_multiprocessing
-from .sta_batchruntomo import sta_batchruntomo
+from .alignframes import alignframes
+from .alignframes_mp import alignframes_mp
+from .batchruntomo import batchruntomo
 from .sta_fidder import sta_fidder
-from .sta_ctfplotter import sta_ctfplotter
+from .ctfplotter import ctfplotter
 from .sta_rescale_tiltstack import sta_rescale_tiltstack
