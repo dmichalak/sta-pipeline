@@ -1,9 +1,1 @@
-__version__ = "0.1"
-__author__ = "dmichalak"
-
-
-
-
-
-# scripts
-from .sta_eman2 import sta_eman2
+from .eman2_predict import eman2_predict

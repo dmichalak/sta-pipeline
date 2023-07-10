@@ -1,4 +1,3 @@
-import click
 import subprocess
 import time
 from pathlib import Path
@@ -93,28 +92,6 @@ def ctfplotter(
             minutes, seconds = divmod(expected_time, 60)
             print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
             print("----")
-
-
-@click.command()
-@click.option(
-    "--input_directory",
-    "-i",
-    required=True,
-    help="Input directory containing either an MRC tilt series or, for batch processing, 'frames', 'mdoc', and tilt series directories.",
-)
-@click.option(
-    "--axis_angle",
-    "-aa",
-    default=178.9,
-    show_default=True,
-    help="Tilt axis angle in degrees.",
-)
-@click.option(
-    "--pixel_size",
-    "-ps",
-    default=1.0825,
-    show_default=True,
-    help="Pixel size in ångströms.",
-)
-def cli(input_directory, axis_angle, pixel_size):
-    sta_ctfplotter(input_directory, axis_angle, pixel_size)
+    print(f"Writing all defocus values to a f{input_directory.name}.defocus")
+    get_defoci(input_directory)
+    print("Done.")

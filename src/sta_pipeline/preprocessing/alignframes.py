@@ -1,5 +1,4 @@
 import subprocess
-import click
 import time
 from pathlib import Path
 from ..utils import *
@@ -85,28 +84,3 @@ def alignframes(
         processing_time = end_time - start_time
         minutes, seconds = divmod(processing_time, 60)
         print(f"{ts_directory.name} took {int(minutes)} min {int(seconds)} sec.")
-
-
-@click.command()
-@click.option(
-    "--input_directory",
-    "-i",
-    required=True,
-    help="Input directory containing 'frames' and 'mdoc' directories.",
-)
-@click.option(
-    "--align_binning",
-    "-ab",
-    default=5,
-    show_default=True,
-    help="Binning to be used for movie frame alignment.",
-)
-@click.option(
-    "--sum_binning",
-    "-sb",
-    default=5,
-    show_default=True,
-    help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10.",
-)
-def cli(input_directory, align_binning, sum_binning):
-    sta_alignframes(input_directory, align_binning, sum_binning)

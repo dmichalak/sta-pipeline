@@ -3,30 +3,30 @@ from typer import Option
 from ..utils import *
 from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
-from .alignframes import alignframes as _alignframes
+#from .alignframes import alignframes as _alignframes
 from .alignframes_mp import alignframes_mp as _alignframes_mp
 from .batchruntomo import batchruntomo as _batchruntomo
 from .ctfplotter import ctfplotter as _ctfplotter
 
-@cli.command(name="alignframes", no_args_is_help=True)
-def alignframes(
-    input_directory: Path = Option(
-        default=...,
-        help="The path to the directory containing all ts directories.",
-        **PKWARGS,
-    ),
-    align_binning: int = Option(
-        default=1,
-        help="Binning to be used for movie frame alignment.",
-        **PKWARGS,
-    ),
-    sum_binning: int = Option(
-        default=1,
-        help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10.",
-        **PKWARGS,
-    ),
-) -> None:
-    _alignframes(input_directory, align_binning, sum_binning)
+#@cli.command(name="alignframes", no_args_is_help=True)
+#def alignframes(
+#    input_directory: Path = Option(
+#        default=...,
+#        help="The path to the directory containing all ts directories.",
+#        **PKWARGS,
+#    ),
+#    align_binning: int = Option(
+#        default=1,
+#        help="Binning to be used for movie frame alignment.",
+#        **PKWARGS,
+#    ),
+#    sum_binning: int = Option(
+#        default=1,
+#        help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10.",
+#        **PKWARGS,
+#    ),
+#) -> None:
+#    _alignframes(input_directory, align_binning, sum_binning)
 
 @cli.command(name="alignframes_mp", no_args_is_help=True)
 def alignframes_mp(

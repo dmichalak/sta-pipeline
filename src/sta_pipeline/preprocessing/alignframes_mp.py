@@ -6,7 +6,6 @@ from ..utils import *
 
 def alignframes(
     stack_data
-    #input_directory,mdoc_file,align_binning,sum_binning,ts_number,
 ) -> None:
 
     input_directory = stack_data[0]

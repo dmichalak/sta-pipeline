@@ -12,7 +12,7 @@ __all__ = ["__version__", "cli"]
 
 from ._cli import cli
 # cli tools
-from .preprocessing.cli import alignframes, alignframes_mp, batchruntomo, ctfplotter
+from .preprocessing.cli import alignframes_mp, batchruntomo, ctfplotter #, alignframes
 from .isonet.cli import isonet_setup, isonet_deconv, isonet_mask, isonet_extract, isonet_refine, isonet_predict
 # python things
 

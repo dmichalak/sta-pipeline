@@ -3,7 +3,7 @@ __author__ = "dmichalak"
 
 
 # scripts
-from .alignframes import alignframes
+#from .alignframes import alignframes
 from .alignframes_mp import alignframes_mp
 from .batchruntomo import batchruntomo
 from .sta_fidder import sta_fidder
