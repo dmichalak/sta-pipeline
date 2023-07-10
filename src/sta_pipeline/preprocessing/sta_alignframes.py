@@ -47,7 +47,7 @@ def sta_alignframes(
             Path.mkdir(ts_directory)
 
         # Check if this tilt stack has already been processed
-        if "sta_alignframes.success" in check_job_success(ts_directory):
+        if ts_directory / "sta_alignframes.success" in check_job_success(ts_directory):
             print(
                 f'The file "sta_alignframes.success" was found. Skipping {ts_directory.name}.'
             )

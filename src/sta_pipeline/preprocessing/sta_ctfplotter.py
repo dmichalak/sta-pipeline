@@ -35,7 +35,7 @@ def sta_ctfplotter(
     number_processed = 0
     for directory in sorted(dirs_to_process):
         with cd(directory):
-            if "sta_ctfplotter.success" in check_job_success(directory):
+            if directory / "sta_ctfplotter.success" in check_job_success(directory):
                 print(
                     f'The file "sta_ctfplotter.success" was found. Skipping {directory.name}.'
                 )

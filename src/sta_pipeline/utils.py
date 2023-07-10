@@ -31,4 +31,4 @@ def check_job_success(
 ):
     """Checks if a job has been run successfully."""
     directory = Path(directory).absolute()
-    return directory.glob("*.success")       
+    return directory.glob("*.success")
