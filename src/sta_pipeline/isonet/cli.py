@@ -36,6 +36,7 @@ def isonet_setup(
 ) -> None:
     _isonet_setup(data_directory, working_directory, project_name, pixel_size)
 
+
 @cli.command(name="isonet_deconv", no_args_is_help=True)
 def isonet_deconv(
     working_directory: Path = Option(
@@ -85,6 +86,7 @@ def isonet_deconv(
     ),
 ) -> None:
     _isonet_deconv(working_directory, isonet_star_file, project_name, voltage, cs, snr_falloff, deconv_strength, n_cpu, tomogram_idx_list)
+
 
 @cli.command(name="isonet_mask", no_args_is_help=True)
 def isonet_mask(
@@ -156,6 +158,7 @@ def isonet_extract(
 ) -> None:
     _isonet_extract(working_directory, project_name, isonet_star_file, density_percentage, std_percentage, tomogram_idx_list)
 
+
 @cli.command(name="isonet_refine", no_args_is_help=True)
 def isonet_refine(
     working_directory: Path = Option(
@@ -191,13 +194,9 @@ def isonet_refine(
 ) -> None:
     _isonet_refine(working_directory, project_name, isonet_star_file, density_percentage, std_percentage, tomogram_idx_list)
 
+
 @cli.command(name="isonet_predict", no_args_is_help=True)
 def isonet_predict(
-    working_directory: Path = Option(
-        default=".",
-        help="The directory to output all isonet files.",
-        **PKWARGS,
-    ),
     project_name: str = Option(
         default="isonet",
         help="The name of the project.",
@@ -206,6 +205,11 @@ def isonet_predict(
     isonet_star_file: Path = Option(
         default=...,
         help="The path to the star file.",
+        **PKWARGS,
+    ),
+    refine_directory: Path = Option(
+        default=".",
+        help="The directory containing the output of IsoNet's \"refine\" job.",
         **PKWARGS,
     ),
     density_percentage: int = Option(
@@ -218,12 +222,15 @@ def isonet_predict(
         help="The standard deviation percentage.",
         **PKWARGS,
     ),
+    gpu_ids: str = Option(
+        default="0",
+        help="The GPU IDs to use.",
+        **PKWARGS,
+    ),
     tomogram_idx_list: str = Option(
         default="0,1,2,3,4",
         help="The list of tomogram indices to use.",
         **PKWARGS,
     ),
 ) -> None:
-    _isonet_predict(working_directory, project_name, isonet_star_file, density_percentage, std_percentage, tomogram_idx_list)
-
-
+    _isonet_predict(project_name, isonet_star_file, refine_directory, density_percentage, std_percentage, gpu_ids, tomogram_idx_list)
