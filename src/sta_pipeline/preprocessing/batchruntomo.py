@@ -1,12 +1,11 @@
-import click
 import subprocess
 import time
 from pathlib import Path
 from ..utils import *
 
 
-def sta_batchruntomo(
-    input_directory: Path,
+def batchruntomo(
+    batch_directory: Path,
     directive_file: Path,
     n_cpus: int,
     starting_step: float,
@@ -15,26 +14,26 @@ def sta_batchruntomo(
     force: bool,
 ) -> None:
     # Look for the "frames" and "mdoc" directories
-    input_directory = Path(input_directory).absolute()
+    batch_directory = Path(batch_directory).absolute()
     directive_file = Path(directive_file).absolute()
 
-    frames_directory = input_directory / "frames"
-    mdoc_directory = input_directory / "mdoc"
+    frames_directory = batch_directory / "frames"
+    mdoc_directory = batch_directory / "mdoc"
     if frames_directory.is_dir() and mdoc_directory.is_dir():
         print(
-            f"Found 'frames' and 'mdoc' directories: processing all tilt series within {input_directory}..."
+            f"Found 'frames' and 'mdoc' directories: processing all tilt series within {batch_directory}..."
         )
-        dirs_to_process = [dir for dir in input_directory.glob("ts*")]
-    # Look for a .mrc in input_directory
+        dirs_to_process = [dir for dir in batch_directory.glob("ts*")]
+    # Look for a .mrc in batch_directory
     elif (
-        Path(input_directory / f"{input_directory}.mrc").is_file()
-        or Path(input_directory / f"{input_directory}_bin{binning}.mrc").is_file()
+        Path(batch_directory / f"{batch_directory}.mrc").is_file()
+        or Path(batch_directory / f"{batch_directory}_bin{binning}.mrc").is_file()
     ):
-        dirs_to_process = input_directory
+        dirs_to_process = batch_directory
     # If couldn't find either, exit script
     else:
         print(
-            f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {input_directory}."
+            f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {batch_directory}."
         )
         raise SystemExit(0)
 
@@ -106,85 +105,3 @@ def sta_batchruntomo(
         minutes, seconds = divmod(expected_time, 60)
         print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
         print("----")
-
-
-@click.command()
-@click.option(
-    "--input_directory",
-    "-i",
-    default=None,
-    help="The path to the batch of tilt stacks, each in its own directory.",
-)
-@click.option(
-    "--directive_file",
-    "-d",
-    required=True,
-    default=Path("directives.adoc"),
-    show_default=True,
-    help="The path to the .adoc file.",
-)
-@click.option("--n_cpus", "-n", default=2, show_default=True,help=".")
-@click.option(
-    "--starting_step",
-    "-s",
-    default=None,
-    help="""Processing step number to start with in batchruntomo. Steps are numbered as... \
-                 \n 0: Setup
-                 \n 1: Preprocessing
-                 \n 2: Cross-correlation alignment
-                 \n 3: Prealigned stack
-                 \n 4: Patch tracking, autoseeding, or RAPTOR
-                 \n 5: Bead tracking
-                 \n 6: Alignment
-                 \n 7: Positioning
-                 \n 8: Aligned stack generation
-                 \n 9: CTF plotting
-                 \n 10: 3D gold detection
-                 \n 11: CTF correction
-                 \n 12: Gold erasing after transforming fiducial model or projecting 3D model
-                 \n 13: 2D filtering
-                 \n 14: Reconstruction
-                 \n 15: Combine setup
-                 \n 16: Solvematch
-                 \n 17: Initial matchvol
-                 \n 18: Autopatchfit
-                 \n 19: Volcombine
-                 \n 20: Postprocessing with Trimvol
-                 \n 21: NAD (Nonlinear anistropic diffusion)
-                 \n 22: Cleanup""",
-)
-@click.option(
-    "--ending_step",
-    "-e",
-    default=None,
-    help="Processing step number to end with in batchruntomo.",
-)
-@click.option(
-    "--binning",
-    "-bin",
-    help="Indicate the binning, as defined in the directives.adoc,  of the aligned stack and any subsequent tomograms.",
-)
-@click.option(
-    "--force",
-    is_flag=True,
-    default=False,
-    help="Force processing even if sta_batchruntomo.success is found. BE CAREFUL!",
-)
-def cli(
-    input_directory,
-    directive_file,
-    n_cpus,
-    starting_step,
-    ending_step,
-    binning,
-    force,
-):
-    sta_batchruntomo(
-        input_directory,
-        directive_file,
-        n_cpus,
-        starting_step,
-        ending_step,
-        binning,
-        force,
-    )

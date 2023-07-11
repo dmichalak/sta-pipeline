@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sta-pipeline"
+dynamic = ["version"]
+readme = "README.md"
+license = ""
+requires-python = ">=3.6"
+dependencies = [
+    "typer",
+    "rich==12.0.1",
+    "typing-extensions==3.7.4.3",
+    "click",
+    "pandas",
+    "numpy",
+    "mrcfile",
+    "starfile",
+]
+
+[project.scripts]
+sta_pipeline = "src.sta_pipeline:cli"
+
+[tool.hatch.version]
+path = "src/sta_pipeline/__init__.py"
