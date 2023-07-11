@@ -1,8 +1,7 @@
 from pathlib import Path
-import click
 
 
-def sta_defoci(input_directory):
+def get_defoci(input_directory):
     """
     Get the defocus values from the ctfplotter output files.
 
@@ -43,20 +42,3 @@ def sta_defoci(input_directory):
             output_file.write(f"{ts}\t{defocus}\n")
     
     return ts_defocus_dict 
-
-
-
-@click.command()
-@click.option(
-    "--input_directory",
-    "-i",
-    default=None,
-    help="The path to the batch of tilt stacks, each in its own directory.",
-)
-
-def cli(
-    input_directory,
-):
-    sta_defoci(
-        input_directory,
-    )

@@ -1,20 +1,18 @@
 import subprocess
-import click
 import time
 from pathlib import Path
-from typing import Optional
 from ..utils import *
 
 
-def sta_alignframes(
-    input_directory: Path,
+def alignframes(
+    batch_directory: Path,
     align_binning: int,
     sum_binning: int,
 ) -> None:
-    input_directory = Path(input_directory).absolute()
+    batch_directory = Path(batch_directory).absolute()
     # Look for the "frames" and "mdoc" directories
-    frames_directory = input_directory / "frames"
-    mdoc_directory = input_directory / "mdoc"
+    frames_directory = batch_directory / "frames"
+    mdoc_directory = batch_directory / "mdoc"
     if frames_directory.is_dir() and mdoc_directory.is_dir():
         print(
             f"Found 'frames' and 'mdoc' directories: processing all tilt series within {mdoc_directory}..."
@@ -22,7 +20,7 @@ def sta_alignframes(
     # If couldn't find, exit script
     else:
         print(
-            f"Error: Did not find 'frames' and 'mdoc' directories in {input_directory.name}."
+            f"Error: Did not find 'frames' and 'mdoc' directories in {batch_directory.name}."
         )
         raise SystemExit(0)
 
@@ -86,28 +84,3 @@ def sta_alignframes(
         processing_time = end_time - start_time
         minutes, seconds = divmod(processing_time, 60)
         print(f"{ts_directory.name} took {int(minutes)} min {int(seconds)} sec.")
-
-
-@click.command()
-@click.option(
-    "--input_directory",
-    "-i",
-    required=True,
-    help="Input directory containing 'frames' and 'mdoc' directories.",
-)
-@click.option(
-    "--align_binning",
-    "-ab",
-    default=5,
-    show_default=True,
-    help="Binning to be used for movie frame alignment.",
-)
-@click.option(
-    "--sum_binning",
-    "-sb",
-    default=5,
-    show_default=True,
-    help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10.",
-)
-def cli(input_directory, align_binning, sum_binning):
-    sta_alignframes(input_directory, align_binning, sum_binning)

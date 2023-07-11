@@ -1,31 +1,30 @@
-import click
 import subprocess
 import time
 from pathlib import Path
 from ..utils import *
 
 
-def sta_ctfplotter(
-    input_directory: Path,
+def ctfplotter(
+    batch_directory: Path,
     axis_angle: float,
     pixel_size: float,
 ) -> None:
     # Look for the "frames" and "mdoc" directories
-    input_directory = Path(input_directory).absolute()
-    frames_directory = input_directory / "frames"
-    mdoc_directory = input_directory / "mdoc"
+    batch_directory = Path(batch_directory).absolute()
+    frames_directory = batch_directory / "frames"
+    mdoc_directory = batch_directory / "mdoc"
     if frames_directory.is_dir() and mdoc_directory.is_dir():
         print(
-            f"Found 'frames' and 'mdoc' directories: processing all tilt series within {input_directory}..."
+            f"Found 'frames' and 'mdoc' directories: processing all tilt series within {batch_directory}..."
         )
-        dirs_to_process = [dir for dir in input_directory.glob("ts*")]
-    # Look for a .mrc in input_directory
-    elif Path(input_directory / f"{input_directory}.mrc").is_file():
-        dirs_to_process = input_directory
+        dirs_to_process = [dir for dir in batch_directory.glob("ts*")]
+    # Look for a .mrc in batch_directory
+    elif Path(batch_directory / f"{batch_directory}.mrc").is_file():
+        dirs_to_process = batch_directory
     # If couldn't find either, exit script
     else:
         print(
-            f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {input_directory}."
+            f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {batch_directory}."
         )
         raise SystemExit(0)
     number_to_process = len(dirs_to_process)
@@ -93,28 +92,6 @@ def sta_ctfplotter(
             minutes, seconds = divmod(expected_time, 60)
             print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
             print("----")
-
-
-@click.command()
-@click.option(
-    "--input_directory",
-    "-i",
-    required=True,
-    help="Input directory containing either an MRC tilt series or, for batch processing, 'frames', 'mdoc', and tilt series directories.",
-)
-@click.option(
-    "--axis_angle",
-    "-aa",
-    default=178.9,
-    show_default=True,
-    help="Tilt axis angle in degrees.",
-)
-@click.option(
-    "--pixel_size",
-    "-ps",
-    default=1.0825,
-    show_default=True,
-    help="Pixel size in ångströms.",
-)
-def cli(input_directory, axis_angle, pixel_size):
-    sta_ctfplotter(input_directory, axis_angle, pixel_size)
+    print(f"Writing all defocus values to a f{batch_directory.name}.defocus")
+    get_defoci(batch_directory)
+    print("Done.")
