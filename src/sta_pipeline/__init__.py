@@ -14,5 +14,3 @@ from ._cli import cli
 # cli tools
 from .preprocessing.cli import alignframes_mp, batchruntomo, ctfplotter, full_preprocess
 from .isonet.cli import isonet_setup, isonet_deconv, isonet_mask, isonet_extract, isonet_refine, isonet_predict
-# python things
-from .preprocessing import alignframes_mp, batchruntomo, ctfplotter, full_preprocess

@@ -130,8 +130,8 @@ def full_preprocess(
         help="Binning to be used for movie frame summing. This will be the binning of the tilt series. Make sure to set the binning for the tomogram reconstruction accordingly. (e.g., setting bin=2 for reconstruction using a stack generated at --sum_binning=5 will result in a final binning of 10.",
         **PKWARGS,
     ),
-    num_processes: int = Option(
-        default=4,
+    n_procs_alignframes: int = Option(
+        default=2,
         help="Number of parallel processes for alignframes.",
         **PKWARGS,
     ),
@@ -140,8 +140,8 @@ def full_preprocess(
         help="The path to the batchruntomo directive file.",
         **PKWARGS,
     ),
-    n_cpus: int = Option(
-        default=1,
+    n_cpus_batchruntomo: int = Option(
+        default=4,
         help="Number of parallel processes for batchruntomo.",
         **PKWARGS,
     ),
@@ -176,6 +176,6 @@ def full_preprocess(
         **PKWARGS,
     ),
 ) -> None:
-    _alignframes_mp(batch_directory, align_binning, sum_binning, num_processes)
-    _batchruntomo(batch_directory, directive_file, n_cpus, starting_step, ending_step, binning, force)
+    _alignframes_mp(batch_directory, align_binning, sum_binning, n_procs_alignframes)
+    _batchruntomo(batch_directory, directive_file, n_cpus_batchruntomo, starting_step, ending_step, binning, force)
     _ctfplotter(batch_directory, axis_angle, pixel_size)
