@@ -10,7 +10,7 @@ from .ctfplotter import ctfplotter as _ctfplotter
 
 #@cli.command(name="alignframes", no_args_is_help=True)
 #def alignframes(
-#    input_directory: Path = Option(
+#    batch_directory: Path = Option(
 #        default=...,
 #        help="The path to the directory containing all ts directories.",
 #        **PKWARGS,
@@ -26,11 +26,11 @@ from .ctfplotter import ctfplotter as _ctfplotter
 #        **PKWARGS,
 #    ),
 #) -> None:
-#    _alignframes(input_directory, align_binning, sum_binning)
+#    _alignframes(batch_directory, align_binning, sum_binning)
 
 @cli.command(name="alignframes_mp", no_args_is_help=True)
 def alignframes_mp(
-    input_directory: Path = Option(
+    batch_directory: Path = Option(
         default=...,
         help="The path to the directory containing all ts directories.",
         **PKWARGS,
@@ -51,11 +51,11 @@ def alignframes_mp(
         **PKWARGS,
     ),
 ) -> None:
-    _alignframes_mp(input_directory, align_binning, sum_binning, num_processes)
+    _alignframes_mp(batch_directory, align_binning, sum_binning, num_processes)
 
 @cli.command(name="batchruntomo", no_args_is_help=True)
 def batchruntomo(
-    input_directory: Path = Option(
+    batch_directory: Path = Option(
         default=...,
         help="The path to the directory containing all ts directories.",
         **PKWARGS,
@@ -91,11 +91,11 @@ def batchruntomo(
         **PKWARGS,
     ),
 ) -> None:
-    _batchruntomo(input_directory, directive_file, n_cpus, starting_step, ending_step, binning, force)
+    _batchruntomo(batch_directory, directive_file, n_cpus, starting_step, ending_step, binning, force)
 
 @cli.command(name="ctfplotter", no_args_is_help=True)
 def ctfplotter(
-    input_directory: Path = Option(
+    batch_directory: Path = Option(
         default=Path("../tomograms/"),
         help="The path to the directory containing all ts directories.",
         **PKWARGS,
@@ -111,4 +111,4 @@ def ctfplotter(
         **PKWARGS,
     ),
 ) -> None:
-    _ctfplotter(input_directory, axis_angle, pixel_size)
+    _ctfplotter(batch_directory, axis_angle, pixel_size)

@@ -5,14 +5,14 @@ from ..utils import *
 
 
 def alignframes(
-    input_directory: Path,
+    batch_directory: Path,
     align_binning: int,
     sum_binning: int,
 ) -> None:
-    input_directory = Path(input_directory).absolute()
+    batch_directory = Path(batch_directory).absolute()
     # Look for the "frames" and "mdoc" directories
-    frames_directory = input_directory / "frames"
-    mdoc_directory = input_directory / "mdoc"
+    frames_directory = batch_directory / "frames"
+    mdoc_directory = batch_directory / "mdoc"
     if frames_directory.is_dir() and mdoc_directory.is_dir():
         print(
             f"Found 'frames' and 'mdoc' directories: processing all tilt series within {mdoc_directory}..."
@@ -20,7 +20,7 @@ def alignframes(
     # If couldn't find, exit script
     else:
         print(
-            f"Error: Did not find 'frames' and 'mdoc' directories in {input_directory.name}."
+            f"Error: Did not find 'frames' and 'mdoc' directories in {batch_directory.name}."
         )
         raise SystemExit(0)
 

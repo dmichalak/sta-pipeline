@@ -8,12 +8,12 @@ def alignframes(
     stack_data
 ) -> None:
 
-    input_directory = stack_data[0]
+    batch_directory = stack_data[0]
     mdoc_file = stack_data[1]
     align_binning = stack_data[2]
     sum_binning = stack_data[3]
     ts_number = stack_data[4]
-    frames_directory = input_directory / "frames"
+    frames_directory = batch_directory / "frames"
 
     if mdoc_file.stat().st_size < 10 * 1024:
     # if the mdoc file is bigger than 10 kB, to make sure it corresponds to a full tilt series
@@ -21,7 +21,7 @@ def alignframes(
             "This mdoc doesn't seem to correspond to a tilt series. Skipping it..."
         )
         return
-    ts_directory = input_directory / Path(f"ts{ts_number:03}").absolute()
+    ts_directory = batch_directory / Path(f"ts{ts_number:03}").absolute()
     output_image_file = ts_directory / Path(f"ts{ts_number:03}.mrc")
 
     if not ts_directory.exists():
@@ -71,15 +71,15 @@ def alignframes(
     print(f"{ts_directory.name} took {int(minutes)} min {int(seconds)} sec.")
 
 def alignframes_mp(
-    input_directory: Path,
+    batch_directory: Path,
     align_binning: int,
     sum_binning: int,
     num_processes: int,
 ) -> None:
-    input_directory = Path(input_directory).absolute()
+    batch_directory = Path(batch_directory).absolute()
     # Look for the "frames" and "mdoc" directories
-    frames_directory = input_directory / "frames"
-    mdoc_directory = input_directory / "mdoc"
+    frames_directory = batch_directory / "frames"
+    mdoc_directory = batch_directory / "mdoc"
     if frames_directory.is_dir() and mdoc_directory.is_dir():
         print(
             f"Found 'frames' and 'mdoc' directories: processing all tilt series within {mdoc_directory}..."
@@ -87,7 +87,7 @@ def alignframes_mp(
     # If couldn't find, exit script
     else:
         print(
-            f"Error: Did not find 'frames' and 'mdoc' directories in {input_directory.name}."
+            f"Error: Did not find 'frames' and 'mdoc' directories in {batch_directory.name}."
         )
         raise SystemExit(0)
 
@@ -96,7 +96,7 @@ def alignframes_mp(
     ts_number = 1
 
     for mdoc_file in sorted(mdoc_directory.glob("*.mrc.mdoc")):
-        stacks_to_process.append([input_directory, mdoc_file, align_binning, sum_binning, ts_number])
+        stacks_to_process.append([batch_directory, mdoc_file, align_binning, sum_binning, ts_number])
         ts_number+=1
 
     with Pool(processes=int(num_processes)) as pool:

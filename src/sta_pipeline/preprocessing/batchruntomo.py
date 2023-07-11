@@ -5,7 +5,7 @@ from ..utils import *
 
 
 def batchruntomo(
-    input_directory: Path,
+    batch_directory: Path,
     directive_file: Path,
     n_cpus: int,
     starting_step: float,
@@ -14,26 +14,26 @@ def batchruntomo(
     force: bool,
 ) -> None:
     # Look for the "frames" and "mdoc" directories
-    input_directory = Path(input_directory).absolute()
+    batch_directory = Path(batch_directory).absolute()
     directive_file = Path(directive_file).absolute()
 
-    frames_directory = input_directory / "frames"
-    mdoc_directory = input_directory / "mdoc"
+    frames_directory = batch_directory / "frames"
+    mdoc_directory = batch_directory / "mdoc"
     if frames_directory.is_dir() and mdoc_directory.is_dir():
         print(
-            f"Found 'frames' and 'mdoc' directories: processing all tilt series within {input_directory}..."
+            f"Found 'frames' and 'mdoc' directories: processing all tilt series within {batch_directory}..."
         )
-        dirs_to_process = [dir for dir in input_directory.glob("ts*")]
-    # Look for a .mrc in input_directory
+        dirs_to_process = [dir for dir in batch_directory.glob("ts*")]
+    # Look for a .mrc in batch_directory
     elif (
-        Path(input_directory / f"{input_directory}.mrc").is_file()
-        or Path(input_directory / f"{input_directory}_bin{binning}.mrc").is_file()
+        Path(batch_directory / f"{batch_directory}.mrc").is_file()
+        or Path(batch_directory / f"{batch_directory}_bin{binning}.mrc").is_file()
     ):
-        dirs_to_process = input_directory
+        dirs_to_process = batch_directory
     # If couldn't find either, exit script
     else:
         print(
-            f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {input_directory}."
+            f"Error: Neither found 'frames' and 'mdoc' directories nor a stack to process in {batch_directory}."
         )
         raise SystemExit(0)
 
