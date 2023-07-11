@@ -1,4 +1,5 @@
 from typer import Option
+from typing import Optional
 
 from ..utils import *
 from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
@@ -227,10 +228,9 @@ def isonet_predict(
         help="The GPU IDs to use.",
         **PKWARGS,
     ),
-    tomogram_idx_list: str = Option(
-        default="0,1,2,3,4",
+    tomogram_idx_list: Optional[str] = Option(
+        default=None,
         help="The list of tomogram indices to use.",
-        **PKWARGS,
     ),
 ) -> None:
     _isonet_predict(project_name, isonet_star_file, refine_directory, density_percentage, std_percentage, gpu_ids, tomogram_idx_list)

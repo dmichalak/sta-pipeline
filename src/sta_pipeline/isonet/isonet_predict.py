@@ -1,6 +1,6 @@
 
 from pathlib import Path
-
+from typing import Optional
 import subprocess
 
 from ..utils import *
@@ -13,7 +13,7 @@ def isonet_predict(
     density_percentage: int,
     std_percentage: int,
     gpu_ids: str,
-    tomogram_idx_list: str,
+    tomogram_idx_list: Optional[str] = None,
 ):
     isonet_star_file = Path(isonet_star_file).absolute()
     refine_directory = Path(refine_directory).absolute()
