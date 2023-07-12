@@ -14,7 +14,6 @@ def eman2_extract(
     abs_threshold: float,
 ) -> None:
     peaks_list = []
-    check peaks local max allows you to take the max of either rel or abs threshold
     for segment_map in eman2_directory.glob("segmentations/*.mrc"):
         map_peaks_df = get_peak_coordinates(segment_map, min_distance, rel_threshold, abs_threshold)
         peaks_list.append(map_peaks_df)

@@ -15,7 +15,7 @@ def isonet_refine(
     iterations: int,
     density_percentage: int,
     std_percentage: int,
-):
+) -> Path:
     working_directory = Path(working_directory).absolute()
     scratch_directory = Path(scratch_directory).absolute()
     subtomo_star_file = Path(subtomo_star_file).absolute()
@@ -63,3 +63,5 @@ def isonet_refine(
     log_err = working_directory / "sta_isonet_refine.err"
     with open(log_out, "a") as out, open(log_err, "a") as err:
         result = subprocess.run(command, stdout=out, stderr=err)
+
+    return result_directory

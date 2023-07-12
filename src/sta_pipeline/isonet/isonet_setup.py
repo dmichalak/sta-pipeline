@@ -11,7 +11,7 @@ def isonet_setup(
     working_directory: Path,
     project_name: str,
     pixel_size: float,
-) -> None:
+) -> Path:
     """
     Create the star file for isonet.
 
@@ -49,3 +49,5 @@ def isonet_setup(
     # write the star file
     isonet_star_filepath = working_directory / f"{project_name}.star"
     starfile.write(isonet_star_df, isonet_star_filepath, overwrite=True)
+    
+    return isonet_star_filepath

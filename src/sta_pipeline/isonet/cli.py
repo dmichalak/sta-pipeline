@@ -234,3 +234,84 @@ def isonet_predict(
     ),
 ) -> None:
     _isonet_predict(project_name, isonet_star_file, refine_directory, density_percentage, std_percentage, gpu_ids, tomogram_idx_list)
+
+
+def isonet_full(
+    data_directory: Path = Option(
+        default=Path("../tomograms/"),
+        help="The path to the directory containing all ts directories.",
+        **PKWARGS,
+    ),
+    working_directory: Path = Option(
+        default=".",
+        help="The directory to output all isonet files.",
+        **PKWARGS,
+    ),
+    project_name: str = Option(
+        default="isonet",
+        help="The name of the project.",
+        **PKWARGS,
+    ),
+    pixel_size: float = Option(
+        default=10.825,
+        help="The pixel size in angstrom.",
+        **PKWARGS,
+    ),
+    voltage: int = Option(
+        default=300,
+        help="The voltage of the microscope.",
+        **PKWARGS,
+    ),
+    cs: float = Option(
+        default=2.7,
+        help="The spherical aberration of the microscope in mm.",
+        **PKWARGS,
+    ),
+    snr_falloff: float = Option(
+        default=0.7,
+        help="The signal to noise ratio falloff.",
+        **PKWARGS,
+    ),
+    deconv_strength: float = Option(
+        default=1.0,
+        help="The deconvolution strength.",
+        **PKWARGS,
+    ),
+    n_cpu: int = Option(
+        default=4,
+        help="The number of CPUs to use.",
+        **PKWARGS,
+    ),
+    density_percentage: int = Option(
+        default=50,
+        help="The density percentage.",
+        **PKWARGS,
+    ),
+    std_percentage: int = Option(
+        default=50,
+        help="The standard deviation percentage.",
+        **PKWARGS,
+    ),
+    gpu_ids: str = Option(
+        default="0",
+        help="The GPU IDs to use.",
+        **PKWARGS,
+    ),
+    tomogram_idx_list: Optional[str] = Option(
+        default=None,
+        help="The list of tomogram indices to use.",
+    ),
+) -> None:
+    
+    isonet_star_file = _isonet_setup(data_directory, working_directory, project_name, pixel_size)
+
+    _isonet_deconv(working_directory, isonet_star_file, project_name, voltage, cs, snr_falloff, deconv_strength, n_cpu, tomogram_idx_list)
+
+    _isonet_mask(working_directory, isonet_star_file, project_name, density_percentage, std_percentage, tomogram_idx_list)
+
+    _isonet_extract(working_directory, project_name, isonet_star_file, density_percentage, std_percentage, tomogram_idx_list)
+
+    refine_directory = _isonet_refine(working_directory, project_name, isonet_star_file, density_percentage, std_percentage, tomogram_idx_list)
+
+    _isonet_predict(project_name, isonet_star_file, refine_directory, density_percentage, std_percentage, gpu_ids, tomogram_idx_list
+)

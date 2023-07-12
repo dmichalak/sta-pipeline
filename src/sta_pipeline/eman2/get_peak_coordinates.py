@@ -11,7 +11,7 @@ def get_peak_coordinates(
     threshold_abs: float,
     threshold_rel: float,
 ) -> pd.DataFrame:
-    """Get the coordinates of the peaks in a segment map."""
+    """Get the coordinates of the peaks in a segment map. If both threshold_abs and threshold_rel are provided, the maximum of the two is chosen as the minimum intensity threshold of peaks."""
 
     with mrcfile.open(segment_map) as mrc:
         peaks = peak_local_max(
