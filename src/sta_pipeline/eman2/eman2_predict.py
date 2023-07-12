@@ -1,30 +1,31 @@
 import subprocess
+from typing import Optional
 from pathlib import Path
+import pandas as pd
 from ..utils import *
 
 
 def eman2_predict(
-    eman2_directory: Path,
-    batch_directory: Path,
+    trained_network: Path,
+    corrected_tomograms: Path,
 ) -> None:
     """Predict the locations of particles in tomograms using a trained network."""
-    eman2_directory = Path(eman2_directory).absolute()
-    batch_directory = Path(batch_directory).absolute()
 
-    tomogram_path_list = get_tomogram_paths(batch_directory)
+    trained_network = Path(trained_network).absolute() 
+    corrected_tomograms = Path(corrected_tomograms).absolute()
+    eman2_directory = corrected_tomograms.parent
+
+    tomogram_path_list = [f"{tomogram}" for tomogram in corrected_tomograms.glob("*.mrc")]
     tomogram_paths = ",".join(tomogram_path_list)
-
-    trained_network = eman2_directory / "trained_network.hdf"
 
     command = [
         "e2tomoseg_convnet.py",
-        "--nnet=" + str(trained_network),
-        "--tomograms=" + str(tomogram_paths),
+        f"--nnet={trained_network}",
+        f"--tomograms={tomogram_paths}",
         "--applying",
         "--threads=32",
         "--device=gpu",
     ]
-
 
     log_out = eman2_directory / "sta_isonet_deconv.out"
     log_err = eman2_directory/ "sta_isonet_deconv.err"

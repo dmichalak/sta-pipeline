@@ -76,7 +76,7 @@ def get_defoci(input_directory):
     
     return ts_defocus_dict 
 
-def get_tomogram_paths(
+def get_ts_tomograms(
     batch_directory: Path,
 ) -> list:
     """Get the paths to the tomograms."""
