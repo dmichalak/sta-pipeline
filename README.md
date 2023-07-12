@@ -59,11 +59,11 @@ After running ``alignframes``, the structure within ``data/batch001`` will be
 where ``ts###`` will refer to each tilt series found in ``mdoc/``.
 
 ## Example commands
-``sta_pipeline alignframes``
-``sta_pipeline batchruntomo``
-``sta_pipeline ctfplotter``
-``sta_pipeline isonet_setup``
-``sta_pipeline isonet_mask`` 
+``sta_pipeline alignframes``\
+``sta_pipeline batchruntomo``\
+``sta_pipeline ctfplotter``\
+``sta_pipeline isonet_setup``\
+``sta_pipeline isonet_mask`` \
 
 ...
 ## Software requirements*
