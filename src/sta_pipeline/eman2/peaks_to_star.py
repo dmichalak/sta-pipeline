@@ -18,14 +18,19 @@ def peaks_to_star(
     rln_coordinates = ["rlnCoordinateZ", "rlnCoordinateY", "rlnCoordinateX"]
     rln_angles = ["rlnAngleRot", "rlnAngleTilt", "rlnAnglePsi"]
 
-
-    peaks_dataframe.rename(columns={'x' : 'rlnCoordinateX', 'y' : 'rlnCoordinateY', 'z' : 'rlnCoordinateZ'}, inplace=True)
+    peaks_dataframe.rename(
+        columns={"x": "rlnCoordinateX", "y": "rlnCoordinateY", "z": "rlnCoordinateZ"},
+        inplace=True,
+    )
     unbinned_peaks_dataframe = peaks_dataframe.copy()
-    unbinned_peaks_dataframe[rln_coordinates] = peaks_dataframe[rln_coordinates] * tomo_bin_factor
+    unbinned_peaks_dataframe[rln_coordinates] = (
+        peaks_dataframe[rln_coordinates] * tomo_bin_factor
+    )
 
     for angle in rln_angles:
-        random_angles = np.random.randint(0, 179, size=len(unbinned_peaks_dataframe.index))
+        random_angles = np.random.randint(
+            0, 179, size=len(unbinned_peaks_dataframe.index)
+        )
         unbinned_peaks_dataframe[angle] = random_angles
-    
-    starfile.write(unbinned_peaks_datafram, output_star, overwrite=True) 
-    
+
+    starfile.write(unbinned_peaks_dataframe, output_star, overwrite=True)
