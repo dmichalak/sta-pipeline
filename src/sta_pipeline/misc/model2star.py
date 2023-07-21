@@ -27,8 +27,11 @@ randomize_particle_angles = True # If True, randomize the angles of the particle
 path_to_model_directory = Path(path_to_model_directory).absolute() 
 model_dict = {}
 for model in path_to_model_directory.glob("*.mod"):
-    model_dict[model.stem] = imodmodel.read(model)
-    model_dict[model.stem]["name"] = model.stem
+    if model.stem in model_dict.keys():
+        raise ValueError("Multiple model files with the same name found in the directory: ", path_to_model_directory)
+    else: 
+        model_dict[model.stem] = imodmodel.read(model)
+        model_dict[model.stem]["name"] = model.stem
 
 # Check if any models were found at path_to_model_directory
 if len(model_dict) == 0:
