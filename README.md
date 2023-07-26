@@ -12,6 +12,7 @@
   - [II. Particle picking](#ii-particle-picking)
   - [III. Refinement](#iii-refinement)
 - [Helpful references](#helpful-references)
+    - [Segmenting filaments in 3dmod](#segmenting-filaments-in-3dmod)
     - [IMOD](#imod)
     - [IsoNet](#isonet)
     - [EMAN2](#eman2)
@@ -110,6 +111,9 @@ Software: ``RELION``
 
 # Helpful references
 
+
+### Segmenting filaments in 3dmod
+
 ### IMOD
 - [List of programs](https://bio3d.colorado.edu/imod/doc/program_listing.html)
 - [alignframes help page](https://bio3d.colorado.edu/imod/doc/man/alignframes.html)
@@ -121,7 +125,7 @@ Software: ``RELION``
 ### EMAN2
 - [List of programs](https://blake.bcm.edu/doxygen/programs_help_html/)
 - [Neural network tutorial](https://blake.bcm.edu/emanwiki/EMAN2/Programs/tomoseg)
-- [Computationally friendly box-sizes](https://blake.bcm.edu/emanwiki/EMAN2/BoxSize) \\
+- [Computationally friendly box-sizes](https://blake.bcm.edu/emanwiki/EMAN2/BoxSize) \
 24, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 84, 96, 100, 104, 112, 120, 128, 132, 140, 168, 180, 192, 196, 208, 216, 220, 224, 240, 256, 260, 288, 300, 320, 352, 360, 384, 416, 440, 448, 480, 512, 540, 560, 576, 588, 600, 630, 640, 648, 672, 686, 700, 720, 750, 756, 768, 784, 800, 810, 840, 864, 882, 896, 900, 960, 972, 980, 1000, 1008, 1024
 
 ### RELION-4.0

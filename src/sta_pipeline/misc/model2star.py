@@ -10,7 +10,7 @@ import starfile
 
 
 # Set the following variables
-path_to_model_directory = "/data/singal/cryo-ET-recon/models" # Path to the directory containing the models (in .mod format)
+path_to_model_directory = "."
 randomize_particle_angles = True # If True, randomize the angles of the particles. If False, set all angles to 0.0
 
 
@@ -59,7 +59,7 @@ else:
 
     # Write the star files for each model found in the directory
     for key in star_dict.keys():
-        starfile.write(star_dict[key], path_to_model_directory / f"{star_dict[key]['rlnTomoName'][0]}.star", overwrite=True)
-        print("Star file written at: ", path_to_model_directory / f"{star_dict[key]['rlnTomoName'][0]}.star")
+        starfile.write(star_dict[key], path_to_model_directory / f"{star_dict[key]['rlnTomoName'].iloc[1]}.star", overwrite=True)
+        print("Star file written: ", path_to_model_directory / f"{star_dict[key]['rlnTomoName'].iloc[1]}.star")
     
     print("Done!")
