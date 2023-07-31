@@ -62,8 +62,8 @@ repository = "https://github.com/dmichalak/sta-pipeline"
 # Entry points
 # https://peps.python.org/pep-0621/#entry-points
 # same as console_scripts entry point
-# [project.scripts]
-# sta-pipeline-cli = "sta_pipeline:main_cli"
+[project.scripts]
+sta-pipeline = "sta_pipeline:cli"
 
 # [project.entry-points."some.group"]
 # tomatoes = "sta_pipeline:main_tomatoes"

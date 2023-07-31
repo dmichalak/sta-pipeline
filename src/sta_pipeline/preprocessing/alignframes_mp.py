@@ -53,7 +53,8 @@ def alignframes(
     with open(f"{ts_directory.name}/sta_alignframes.out", "a") as out, open(
         f"{ts_directory.name}/sta_alignframes.err", "a",
     ) as err:
-        result = subprocess.run(command, stdout=out, stderr=err)
+        with cd(ts_directory):
+            result = subprocess.run(command, stdout=out, stderr=err)
 
     # output_image_file.replace(output_image_file.with_suffix(f"_bin{align_binning}.st"))
     if int(align_binning) * int(sum_binning) > 1:
