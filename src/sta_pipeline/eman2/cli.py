@@ -1,3 +1,5 @@
+from pathlib import Path
+from typing import Optional
 from typer import Option
 
 from ..utils import *
@@ -5,13 +7,14 @@ from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 from .eman2_predict import eman2_predict as _eman2_predict
 from .eman2_extract import eman2_extract as _eman2_extract
+from .eman2_training import eman2_training as _eman2_training
 
 
 @cli.command(name="eman2_predict", no_args_is_help=True)
 def eman2_predict(
-    trained_network = Option(
+    trained_network= Option(
         default=...,
-        help="The path to the trained network HDF file.",
+        help="The path to the trained network HDF file (ex: nnet_save__ribosomes_good.hdf).",
         **PKWARGS,
     ),
     corrected_tomograms = Option(
@@ -20,7 +23,7 @@ def eman2_predict(
         **PKWARGS,
     ),
 ) -> None:
-    _eman2_predict(trained_network, corrected_tomograms)
+    _eman2_predict(trained_trainset, corrected_tomograms)
 
 @cli.command(name="eman2_extract", no_args_is_help=True)
 def eman2_extract(
@@ -46,3 +49,28 @@ def eman2_extract(
     ),
 ) -> None:
     _eman2_extract(eman2_directory, min_distance, rel_threshold, abs_threshold)
+
+@cli.command(name="eman2_training", no_args_is_help=True)
+def eman2_training(
+    eman2_trainset: Path = Option(
+        default=...,
+        help="The path to the trainset HDF file.",
+        **PKWARGS,
+    ),
+    learning_rate: float = Option(
+        default=...,
+        help="The learning rate for training.",
+        **PKWARGS,
+    ),
+    iterations: int = Option(
+        default=...,
+        help="The number of iterations for training.",
+        **PKWARGS,
+    ),
+    continue_from: Optional[Path] = Option(
+        default=None,
+        help="The path to a trained trainset HDF file to continue training from.",
+        **PKWARGS,
+    ),
+) -> None:
+    _eman2_training(eman2_trainset, learning_rate, iterations, continue_from)

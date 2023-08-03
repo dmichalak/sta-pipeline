@@ -14,4 +14,4 @@ from ._cli import cli
 
 from .preprocessing.cli import alignframes_mp, batchruntomo, ctfplotter, full_preprocess
 from .isonet.cli import isonet_setup, isonet_deconv, isonet_mask, isonet_extract, isonet_refine, isonet_predict
-from .eman2.cli import eman2_predict
+from .eman2.cli import eman2_predict, eman2_extract, eman2_training

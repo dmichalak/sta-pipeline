@@ -16,7 +16,7 @@ def eman2_predict(
     eman2_directory = corrected_tomograms.parent
 
     tomogram_path_list = [
-        f"{tomogram}" for tomogram in corrected_tomograms.glob("*.mrc")
+        f"{tomogram}" for tomogram in corrected_tomograms.glob("*.hdf")
     ]
     tomogram_paths = ",".join(tomogram_path_list)
 
@@ -29,7 +29,7 @@ def eman2_predict(
         "--device=gpu",
     ]
 
-    log_out = eman2_directory / "sta_isonet_deconv.out"
-    log_err = eman2_directory / "sta_isonet_deconv.err"
+    log_out = eman2_directory / "sta_eman2_predict.out"
+    log_err = eman2_directory / "sta_eman2_predict.err"
     with open(log_out, "a") as out, open(log_err, "a") as err:
         result = subprocess.run(command, stdout=out, stderr=err)
