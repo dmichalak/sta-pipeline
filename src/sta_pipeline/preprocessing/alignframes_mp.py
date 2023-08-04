@@ -21,8 +21,8 @@ def alignframes(
             "This mdoc doesn't seem to correspond to a tilt series. Skipping it..."
         )
         return
-    ts_directory = batch_directory / Path(f"ts{ts_number:03}").absolute()
-    output_image_file = ts_directory / Path(f"ts{ts_number:03}.mrc")
+    ts_directory = batch_directory / Path(f"ts_{ts_number:03}").absolute()
+    output_image_file = ts_directory / Path(f"ts_{ts_number:03}.mrc")
 
     if not ts_directory.exists():
         Path.mkdir(ts_directory)
@@ -34,6 +34,8 @@ def alignframes(
         )
         ts_number += 1
         return
+    command = ["cp", mdoc_file.as_posix(), ts_directory.as_posix()]
+    result = subprocess.run(command)
     print(f"Processing {ts_directory.name}.")
     start_time = time.time()  # Start measuring the time for this iteration
     command = [
@@ -62,8 +64,6 @@ def alignframes(
             ts_directory / (output_image_file.stem + f"_bin{int(sum_binning)}.mrc")
         )
 
-    command = ["cp", mdoc_file.as_posix(), ts_directory.as_posix()]
-    result = subprocess.run(command)
     ts_number += 1
     job_success(ts_directory, "sta_alignframes")
     end_time = time.time()  # Stop measuring the time for this iteration

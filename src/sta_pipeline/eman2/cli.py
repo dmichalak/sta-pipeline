@@ -27,7 +27,7 @@ def eman2_predict(
 
 @cli.command(name="eman2_extract", no_args_is_help=True)
 def eman2_extract(
-    eman2_directory = Option(
+    segmentation_directory = Option(
         default=...,
         help="The path to the directory containing the tomograms and segmentations.",
         **PKWARGS,
@@ -48,7 +48,7 @@ def eman2_extract(
         **PKWARGS,
     ),
 ) -> None:
-    _eman2_extract(eman2_directory, min_distance, rel_threshold, abs_threshold)
+    _eman2_extract(segmentation_directory, min_distance, rel_threshold, abs_threshold)
 
 @cli.command(name="eman2_training", no_args_is_help=True)
 def eman2_training(

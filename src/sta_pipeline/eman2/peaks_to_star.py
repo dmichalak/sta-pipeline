@@ -32,5 +32,15 @@ def peaks_to_star(
             0, 179, size=len(unbinned_peaks_dataframe.index)
         )
         unbinned_peaks_dataframe[angle] = random_angles
-
+    # if rlnTomoName is a column in peaks_dataframe, move it to the last column index
+    if "rlnTomoName" in peaks_dataframe.columns:
+        unbinned_peaks_dataframe["rlnTomoName"] = peaks_dataframe["rlnTomoName"]
+        unbinned_peaks_dataframe = unbinned_peaks_dataframe[
+            [
+                col
+                for col in unbinned_peaks_dataframe.columns
+                if col != "rlnTomoName"
+            ]
+            + ["rlnTomoName"]
+        ]
     starfile.write(unbinned_peaks_dataframe, output_star, overwrite=True)
