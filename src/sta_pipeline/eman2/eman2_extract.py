@@ -21,6 +21,8 @@ def eman2_extract(
     segmentation_directory = Path(segmentation_directory).absolute()
 
     peaks_list = []
+
+    # Convert segmentation maps from .hdf to .mrc
     for hdf in sorted(segmentation_directory.glob("*.hdf")):
         if not hdf.with_suffix(".mrc").exists():
             command = [
@@ -29,6 +31,8 @@ def eman2_extract(
                 str(hdf.with_suffix(".mrc")),
             ]
             subprocess.run(command)
+
+    # Extract peaks from segmentation maps and save to a star file per tomogram
     for segment_map in sorted(segmentation_directory.glob("*.mrc")):
         starfile_name = f"{segment_map.stem}_abs{abs_threshold}rel{rel_threshold}.star"
         if (segmentation_directory / starfile_name).exists():
@@ -49,6 +53,8 @@ def eman2_extract(
             tomo_bin_factor=1,
             )
         peaks_list.append(map_peaks_df)
+
+    # Concatenate all star files into one star file
     peaks_df = pd.concat(peaks_list, axis=0, ignore_index=True)
     peaks_starfile_name = f"allpeaks_abs{abs_threshold}rel{rel_threshold}.star"
     print(f"Saving all found peaks to {segmentation_directory / (f'{peaks_starfile_name}')}...")

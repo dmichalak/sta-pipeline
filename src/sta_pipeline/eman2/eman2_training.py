@@ -14,7 +14,7 @@ def eman2_training(
     eman2_trainset = Path(eman2_trainset).absolute()
     eman2_directory = eman2_trainset.parent
 
-    if continue_from is None:
+    if continue_from is None or continue_from == "None":
         command = [
             "e2tomoseg_convnet.py",
             f"--trainset={eman2_trainset}",

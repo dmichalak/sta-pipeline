@@ -23,7 +23,7 @@ def eman2_predict(
         **PKWARGS,
     ),
 ) -> None:
-    _eman2_predict(trained_trainset, corrected_tomograms)
+    _eman2_predict(trained_network, corrected_tomograms)
 
 @cli.command(name="eman2_extract", no_args_is_help=True)
 def eman2_extract(
@@ -50,7 +50,7 @@ def eman2_extract(
 ) -> None:
     _eman2_extract(segmentation_directory, min_distance, rel_threshold, abs_threshold)
 
-@cli.command(name="eman2_training", no_args_is_help=True)
+@cli.command(name="eman2_training", no_args_is_help=True, )
 def eman2_training(
     eman2_trainset: Path = Option(
         default=...,
@@ -69,7 +69,7 @@ def eman2_training(
     ),
     continue_from: Optional[Path] = Option(
         default=None,
-        help="The path to a trained trainset HDF file to continue training from.",
+        help="The path to a trained network HDF file to continue training from (ex. nnet_save__ribosomes_good.hdf).",
         **PKWARGS,
     ),
 ) -> None:

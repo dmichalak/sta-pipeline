@@ -69,6 +69,7 @@ def ctfplotter(
                 "-UseExpectedDefForAuto",
                 "-VaryExponentInFit",
                 "-SearchAstigmatism",
+                "-InvertTiltAngles",
                 "-SaveAndExit",
             ]
             with open(f"sta_ctfplotter.out", "a") as out, open(
@@ -92,6 +93,6 @@ def ctfplotter(
             minutes, seconds = divmod(expected_time, 60)
             print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
             print("----")
-    print(f"Writing all defocus values to a f{batch_directory.name}.defocus")
+    print(f"Writing all defocus values to {directory.parent}/{batch_directory.name}.defocus")
     get_defoci(batch_directory)
     print("Done.")

@@ -53,12 +53,8 @@ def batchruntomo(
             )
             number_found += 1
             continue
-
-        rootname_binned = f"{directory.name}_bin{binning}"
-        if Path(rootname_binned + ".mrc").is_file():
-            rootname = rootname_binned
-        else:
-            rootname = f"{directory.name}"
+        
+        rootname = f"{directory.name}"
         print(f"Processing {rootname}.")
         start_time = time.time()
         command = [
@@ -88,6 +84,15 @@ def batchruntomo(
             "a",
         ) as err:
             result = subprocess.run(command, stdout=out, stderr=err)
+
+        # If the binning is greater than 1, rename the output file to include the binning
+        if binning > 1:
+            print("Renaming output file to include binning.")
+            Path(directory / (rootname + "_rec.mrc")).rename(
+                directory / (rootname + f"_b{binning}_rec.mrc")
+            )
+
+
         job_success(directory, "sta_batchruntomo")
         number_processed += 1
 

@@ -56,7 +56,7 @@ runtime.AlignedStack.any.correctCTF = 0
 runtime.AlignedStack.any.eraseGold = 0
 
 ##### Aligned stack parameters
-runtime.AlignedStack.any.binByFactor = 10
+runtime.AlignedStack.any.binByFactor = 8
 comparam.newst.newstack.TaperAtFill = 1,1
 comparam.newst.newstack.AntialiasFilter = -1
 runtime.GoldErasing.any.thickness = 4000
