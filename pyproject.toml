@@ -36,6 +36,8 @@ dependencies = [
     "pandas",
     "mrcfile",
     "starfile",
+    "imodmodel",
+    "dynamotable",
     "typer",
     "scikit-image",
 ]
