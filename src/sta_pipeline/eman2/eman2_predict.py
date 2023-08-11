@@ -16,7 +16,7 @@ def eman2_predict(
     eman2_directory = corrected_tomograms.parent
 
     tomogram_path_list = [
-        f"{tomogram}" for tomogram in corrected_tomograms.glob("*.hdf")
+        f"{tomogram}" for tomogram in sorted(corrected_tomograms.glob("*.hdf"))
     ]
     tomogram_paths = ",".join(tomogram_path_list)
 

@@ -87,6 +87,10 @@ def batchruntomo(
 
         # If the binning is greater than 1, rename the output file to include the binning
         if binning > 1:
+            print("Renaming aligned tilt stack to include binning.")
+            Path(directory / (rootname + "_ali.mrc")).rename(
+                directory / (rootname + f"_b{binning}_ali.mrc")
+            )
             print("Renaming output file to include binning.")
             Path(directory / (rootname + "_rec.mrc")).rename(
                 directory / (rootname + f"_b{binning}_rec.mrc")
