@@ -12,17 +12,16 @@ import dynamotable
 # based on https://github.com/EuanPyle/relion2dynamo
 
 def convert_star2tbl(
-        input_directory: Path,
+        input_directory: str,
         input_binning: int,
         output_binning: int,
         overwrite: Optional[bool] = False,
 ):
     input_directory = Path(input_directory).absolute()
     output_directory = input_directory
-
     for star_file in sorted(input_directory.glob("*.star")):
         star_filename = star_file.stem
-
+        print(f"Converting {star_filename}...")
         star_df = starfile.read(star_file)
 
         if isinstance(star_df, OrderedDict):
@@ -85,7 +84,7 @@ def convert_star2tbl(
         binned_dynamo_df = pd.DataFrame.from_dict(binned_dynamo_dict)
 
         # Write the dynamo table
-        dynamotable.write(dynamo_df, output_directory / f"{star_filename}_unb.tbl")
-        dynamotable.write(binned_dynamo_df, output_directory /  f"{star_filename}_b{output_binning}.tbl")
+        dynamotable.write(dynamo_df, f"{output_directory / star_filename}_unb.tbl")
+        dynamotable.write(binned_dynamo_df, f"{output_directory /  star_filename}_b{output_binning}.tbl")
         
 
