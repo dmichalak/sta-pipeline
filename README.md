@@ -7,6 +7,7 @@
   - [Directory structure](#directory-structure)
   - [Example commands](#example-commands)
   - [Software requirements\*](#software-requirements)
+  - [Software versions](#software-versions)
 - [Outline of the pipeline](#outline-of-the-pipeline)
   - [I. Preprocessing](#i-preprocessing)
   - [II. Particle picking](#ii-particle-picking)
@@ -76,6 +77,12 @@ where ``ts###`` will refer to each tilt series found in ``mdoc/``.
 - [``RELION``](https://relion.readthedocs.io/en/release-4.0/)
 
 *Scripts and the above software have only been tested on a Linux-based system so far
+
+## Software versions
+
+-- nvidia-driver = 535.86.10
+-- CUDA = 12.2
+-- RELION = 4.0.1-commmit-0b03a6
 # Outline of the pipeline
 
 

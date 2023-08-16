@@ -1,4 +1,4 @@
-myCatalogue = 'erased_21tomos';
+myCatalogue = 'artiax_21tomos';
 
 % Get the list of .tbl files ./tbls and sort them alphabetically
 files = dir('*.tbl');
