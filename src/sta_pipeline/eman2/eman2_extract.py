@@ -86,20 +86,12 @@ def eman2_extract(
     if concatenate_star_files:
         print("Concatenating all star files...")
         starfile_name = f"particles_abs{abs_threshold}rel{rel_threshold}.star"
-        for ts_name in ts_dict.keys():
-
-
-            Not done with this yet
-                
-
-
-
-    peaks_df = pd.concat(peaks_list, axis=0, ignore_index=True)
-    peaks_starfile_name = f"allpeaks_abs{abs_threshold}rel{rel_threshold}.star"
-    print(f"Saving all found peaks to {segmentation_directory / (f'{peaks_starfile_name}')}...")
-    starfile.write(
-        peaks_df,
-        segmentation_directory / peaks_starfile_name,
-        overwrite=True,
+        all_peaks = pd.concat(peaks_list, axis=0, ignore_index=True)
+        peaks_to_star(
+            all_peaks,
+            segmentation_directory / starfile_name,
+            tomo_bin_factor=tomo_bin_factor,
         )
+        print(f"Saved concatenated star file to {segmentation_directory / starfile_name}.")
+
     print("Done!")
