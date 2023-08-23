@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Optional
 import subprocess
 
-from ..utils import *
+from ..utilities.utils import *
 
 
 def isonet_predict(

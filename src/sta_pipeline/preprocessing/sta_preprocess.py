@@ -3,7 +3,7 @@ import click
 from pathlib import Path
 from typing import Optional
 
-from ..utils import *
+from ..utilities.utils import *
 from . import sta_alignframes, sta_batchruntomo, sta_ctfplotter
 
 

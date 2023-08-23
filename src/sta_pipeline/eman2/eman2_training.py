@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Optional
 import subprocess
 import pandas as pd
-from ..utils import *
+from ..utilities.utils import *
 
 def eman2_training(
     eman2_trainset: Path,

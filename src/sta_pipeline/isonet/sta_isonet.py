@@ -8,7 +8,7 @@ from os import PathLike
 import starfile
 
 from .get_defoci import sta_defoci
-from ..utils import *
+from ..utilities.utils import *
 from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 

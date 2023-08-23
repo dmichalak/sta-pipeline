@@ -2,7 +2,7 @@ import subprocess
 from typing import Optional
 from pathlib import Path
 import pandas as pd
-from ..utils import *
+from ..utilities.utils import *
 
 
 def eman2_predict(

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import subprocess
 
-from ..utils import *
+from ..utilities.utils import *
 
 
 def isonet_refine(

@@ -2,7 +2,7 @@ from typer import Option
 from typing import Optional
 from pathlib import Path
 
-from ..utils import *
+from ..utilities.utils import *
 from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 from .isonet_setup import isonet_setup as _isonet_setup

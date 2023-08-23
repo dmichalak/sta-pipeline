@@ -1,7 +1,7 @@
 import click
 import subprocess
 from pathlib import Path
-from ..utils import *
+from ..utilities.utils import *
 import mrcfile
 
 

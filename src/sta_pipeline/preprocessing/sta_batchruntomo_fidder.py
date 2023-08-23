@@ -2,7 +2,7 @@ import click
 import subprocess
 from pathlib import Path
 from .sta_fidder import sta_fidder
-from ..utils import *
+from ..utilities.utils import *
 
 
 def sta_batchruntomo(

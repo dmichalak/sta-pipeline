@@ -2,7 +2,7 @@ from pathlib import Path
 from typer import Option
 from typing import Optional
 
-from ..utils import *
+from ..utilities.utils import *
 from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 from .convert_star2tbl import convert_star2tbl as _convert_star2tbl

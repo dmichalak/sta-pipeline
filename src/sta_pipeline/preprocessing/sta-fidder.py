@@ -1,7 +1,7 @@
 import subprocess
 import time
 from pathlib import Path
-from ..utils import *
+from ..utilities.utils import *
 
 def fidder(
     batch_directory: Path,

@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Optional
 from typer import Option
 
-from ..utils import *
+from ..utilities.utils import *
 from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 from .eman2_predict import eman2_predict as _eman2_predict

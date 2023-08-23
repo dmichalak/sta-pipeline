@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import starfile
 
-from ..utils import *
+from ..utilities.utils import *
 
 
 def peaks_to_star(

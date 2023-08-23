@@ -53,13 +53,14 @@ runtime.Positioning.any.thickness =
 
 ##### Aligned stack choices
 runtime.AlignedStack.any.correctCTF = 0
-runtime.AlignedStack.any.eraseGold = 0
+runtime.AlignedStack.any.eraseGold = 1
 
 ##### Aligned stack parameters
 runtime.AlignedStack.any.binByFactor = 10
 comparam.newst.newstack.TaperAtFill = 1,1
 comparam.newst.newstack.AntialiasFilter = -1
-runtime.GoldErasing.any.thickness = 4000
+runtime.GoldErasing.any.thickness = 4800
+runtime.GoldErasing.any.extraDiameter = 4
 comparam.golderaser.ccderaser.ExpandCircleIterations = 3
 comparam.golderaser.ccderaser.PolynomialOrder = -1
 

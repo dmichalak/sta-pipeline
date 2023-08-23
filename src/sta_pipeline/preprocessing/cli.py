@@ -1,7 +1,7 @@
 from typer import Option
 from pathlib import Path
 
-from ..utils import *
+from ..utilities.utils import *
 from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 #from .alignframes import alignframes as _alignframes

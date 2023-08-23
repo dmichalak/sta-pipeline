@@ -2,7 +2,7 @@ import subprocess
 import time
 from pathlib import Path
 from multiprocessing import Pool
-from ..utils import *
+from ..utilities.utils import *
 
 def alignframes(
     stack_data
