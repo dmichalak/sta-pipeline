@@ -36,14 +36,14 @@ def convert_star2tbl(
 
 @cli.command(name="convert_tbl2star", no_args_is_help=True)
 def convert_tbl2star(
-    input_directory: str = Option(
+    input_tbl_file: str = Option(
         default=...,
-        help="The path to the directory containing the tbl files. By default, the output directory is the same as the input directory. \n Note: RELION-v4.0 generally expects coordinates to be unbinned in star files. Dynamo generally expects coordinates to match the binning of the corresponding tomogram in tbl files.",
+        help="The path to the tbl file to be converted. The output directory is where the input tbl file is located. \n Note: RELION-v4.0 generally expects coordinates to be unbinned in star files. Dynamo generally expects coordinates to match the binning of the corresponding tomogram in tbl files.",
         **PKWARGS,
     ),
     input_binning: int = Option(
         default=1,
-        help="The binning of the coordinates in the input tbl files.",
+        help="The binning of the coordinates in the input tbl file.",
         **PKWARGS,
     ),
     ts_directories: Path = Option(
@@ -53,8 +53,8 @@ def convert_tbl2star(
     ),
     overwrite: Optional[bool] = Option(
         default=False,
-        help="Overwrite existing star files.",
+        help="Overwrite an existing star file with the same name.",
         **PKWARGS,
     ),
 ) -> None:
-    _convert_tbl2star(input_directory, input_binning, ts_directories, overwrite)
+    _convert_tbl2star(input_tbl_file, input_binning, ts_directories, overwrite)
