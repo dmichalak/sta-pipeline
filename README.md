@@ -97,7 +97,13 @@ Software: ``IMOD``
 
 ## II. Particle picking
 
-Software: ``IsoNet``, ``EMAN2``, ``RELION`` 
+Software: ``dynamo``, ``IsoNet``, ``EMAN2``, ``RELION`` 
+
+- After initial alignment in ``dynamo``, ``sta-pipeline convert_tbl2star`` to convert ``dynamo`` tables to ``RELION`` star files
+- Import into ``RELION``
+
+- Classification with alignment in ``RELION``
+
 
 - Prepare tomograms for particle picking via denoising and modeling the missing wedge (``IsoNet``)
 - Train a neural network to automatically locate densities of interest in tomograms (``EMAN2``)

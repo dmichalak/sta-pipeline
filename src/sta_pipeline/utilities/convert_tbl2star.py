@@ -32,7 +32,8 @@ def convert_tbl2star(
     for coord in ("x", "y", "z"):
         rln_coord_column = f"rlnCoordinate{coord.upper()}"
         dynamo_shift_column = f"d{coord}"
-        relion_dict[rln_coord_column] = (tbl_df[coord] * float(input_binning))
+        # rln coordinate = (dynamo coordinate + dynamo shift) * input_binning
+        relion_dict[rln_coord_column] = (tbl_df[coord] + tbl_df[dynamo_shift_column]) * float(input_binning)
 
     # Get orientational info from the input tbl file
     dynamo_angles = tbl_df[["tdrot", "tilt", "narot"]].to_numpy()

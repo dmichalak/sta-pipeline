@@ -6,6 +6,8 @@ from ..utilities.utils import *
 from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 
 from .make_rln_tomo_star import make_rln_tomo_star as _make_rln_tomo_star
+from .rln_split_classif_star import rln_split_classif_star as _rln_split_classif_star
+from .rln_select_good_classes import rln_select_good_classes as _rln_select_good_classes
 
 @cli.command(name="make_rln_tomo_star", no_args_is_help=True)
 def make_rln_tomo_star(
@@ -21,3 +23,39 @@ def make_rln_tomo_star(
     ),
 ) -> None:
     _make_rln_tomo_star(batch_directory, fractional_dose)
+
+
+@cli.command(name="rln_split_classif_star", no_args_is_help=True)
+def rln_split_classif_star(
+    classif_star_file: Path = Option(
+        default=...,
+        help="The path to the run_it025_data.star file.",
+        **PKWARGS,
+    ),
+    overwrite: Optional[bool] = Option(
+        default=False,
+        help="Whether to overwrite existing star files.",
+        **PKWARGS,
+    ),
+) -> None:
+    _rln_split_classif_star(classif_star_file, overwrite)
+
+@cli.command(name="rln_select_good_classes", no_args_is_help=True)
+def rln_select_good_classes(
+    classif_directory: Path = Option(
+        default=...,
+        help="The path to the directory containing the class_*.star files.",
+        **PKWARGS,
+    ),
+    good_classes: str = Option(
+        default=...,
+        help="The list of good classes in the format '1,2,3,4,5'.",
+        **PKWARGS,
+    ),
+    overwrite: Optional[bool] = Option(
+        default=False,
+        help="Whether to overwrite existing star files.",
+        **PKWARGS,
+    ),
+) -> None:
+    _rln_select_good_classes(classif_directory, good_classes, overwrite)

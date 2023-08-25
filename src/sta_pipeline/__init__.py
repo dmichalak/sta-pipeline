@@ -15,5 +15,5 @@ from ._cli import cli
 from .preprocessing.cli import alignframes_mp, batchruntomo, ctfplotter, full_preprocess
 from .isonet.cli import isonet_setup, isonet_deconv, isonet_mask, isonet_extract, isonet_refine, isonet_predict
 from .eman2.cli import eman2_predict, eman2_extract, eman2_training
-from .relion.cli import make_rln_tomo_star
-from .utilities.cli import convert_star2tbl , convert_tbl2star
+from .relion.cli import make_rln_tomo_star, rln_split_classif_star, rln_select_good_classes
+from .utilities.cli import convert_star2tbl, convert_tbl2star
