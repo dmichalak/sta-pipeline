@@ -75,7 +75,8 @@ def convert_tbl2star(
         #####
 
         relion_dict["rlnTomoName"] = tomo_name_list
-        relion_dict["rlnObjectNumber"] = tbl_df["reg"]
+        # Label the particles with unique object numbers
+        relion_dict["rlnObjectNumber"] = np.arange(len(dynamo_tomoname)) + 1
 
         relion_df = pd.DataFrame.from_dict(relion_dict)
 
