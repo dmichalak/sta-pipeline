@@ -41,7 +41,7 @@ def isonet_setup(
     # create the a DataFrame for the star file
     isonet_star_df = pd.DataFrame()
     isonet_star_df["rlnIndex"] = range(1,len(ts_defoci_dict)+1)
-    isonet_star_df["rlnMicrographName"] = [f"{data_directory}/{ts_name}/{ts_name}_rec.mrc" for ts_name in ts_defoci_dict.keys()]
+    isonet_star_df["rlnMicrographName"] = [f"{data_directory}/{ts_name}/{ts_name}_b10_rec.mrc" for ts_name in ts_defoci_dict.keys()]
     isonet_star_df["rlnPixelSize"] = pixel_size
     isonet_star_df["rlnDefocus"] = ts_defoci_dict.values()
     isonet_star_df["rlnNumberSubtomo"] = 60

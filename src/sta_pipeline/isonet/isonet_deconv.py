@@ -51,27 +51,48 @@ def isonet_deconv(
 
     deconv_folder = working_directory / f"deconv_snr{snr_falloff}_{project_name}"
     deconv_folder.mkdir(exist_ok=True)
-    command = [
-        "isonet.py",
-        "deconv",
-        f"{isonet_star_file}",
-        "--deconv_folder",
-        f"{deconv_folder}",
-        "--voltage",
-        f"{voltage}",
-        "--cs",
-        f"{cs}",
-        "--snrfalloff",
-        f"{snr_falloff}",
-        "--deconvstrength",
-        f"{deconv_strength}",
-        "--highpassnyquist",
-        f"{highpass_nyquist}",
-        "--ncpu",
-        f"{n_cpu}",
-        "--tomo_idx",
-        f"{tomogram_idx_list}",
-    ]
+    if tomogram_idx_list == "all":
+        command = [
+            "isonet.py",
+            "deconv",
+            f"{isonet_star_file}",
+            "--deconv_folder",
+            f"{deconv_folder}",
+            "--voltage",
+            f"{voltage}",
+            "--cs",
+            f"{cs}",
+            "--snrfalloff",
+            f"{snr_falloff}",
+            "--deconvstrength",
+            f"{deconv_strength}",
+            "--highpassnyquist",
+            f"{highpass_nyquist}",
+            "--ncpu",
+            f"{n_cpu}",
+        ]
+    else:
+        command = [
+            "isonet.py",
+            "deconv",
+            f"{isonet_star_file}",
+            "--deconv_folder",
+            f"{deconv_folder}",
+            "--voltage",
+            f"{voltage}",
+            "--cs",
+            f"{cs}",
+            "--snrfalloff",
+            f"{snr_falloff}",
+            "--deconvstrength",
+            f"{deconv_strength}",
+            "--highpassnyquist",
+            f"{highpass_nyquist}",
+            "--ncpu",
+            f"{n_cpu}",
+            "--tomo_idx",
+            f"{tomogram_idx_list}",
+        ]
     log_out = working_directory / "sta_isonet_deconv.out"
     log_err = working_directory / "sta_isonet_deconv.err"
     with open(log_out, "a") as out, open(log_err, "a") as err:

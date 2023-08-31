@@ -23,26 +23,26 @@ def rln_select_good_classes(
     """
 
     classif_directory = Path(classif_directory).absolute()
-    class_star_files = sorted(classif_directory.glob("class_*.star"))
+    class_star_files = sorted(classif_directory.glob("class*.star"))
 
     good_classes = [int(x) for x in good_classes.split(",")]
 
     # Create a dictionary of good and bad classes
-    #good_classes_dict = {"optics": None, "particles": None}
-    #bad_classes_dict = {"optics": None, "particles": None}
-    good_classes_dict = {"particles": None}
-    bad_classes_dict = {"particles": None}
+    good_classes_dict = {"optics": None, "particles": None}
+    bad_classes_dict = {"optics": None, "particles": None}
+    #good_classes_dict = {"particles": None}
+    #bad_classes_dict = {"particles": None}
 
     for class_star_file in class_star_files:
-        class_number = int(class_star_file.stem.split("_")[1])
+        class_number = int(class_star_file.name[5:8])
         class_star_file = Path(class_star_file).absolute()
         class_star = starfile.read(class_star_file)
         class_particles_df = class_star["particles"]
-        #class_optics_df = class_star["optics"]
+        class_optics_df = class_star["optics"]
         
         if class_number in good_classes:
-            #if good_classes_dict["optics"] is None:
-            #    good_classes_dict["optics"] = class_optics_df
+            if good_classes_dict["optics"] is None:
+                good_classes_dict["optics"] = class_optics_df
 
             if good_classes_dict["particles"] is None:
                 good_classes_dict["particles"] = class_particles_df
@@ -50,8 +50,8 @@ def rln_select_good_classes(
                 # Concatenate the good classes
                 good_classes_dict["particles"] = pd.concat([good_classes_dict["particles"], class_particles_df], axis=0).reset_index(drop=True)
         else:
-            #if bad_classes_dict["optics"] is None:
-            #    bad_classes_dict["optics"] = class_optics_df
+            if bad_classes_dict["optics"] is None:
+                bad_classes_dict["optics"] = class_optics_df
 
             if bad_classes_dict["particles"] is None:
                 bad_classes_dict["particles"] = class_particles_df

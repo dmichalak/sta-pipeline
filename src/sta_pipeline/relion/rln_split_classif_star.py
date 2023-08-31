@@ -6,7 +6,7 @@ import starfile
 def rln_split_classif_star(
         classif_star_file: Path,
         overwrite: Optional[bool] = False,
-) -> dict:
+) -> None:
     """ Split up the run_it025_data.star file into separate star files for each class specified by rlnClassNumber.
 
         Args:
@@ -28,16 +28,22 @@ def rln_split_classif_star(
 
     # Get the list of class numbers from rlnClassNumber
     class_number_list = sorted(classif_particles_df["rlnClassNumber"].unique())
+    
 
+    # Write a star file for each class
     for class_number in class_number_list:
-
-        class_star_file = Path(classif_star_file.parent / f"class_{class_number}_it025_data.star").absolute()
         classes_dict[class_number] = {"optics": classif_optics_df}
         classes_dict[class_number]["particles"] = classif_particles_df[classif_particles_df["rlnClassNumber"] == class_number]
+        class_star_file = classif_star_file.parent / f"class{class_number:03}_it025_data.star"
 
-        # Write the star file
-        print(f"Writing {class_star_file.parent.name}/{class_star_file.name}")
         starfile.write(classes_dict[class_number], class_star_file, overwrite=overwrite)
-    
-    return classes_dict
 
+
+    # Write a star file for each tomogram
+    ts_dict = {}
+    for ts in sorted(classes_dict[class_number_list[1]]["particles"]["rlnTomoName"].unique()):
+        ts_dict[ts] = {"optics" : classif_optics_df}
+        ts_dict[ts]["particles"] = classif_particles_df[classif_particles_df["rlnTomoName"] == ts]
+        ts_star_file = classif_star_file.parent / f"{ts}_it025_data.star"
+
+        starfile.write(ts_dict[ts], ts_star_file, overwrite=overwrite)
