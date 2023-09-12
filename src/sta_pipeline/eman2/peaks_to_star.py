@@ -9,7 +9,7 @@ from ..utilities.utils import *
 def peaks_to_star(
     peaks_dataframe: pd.DataFrame,
     output_star: Path,
-    tomo_bin_factor: int,
+    tomo_bin_factor: float,
 ) -> None:
     """Convert a DataFrame of peak coordinates to a star file."""
 
@@ -23,17 +23,16 @@ def peaks_to_star(
         columns={"x": "rlnCoordinateX", "y": "rlnCoordinateY", "z": "rlnCoordinateZ"},
         inplace=True,
     )
-    unbinned_peaks_dataframe = {}
+    unbinned_peaks_dataframe = {"optics" : None, "particles" : pd.DataFrame()}
     unbinned_peaks_dataframe["optics"] = pd.DataFrame(columns=optics_columns)
     unbinned_peaks_dataframe["optics"].loc[0] = optics_values
-
-    unbinned_peaks_dataframe["particles"][rln_coordinates] = (
-        peaks_dataframe[rln_coordinates] * tomo_bin_factor
-    )
+    for coord in rln_coordinates:
+        unbinned_peaks_dataframe["particles"][coord] = peaks_dataframe[coord] * float(tomo_bin_factor)
 
     for angle in rln_angles:
         random_angles = np.random.randint(
-            0, 179, size=len(unbinned_peaks_dataframe.index)
+            0, 179, size=len(unbinned_peaks_dataframe["particles"].index)
+            #len(unbinned_peaks_dataframe.index)
         )
         unbinned_peaks_dataframe["particles"][angle] = random_angles
     # if rlnTomoName is a column in peaks_dataframe, move it to the last column index

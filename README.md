@@ -10,7 +10,8 @@
   - [Software versions](#software-versions)
 - [Outline of the pipeline](#outline-of-the-pipeline)
   - [I. Preprocessing](#i-preprocessing)
-  - [II. Particle picking](#ii-particle-picking)
+  - [II a. Particle picking](#ii-a-particle-picking)
+  - [II b. Structural Heterogeneity](#ii-b-structural-heterogeneity)
   - [III. Refinement](#iii-refinement)
 - [Helpful references](#helpful-references)
     - [Segmenting filaments in 3dmod](#segmenting-filaments-in-3dmod)
@@ -95,7 +96,7 @@ Software: ``IMOD``
 - Reconstruct tomograms with a SIRT-like filter
 - Reconstruct tomograms with R-weighting (after particle picking)
 
-## II. Particle picking
+## II a. Particle picking
 
 Software: ``dynamo``, ``IsoNet``, ``EMAN2``, ``RELION`` 
 
@@ -110,6 +111,22 @@ Software: ``dynamo``, ``IsoNet``, ``EMAN2``, ``RELION``
 - Sample subtomogram positions from the trained model predictions
 - Clean the subtomogram dataset by removing duplicates, alignment, classification, etc. (``RELION``)
 
+
+## II b. Structural Heterogeneity 
+Notes from "Processing of Structurally Heterogeneous Cryo-EM Data in RELION" - https://pubmed.ncbi.nlm.nih.gov/27572726/
+
+General workflow \
+1. 3D Classification (aka multireference refinement) with an exhaustive angular search
+  - If there is no prior knowledge about the relative orientations of particles, one must marginalize over all orientations during classification (i.e., perform an exhaustive angular search). 
+  - If there are large differencts between the particles in the dataset, 3D classif. with an exhaustive search can separate them into different classes. This can be iteratively repeated to remove "junk" particles.
+
+Once a set of "non-junk" particles has been identified, one can identify structural heterogeneity within the dataset.
+
+2. 3D auto-refinement
+   - Multiple structures found during classification can independantly be refined.
+   - If a resultant refinement has blurry regions, this may indicate structural heterogeneity.
+
+3. 3D Classification with finer, local angular searches
 ## III. Refinement
 
 Software: ``RELION``

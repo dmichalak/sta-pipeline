@@ -22,7 +22,9 @@ def get_peak_coordinates(
         exclude_border=border_size,
     )
 
+    ts_name = segment_map.stem.split("-")[1][:6]
     peaks_df = pd.DataFrame(peaks, columns=["rlnCoordinateZ", "rlnCoordinateY", "rlnCoordinateX"])
+    peaks_df["rlnTomoName"] = ts_name
 
 
     return peaks_df
