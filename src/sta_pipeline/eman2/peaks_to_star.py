@@ -17,15 +17,16 @@ def peaks_to_star(
 
     rln_coordinates = ["rlnCoordinateZ", "rlnCoordinateY", "rlnCoordinateX"]
     rln_angles = ["rlnAngleRot", "rlnAngleTilt", "rlnAnglePsi"]
-    optics_columns = ["rlnOpticsGroup", "rlnOpticsGroupName", "rlnVoltage", "rlnSphericalAberration", "rlnTomoTiltSeriesPixelSize"]
-    optics_values = [1, "opticsGroup1", 300, 2.7, 1.0825]
+    #optics_columns = ["rlnOpticsGroup", "rlnOpticsGroupName", "rlnVoltage", "rlnSphericalAberration", "rlnTomoTiltSeriesPixelSize"]
+    #optics_values = [1, "opticsGroup1", 300, 2.7, 1.0825]
     peaks_dataframe.rename(
         columns={"x": "rlnCoordinateX", "y": "rlnCoordinateY", "z": "rlnCoordinateZ"},
         inplace=True,
     )
-    unbinned_peaks_dataframe = {"optics" : None, "particles" : pd.DataFrame()}
-    unbinned_peaks_dataframe["optics"] = pd.DataFrame(columns=optics_columns)
-    unbinned_peaks_dataframe["optics"].loc[0] = optics_values
+    unbinned_peaks_dataframe = {"particles" : pd.DataFrame()} #{"optics" : None, "particles" : pd.DataFrame()}
+    #unbinned_peaks_dataframe["optics"] = pd.DataFrame(columns=optics_columns)
+    #unbinned_peaks_dataframe["optics"].loc[0] = optics_values
+
     for coord in rln_coordinates:
         unbinned_peaks_dataframe["particles"][coord] = peaks_dataframe[coord] * float(tomo_bin_factor)
 
@@ -46,7 +47,7 @@ def peaks_to_star(
             ]
             + ["rlnTomoName"]
         ]
-    unbinned_peaks_dataframe["particles"]["rlnOpticsGroup"] = 1
+    #unbinned_peaks_dataframe["particles"]["rlnOpticsGroup"] = 1
     unbinned_peaks_dataframe["particles"]["rlnOriginXAngst"] = 0.0
     unbinned_peaks_dataframe["particles"]["rlnOriginYAngst"] = 0.0
     unbinned_peaks_dataframe["particles"]["rlnOriginZAngst"] = 0.0

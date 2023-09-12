@@ -38,18 +38,18 @@ def make_rln_tomo_star(
     for ts_dir in sorted(batch_directory.glob("ts*")):
         rlnTomoName_list.append(ts_dir.name)
         if ts_dir / f"{ts_dir.name}.mrc" in ts_dir.glob("*.mrc"):
-            rlnTomoTiltSeriesName_list.append(f"tomograms/{ts_dir.name}/{ts_dir.name}.mrc")
+            rlnTomoTiltSeriesName_list.append(f"../tomograms/{ts_dir.name}/{ts_dir.name}.mrc")
         else:
             print(f"Error: {ts_dir.name}.mrc not found in {ts_dir}.")
             raise SystemExit(0)
         if ts_dir / f"{ts_dir.name}.defocus" in ts_dir.glob("*.defocus"):
-            rlnTomoImportCtfFindFile_list.append(f"tomograms/{ts_dir.name}/{ts_dir.name}.defocus")
+            rlnTomoImportCtfFindFile_list.append(f"../tomograms/{ts_dir.name}/{ts_dir.name}.defocus")
         else:
             print(f"Error: {ts_dir.name}.defocus not found in {ts_dir}.")
             raise SystemExit(0)
-        rlnTomoImportImodDir_list.append(f"tomograms/{ts_dir.name}")
+        rlnTomoImportImodDir_list.append(f"../tomograms/{ts_dir.name}")
         rlnTomoImportFractionalDose_list.append(fractional_dose)
-        rlnTomoImportOrderList_list.append("order_list.csv")
+        rlnTomoImportOrderList_list.append("inputs/order_list.csv")
 
     # Add the lists to the DataFrame
     tomo_star_df["rlnTomoName"] = rlnTomoName_list
