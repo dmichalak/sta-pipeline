@@ -5,7 +5,7 @@ import pandas as pd
 
 import starfile
 
-from . import split_classif_star
+from .split_classif_star import split_classif_star
 
 def rln_select_good_classes(
         classif_directory : Path,
@@ -26,7 +26,7 @@ def rln_select_good_classes(
 
     classif_directory = Path(classif_directory).absolute()
 
-    split_classif_star(classif_directory, overwrite=overwrite)
+    split_classif_star(classif_directory, overwrite)
 
     class_star_files = sorted(classif_directory.glob("class*.star"))
 

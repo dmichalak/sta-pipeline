@@ -3,7 +3,7 @@ from typing import Optional
 
 import starfile
 
-def rln_split_classif_star(
+def split_classif_star(
         classif_directory: Path,
         overwrite: Optional[bool] = False,
 ) -> None:
@@ -47,3 +47,6 @@ def rln_split_classif_star(
         ts_star_file = classif_directory / f"{ts}_it025_data.star"
 
         starfile.write(ts_dict[ts], ts_star_file, overwrite=overwrite)
+
+if __name__ == "__main__":
+    split_classif_star(classif_directory, overwrite)
