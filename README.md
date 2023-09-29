@@ -119,14 +119,18 @@ General workflow \
 1. 3D Classification (aka multireference refinement) with an exhaustive angular search
   - If there is no prior knowledge about the relative orientations of particles, one must marginalize over all orientations during classification (i.e., perform an exhaustive angular search). 
   - If there are large differencts between the particles in the dataset, 3D classif. with an exhaustive search can separate them into different classes. This can be iteratively repeated to remove "junk" particles.
+   - Example: cleaning a ribosome dataset
+     - spherical mask with 400 A diameter
+     - classification with exhaustive angular search
+     - vary the number of classes and the regularization parameter
 
 Once a set of "non-junk" particles has been identified, one can identify structural heterogeneity within the dataset.
 
-2. 3D auto-refinement
+1. 3D auto-refinement
    - Multiple structures found during classification can independantly be refined.
    - If a resultant refinement has blurry regions, this may indicate structural heterogeneity.
 
-3. 3D Classification with finer, local angular searches
+2. 3D Classification with finer, local angular searches
 ## III. Refinement
 
 Software: ``RELION``

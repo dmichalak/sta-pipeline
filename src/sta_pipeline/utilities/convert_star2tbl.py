@@ -29,21 +29,27 @@ def convert_star2tbl(
                 rln_particles_df = star_df["particles"]
                 optics_df = star_df["optics"]
             except KeyError:
-                raise RuntimeError("Cannot find data_particles or data_optincs in the star file.")
+                raise RuntimeError("Cannot find data_particles or data_optics in the star file.")
+        else:
+            rln_particles_df = star_df
             
         # Initialize a dynamo dictionary
         dynamo_dict = {} 
         binned_dynamo_dict = {}
 
         # Get coordinate info from the input star file
-        unbinned_pixel_size = optics_df["rlnTomoTiltSeriesPixelSize"][0]
+        #unbinned_pixel_size = optics_df["rlnTomoTiltSeriesPixelSize"][0]
+        unbinned_pixel_size = 1.0825
 
         for coord in ("x", "y", "z"):
             rln_coord_column = f"rlnCoordinate{coord.upper()}"
             rln_shift_column = f"rlnOrigin{coord.upper()}Angst"
-            rln_shift = rln_particles_df[rln_shift_column] / unbinned_pixel_size
-            # Dynamo coordinates = RELION coordinates - RELION shift
-            dynamo_dict[coord] = rln_particles_df[rln_coord_column] - rln_shift
+            if rln_shift_column in rln_particles_df.columns:
+                rln_shift = rln_particles_df[rln_shift_column] / unbinned_pixel_size
+                # Dynamo coordinates = RELION coordinates - RELION shift
+                dynamo_dict[coord] = rln_particles_df[rln_coord_column] - rln_shift
+            else:
+                dynamo_dict[coord] = rln_particles_df[rln_coord_column]
             binned_dynamo_dict[coord] = dynamo_dict[coord] / output_binning
 
         # Get orientational info from the input star file
@@ -84,7 +90,7 @@ def convert_star2tbl(
         binned_dynamo_df = pd.DataFrame.from_dict(binned_dynamo_dict)
 
         # Write the dynamo table
-        dynamotable.write(dynamo_df, f"{output_directory / star_filename}_unb.tbl")
+        #dynamotable.write(dynamo_df, f"{output_directory / star_filename}_unb.tbl")
         dynamotable.write(binned_dynamo_df, f"{output_directory /  star_filename}_b{output_binning}.tbl")
         
 

@@ -9,6 +9,7 @@ def eman2_training(
     learning_rate: float,
     iterations: int,
     continue_from: Optional[Path] = None,
+    gpu_id: Optional[int] = 0,
 ) -> None:
 
     eman2_trainset = Path(eman2_trainset).absolute()
@@ -27,7 +28,7 @@ def eman2_training(
             "--poolsz=2,1,1",
             "--trainout",
             "--training",
-            "--device=gpu",
+            f"--device=gpu{gpu_id}",
         ]
         with open(eman2_directory / f"training_{eman2_trainset.stem}.out", "a") as out, open(
             eman2_directory / f"training_{eman2_trainset.stem}.err", "a"

@@ -82,7 +82,7 @@ def isonet_deconv(
         **PKWARGS,
     ),
     tomogram_idx_list: str = Option(
-        default="0,1,2,3,4",
+        default="1,2,3,4,5",
         help="The list of tomogram indices to use.",
         **PKWARGS,
     ),
@@ -168,14 +168,29 @@ def isonet_refine(
         help="The directory to output all isonet files.",
         **PKWARGS,
     ),
+    scratch_directory: Path = Option(
+        default=...,
+        help="The directory to output scratch files.",
+        **PKWARGS,
+    ),
+    subtomo_star_file: Path = Option(
+        default=...,
+        help="The path to the subtomogram star file.",
+        **PKWARGS,
+    ),
     project_name: str = Option(
         default="isonet",
         help="The name of the project.",
         **PKWARGS,
     ),
-    isonet_star_file: Path = Option(
+    gpu_ids: str = Option(
         default=...,
-        help="The path to the star file.",
+        help="The GPU IDs to use.",
+        **PKWARGS,
+    ),
+    n_cpu: int = Option(
+        default=4,
+        help="The number of CPUs to use.",
         **PKWARGS,
     ),
     density_percentage: int = Option(
@@ -188,14 +203,8 @@ def isonet_refine(
         help="The standard deviation percentage.",
         **PKWARGS,
     ),
-    tomogram_idx_list: str = Option(
-        default=...,
-        help="The list of tomogram indices to use (first column in the STAR file). Example: 1,4,9,14,20",
-        **PKWARGS,
-    ),
 ) -> None:
-    _isonet_refine(working_directory, project_name, isonet_star_file, density_percentage, std_percentage, tomogram_idx_list)
-
+    _isonet_refine(working_directory, scratch_directory, subtomo_star_file, project_name, gpu_ids, n_cpu, density_percentage, std_percentage)
 
 @cli.command(name="isonet_predict", no_args_is_help=True)
 def isonet_predict(

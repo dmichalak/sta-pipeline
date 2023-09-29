@@ -12,7 +12,6 @@ def isonet_refine(
     project_name: str,
     gpu_ids: str,
     n_cpu: int,
-    iterations: int,
     density_percentage: int,
     std_percentage: int,
 ) -> Path:
@@ -22,8 +21,9 @@ def isonet_refine(
     result_directory = working_directory / f"refine_dp{density_percentage}sp{std_percentage}_{project_name}"
 
     log_level = ""
-    noise_level = "0.05,0.1,0.15,0.2"
-    noise_start_iter = "11,16,21,26"
+    iterations = "30"
+    noise_level = "0.1,0.2"
+    noise_start_iter = "11,21"
     learning_rate = "0.0004"
     drop_out = "0.3"
     kernel = "(3,3,3)"

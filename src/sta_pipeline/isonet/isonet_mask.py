@@ -10,7 +10,6 @@ def isonet_mask(
     project_name: str,
     density_percentage: int,
     std_percentage: int,
-    z_crop: float,
     tomogram_idx_list: str,
  ) -> None:
     """
@@ -28,8 +27,6 @@ def isonet_mask(
         The density percentage.
     std_percentage : float
         The standard deviation percentage.
-    z_crop : float
-        The z crop.
     tomogram_idx_list : list
         The list of tomogram indices to use.
 
@@ -60,8 +57,6 @@ def isonet_mask(
         f"{density_percentage}",
         "--std_percentage",
         f"{std_percentage}",
- 		"--z_crop",
-        f"{z_crop}",
         "--patch_size",
         f"{patch_size}",
         "--tomo_idx",

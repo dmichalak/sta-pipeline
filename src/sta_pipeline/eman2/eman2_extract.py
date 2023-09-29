@@ -38,28 +38,12 @@ def eman2_extract(
             ]
             subprocess.run(command)
         # add ts info to dict
-        ts_name = hdf.stem.split("-")[1][:6]
+        ts_name = hdf.stem.split("__")[0][:6]
         ts_dict[ts_name] = {}
-        ts_dict[ts_name]["tomo_path"] = hdf.with_suffix(".mrc").absolute()
-
-        segment_path = segmentation_directory / hdf
-
-        if not segment_path.with_suffix(".mrc").exists():
-            print(f"Converting {segment_path.name} to .mrc...")
-            command = [
-                "e2proc3d.py",
-                str(segment_path),
-                str(segment_path.with_suffix(".mrc")),
-            ]
-            subprocess.run(command)
-        # add ts info to dict
-        ts_dict[ts_name]["segment_path"] = segment_path.with_suffix(".mrc").absolute()
+        ts_dict[ts_name]["segment_path"] = hdf.with_suffix(".mrc")
 
     # Extract peaks from segmentation maps and save to a star file per tomogram
     for ts_name in ts_dict.keys():
-        #print(f"Loading {ts_name} data...")
-        #tomogram_mrc = mrcfile.read(ts_dict[ts_name]["tomo_path"])
-        #segment_mrc = mrcfile.read(ts_dict[ts_name]["segment_path"])
         starfile_name = f"{ts_dict[ts_name]['segment_path'].stem}_abs{abs_threshold}rel{rel_threshold}.star"
         if (segmentation_directory / starfile_name).exists():
             print(f"Found {starfile_name}, skipping...")

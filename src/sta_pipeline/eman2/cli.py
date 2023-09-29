@@ -22,8 +22,13 @@ def eman2_predict(
         help="The path to the tomograms \"corrected\" by IsoNet.",
         **PKWARGS,
     ),
+    gpu_id: Optional[int] = Option(
+        default=0,
+        help="The GPU ID to use for prediction.",
+        **PKWARGS,
+    ),
 ) -> None:
-    _eman2_predict(trained_network, corrected_tomograms)
+    _eman2_predict(trained_network, corrected_tomograms, gpu_id)
 
 @cli.command(name="eman2_extract", no_args_is_help=True)
 def eman2_extract(
@@ -88,5 +93,10 @@ def eman2_training(
         help="The path to a trained network HDF file to continue training from (ex. nnet_save__ribosomes_good.hdf).",
         **PKWARGS,
     ),
+    gpu_id: Optional[int] = Option(
+        default=0,
+        help="The GPU ID to use for training.",
+        **PKWARGS,
+    ),
 ) -> None:
-    _eman2_training(eman2_trainset, learning_rate, iterations, continue_from)
+    _eman2_training(eman2_trainset, learning_rate, iterations, continue_from, gpu_id)

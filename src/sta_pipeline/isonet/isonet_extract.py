@@ -18,7 +18,7 @@ def isonet_extract(
     subtomo_folder = f"subtomo_dp{density_percentage}sp{std_percentage}_{project_name}"
     subtomo_star_file = f"subtomo_dp{density_percentage}sp{std_percentage}_{project_name}.star"
     cube_size = 64
-    crop_size = 64 + 16
+    crop_size = 96
 
     command = [
         "isonet.py",

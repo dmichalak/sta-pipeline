@@ -8,6 +8,7 @@ from ..utilities.utils import *
 def eman2_predict(
     trained_network: Path,
     corrected_tomograms: Path,
+    gpu_id: Optional[int] = 0,
 ) -> None:
     """Predict the locations of particles in tomograms using a trained network."""
 
@@ -26,7 +27,7 @@ def eman2_predict(
         f"--tomograms={tomogram_paths}",
         "--applying",
         "--threads=32",
-        "--device=gpu",
+        f"--device=gpu{gpu_id}",
     ]
 
     log_out = eman2_directory / "sta_eman2_predict.out"
