@@ -49,7 +49,7 @@ def alignframes(
         "-binning",
         str(align_binning) + " " + str(sum_binning),
         "-ModeToOutput",
-        "2",
+        "12",
     ]
 
     with open(f"{ts_directory.name}/sta_alignframes.out", "a") as out, open(

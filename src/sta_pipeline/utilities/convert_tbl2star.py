@@ -48,34 +48,32 @@ def convert_tbl2star(
     relion_dict[rln_angle_columns[2]] = warp_angles[:, 2]
 
     # Get tomogram info from the input tbl file
-    dynamo_tomoname = tbl_df["tomo"].to_numpy()
+    dynamo_tomo_index = tbl_df["tomo"].to_numpy()
+#    print(dynamo_tomo_index)
 
     ts_list = []
-    for ts_dir in ts_directories.glob("*_*"):
+    for ts_dir in sorted(ts_directories.glob("*_*")):
         if ts_dir.is_dir():
             ts_list.append(ts_dir.stem)
-    tomo_name_list = [''] * len(dynamo_tomoname)
+    tomo_name_list = [''] * len(dynamo_tomo_index)
 
     #####
     # From github.com/EuanPyle/dynamo2relion in _utils.py
+    tomo_index = 1
     for tomo_name in ts_list:
-        ts_string=re.split('(\d+)',tomo_name)
-        while('' in ts_string) :
-            ts_string.remove('')
-        if len(ts_string) > 2:
-            sys.exit('Check the folder names in tilt_series_directory. Should only contain folders with variations of the ts_01 TS_15 etc. naming convention')
-        tomo_num = int(ts_string[1])
+        tomo_num = tomo_index
 	
     # Assign tomo_name to correct particles
-        tomo_name_indices = np.asarray(np.where(dynamo_tomoname == tomo_num))[0]
+        tomo_name_indices = np.asarray(np.where(dynamo_tomo_index == tomo_num))[0]
 
         for i in tomo_name_indices:
             tomo_name_list[i] = tomo_name
+        tomo_index += 1
     #####
 
     relion_dict["rlnTomoName"] = tomo_name_list
     # Label the particles with unique object numbers
-    relion_dict["rlnObjectNumber"] = np.arange(len(dynamo_tomoname)) + 1
+    relion_dict["rlnObjectNumber"] = np.arange(len(tbl_df.index)) + 1
 
     relion_df = pd.DataFrame.from_dict(relion_dict)
 
