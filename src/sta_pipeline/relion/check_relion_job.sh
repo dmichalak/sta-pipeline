@@ -26,14 +26,51 @@ if ! [[ "$2" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
     echo "Error: Email address $2 is not valid."
     exit 1
 fi
+################
+### FAILSAFE ###
+################
+# Check if any file has not been created or modified in $1 in the last 30 minutes
+################
+### FAILSAFE ###
+################
+
 
 # Check if the job has finished for 48 hours
 for i in {1..576}; do
-    # Check if the job has finished
-    if [ -f "$1/run_it025_optimiser.star" ]; then
+    # Check if the job has finished 
+    if ls $1/RELION_JOB* 1> /dev/null 2>&1; then
         # Send an email to the specified email address
-        echo "RELION job $1 has finished successfully." | mail -s "RELION job finished" "$2"
+        echo "" > ~/email.txt
+        echo "RELION job $1 has finished." >> ~/email.txt
+        ssmtp $2 < ~/email.txt
         exit 0
+    fi
+
+    # Check if run.err has been updated since the start of the job
+    if [ -f "$1/run.err" ]; then
+        if [ $(stat -c %Y "$1/run.err") -gt $(stat -c %Y "$1/run.out") ]; then
+            # Check if run.err has new text containing the string "You ran out of memory on the GPU(s)." 
+            if grep -q "You ran out of memory on the GPU(s)." "$1/run.err"; then
+                # Send an email to the specified email address
+                echo "" > ~/email.txt
+                echo "RELION job $1 has failed due to running out of memory on the GPU(s)." >> ~/email.txt
+                ssmtp $2 < ~/email.txt
+                exit 1
+            fi
+            # Send an email to the specified email address
+            echo "" > ~/email.txt
+            echo "RELION job $1 has failed." >> ~/email.txt
+            ssmtp $2 < ~/email.txt
+            exit 1
+        fi
+    fi
+
+    # Check if run.out has been updated since the start of the job and it has been 60 minutes since this script was started 
+    if [ $(find $1 -mmin -60 | read) ] && [ $($i -gt 12) ]; then
+        # Send an email to the specified email address
+        echo "" > ~/email.txt
+        echo "RELION job $1 has not been updated in the last 60 minutes." >> ~/email.txt
+        ssmtp $2 < ~/email.txt
     fi
 
     # Sleep for 5 minutes

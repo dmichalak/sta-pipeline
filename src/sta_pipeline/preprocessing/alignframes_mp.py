@@ -49,7 +49,7 @@ def alignframes(
         "-binning",
         str(align_binning) + " " + str(sum_binning),
         "-ModeToOutput",
-        "12",
+        "2",
     ]
 
     with open(f"{ts_directory.name}/sta_alignframes.out", "a") as out, open(
@@ -59,7 +59,7 @@ def alignframes(
             result = subprocess.run(command, stdout=out, stderr=err)
 
     # output_image_file.replace(output_image_file.with_suffix(f"_bin{align_binning}.st"))
-    if int(align_binning) * int(sum_binning) > 1:
+    if int(sum_binning) > 1:
         output_image_file.rename(
             ts_directory / (output_image_file.stem + f"_bin{int(sum_binning)}.mrc")
         )
