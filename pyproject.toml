@@ -38,6 +38,7 @@ dependencies = [
     "starfile",
     "imodmodel",
     "dynamotable",
+    "eulerangles",
     "typer",
     "scikit-image",
 ]

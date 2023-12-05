@@ -8,7 +8,7 @@ import starfile
 from .split_classif_star import split_classif_star
 
 def rln_select_good_classes(
-        classif_directory : Path,
+        classif_star : Path,
         good_classes : str,
         overwrite : Optional[bool] = False,
 ) -> dict:
@@ -23,10 +23,10 @@ def rln_select_good_classes(
     Returns:
         good_classes_dict (dict): Dictionary of "particles" and "optics" for each good class
     """
+    classif_star = Path(classif_star).absolute()
+    classif_directory = Path(classif_star.parent).absolute()
 
-    classif_directory = Path(classif_directory).absolute()
-
-    split_classif_star(classif_directory, overwrite)
+    split_classif_star(classif_star, overwrite)
 
     class_star_files = sorted(classif_directory.glob("class*.star"))
 

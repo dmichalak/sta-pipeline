@@ -13,11 +13,15 @@ def ctfplotter(
     batch_directory = Path(batch_directory).absolute()
     frames_directory = batch_directory / "frames"
     mdoc_directory = batch_directory / "mdoc"
+
+    # check to make sure the batch_directory has frames and mdoc directories
     if frames_directory.is_dir() and mdoc_directory.is_dir():
         print(
             f"Found 'frames' and 'mdoc' directories: processing all tilt series within {batch_directory}..."
         )
         dirs_to_process = [dir for dir in batch_directory.glob("ts*")]
+
+    
     # Look for a .mrc in batch_directory
     elif Path(batch_directory / f"{batch_directory}.mrc").is_file():
         dirs_to_process = batch_directory
@@ -42,6 +46,7 @@ def ctfplotter(
                 continue
 
             start_time = time.time()
+
             print(f"Processing {directory.name}.")
             input_stack = directory.name + ".mrc"
             command = [
@@ -63,7 +68,7 @@ def ctfplotter(
                 "-SphericalAberration",
                 "2.7",
                 "-ExpectedDefocus",
-                "6000",
+                "4000",
                 "-AutoFitRangeAndStep",
                 "0,1",
                 "-UseExpectedDefForAuto",
@@ -77,8 +82,11 @@ def ctfplotter(
                 "a",
             ) as err:
                 result = subprocess.run(command, stdout=out, stderr=err)
+
             job_success(directory, "sta_ctfplotter")
+
             number_processed += 1
+
             end_time = time.time()  # Stop measuring the time for this iteration
             processing_time = end_time - start_time
             minutes, seconds = divmod(processing_time, 60)
@@ -93,6 +101,7 @@ def ctfplotter(
             minutes, seconds = divmod(expected_time, 60)
             print(f"Total time expected: {int(minutes)} min {int(seconds)} sec")
             print("----")
+
     print(f"Writing all defocus values to {directory.parent}/{batch_directory.name}.defocus")
     get_defoci(batch_directory)
     print("Done.")

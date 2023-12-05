@@ -4,7 +4,7 @@ from typing import Optional
 import starfile
 
 def split_classif_star(
-        classif_directory: Path,
+        classif_star: Path,
         overwrite: Optional[bool] = False,
 ) -> None:
     """ Split up the run_it025_data.star file into separate star files for each class specified by rlnClassNumber.
@@ -18,8 +18,8 @@ def split_classif_star(
 
     """
 
-    classif_directory = Path(classif_directory).absolute()
-    classif_star = starfile.read(classif_directory / "run_it025_data.star")
+    classif_directory = classif_star.parent#Path(classif_directory).absolute()
+    classif_star = starfile.read(Path(classif_star).absolute())
     classif_particles_df = classif_star["particles"]
     classif_optics_df = classif_star["optics"]
 
