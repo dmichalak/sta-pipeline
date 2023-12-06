@@ -3,10 +3,10 @@
 
 ##### Setup parameters
 setupset.copyarg.stackext = mrc
-setupset.copyarg.dual = 0 
+setupset.copyarg.dual = 0
 setupset.copyarg.pixel = 0.1083
 setupset.copyarg.gold = 10
-setupset.copyarg.defocus = 6000              
+setupset.copyarg.defocus = 6
 setupset.copyarg.voltage = 300
 setupset.copyarg.Cs = 2.7
 setupset.scanHeader = 1
@@ -21,15 +21,15 @@ comparam.prenewst.newstack.BinByFactor = 1
 comparam.prenewst.newstack.AntialiasFilter = -1
 
 ##### Tracking choices
-runtime.Fiducials.any.trackingMethod = 0        
-runtime.Fiducials.any.seedingMethod = 3         
+runtime.Fiducials.any.trackingMethod = 0
+runtime.Fiducials.any.seedingMethod = 3
 
 ##### Beadtracking
 comparam.track.beadtrack.SobelFilterCentering = 1
 comparam.track.beadtrack.ScalableSigmaForSobel = 0.12
 
 ##### Auto seed finding
-comparam.autofidseed.autofidseed.TargetNumberOfBeads = 50
+comparam.autofidseed.autofidseed.TargetNumberOfBeads = 100
 
 ##### Patch tracking
 comparam.xcorr_pt.tiltxcorr.SizeOfPatchesXandY = 680,680
@@ -40,11 +40,16 @@ comparam.xcorr_pt.tiltxcorr.FilterSigma2 = 0.03
 ##### Fine alignment
 comparam.align.tiltalign.SurfacesToAnalyze = 1
 comparam.align.tiltalign.LocalAlignments = 0
+comparam.align.tiltalign.MagOption = 0
+comparam.align.tiltalign.TiltOption = 0
+comparam.align.tiltalign.RotOption = -1
+comparam.align.tiltalign.BeamTiltOption = 2
+
 
 ##### Tomogram positioning
 runtime.Positioning.any.sampleType = 0
-runtime.Positioning.any.binByFactor = 
-runtime.Positioning.any.thickness = 
+runtime.Positioning.any.binByFactor =
+runtime.Positioning.any.thickness =
 
 ##### Aligned stack choices
 runtime.AlignedStack.any.correctCTF = 0
@@ -54,7 +59,7 @@ runtime.AlignedStack.any.eraseGold = 0
 runtime.AlignedStack.any.binByFactor = 1
 comparam.newst.newstack.TaperAtFill = 1,1
 comparam.newst.newstack.AntialiasFilter = -1
-runtime.GoldErasing.any.thickness = 4000
+runtime.GoldErasing.any.thickness = 4800
 comparam.golderaser.ccderaser.ExpandCircleIterations = 3
 comparam.golderaser.ccderaser.PolynomialOrder = -1
 
@@ -69,20 +74,24 @@ comparam.golderaser.ccderaser.PolynomialOrder = -1
 ##### CTF correction parameters
 runtime.CTFplotting.any.autoFitRangeAndStep = 0, 1
 comparam.ctfplotter.ctfplotter.InvertTiltAngles = 0
-comparam.ctfplotter.ctfplotter.FrequencyRangeToFit = 0.08, 0.35
+comparam.ctfplotter.ctfplotter.FrequencyRangeToFit = 0.1, 0.3
 comparam.ctfplotter.ctfplotter.VaryExponentInFit = 1
 comparam.ctfplotter.ctfplotter.BaselineFittingOrder = 4
-comparam.ctfplotter.ctfplotter.CropToPixelSize =
+comparam.ctfplotter.ctfplotter.CropToPixelSize = 0.8
 comparam.ctfplotter.ctfplotter.SearchAstigmatism = 1
 
 ##### Reconstruction
-# 4000 px * 1.0825 A/px = 4330 A = 433 nm thick 
-comparam.tilt.tilt.THICKNESS = 4000
+# 4800 px * 1.0825 A/px = 5196 A = 519.6 nm thick
+comparam.tilt.tilt.THICKNESS = 4800
 comparam.tilt.tilt.FakeSIRTiterations = 
-runtime.Reconstruction.any.doBackprojAlso = 
+#runtime.Reconstruction.any.doBackprojAlso = 1
 runtime.Reconstruction.any.noXAxisTilt = 1
 
-##### Post-processing
+##### Postprocessing
 runtime.Postprocess.any.doTrimvol = 1
-runtime.Trimvol.any.thickness = 
-runtime.Trimvol.any.doSIRTifBoth = 
+# 0 none; 1 flip YZ; 2 rotate around x (default)
+runtime.Trimvol.any.reorient = 2
+runtime.Trimvol.any.thickness =
+runtime.Trimvol.any.doSIRTifBoth =
+comparam.align.tiltalign.LocalAlignments = 0
+

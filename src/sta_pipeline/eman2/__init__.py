@@ -1,9 +1,4 @@
-__version__ = "0.1"
-__author__ = "dmichalak"
-
-
-
-
-
-# scripts
-from .sta_eman2 import sta_eman2
+from .eman2_predict import eman2_predict
+#from .eman2_extract import eman2_extract
+from .eman2_training import eman2_training
+from .eman2_box_extract_mp import eman2_box_extract_mp
