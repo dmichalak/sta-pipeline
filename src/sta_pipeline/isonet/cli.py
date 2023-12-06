@@ -314,14 +314,9 @@ def isonet_full(
 ) -> None:
     
     isonet_star_file = _isonet_setup(data_directory, working_directory, project_name, pixel_size)
-
     _isonet_deconv(working_directory, isonet_star_file, project_name, voltage, cs, snr_falloff, deconv_strength, n_cpu, tomogram_idx_list)
-
     _isonet_mask(working_directory, isonet_star_file, project_name, density_percentage, std_percentage, tomogram_idx_list)
-
     _isonet_extract(working_directory, project_name, isonet_star_file, density_percentage, std_percentage, tomogram_idx_list)
-
     refine_directory = _isonet_refine(working_directory, project_name, isonet_star_file, density_percentage, std_percentage, tomogram_idx_list)
-
     _isonet_predict(project_name, isonet_star_file, refine_directory, density_percentage, std_percentage, gpu_ids, tomogram_idx_list
 )

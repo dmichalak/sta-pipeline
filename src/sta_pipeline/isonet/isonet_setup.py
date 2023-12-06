@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import starfile
 
-from .get_defoci import get_defoci
+from ..utilities.utils import *
 
 
 def isonet_setup(

@@ -2,14 +2,13 @@ import subprocess
 import time
 from pathlib import Path
 from multiprocessing import Pool
-from ..utilities.utils import *
-
-
 import json
 import pandas as pd
 import numpy as np
+
 import starfile
 
+from ..utilities.utils import *
 
 def eman2_box_extract(
     input_data
