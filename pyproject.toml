@@ -37,6 +37,7 @@ dependencies = [
     "mrcfile",
     "starfile",
     "imodmodel",
+    "eulerangles",
     "dynamotable",
     "typer",
     "scikit-image",
