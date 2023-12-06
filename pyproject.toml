@@ -38,7 +38,6 @@ dependencies = [
     "starfile",
     "imodmodel",
     "dynamotable",
-    "eulerangles",
     "typer",
     "scikit-image",
 ]
@@ -142,7 +141,7 @@ source = ["src"]
 
 # https://github.com/mgedmin/check-manifest#configuration
 # add files that you want check-manifest to explicitly ignore here
-# (files that are in the repo but shouldn't go in the package)
+# (files that are inthe repo but shouldn't go in the package)
 [tool.check-manifest]
 ignore = [
     ".github_changelog_generator",
@@ -150,4 +149,4 @@ ignore = [
     ".ruff_cache/**/*",
     "setup.py",
     "tests/**/*",
-]
+] 
