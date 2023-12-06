@@ -37,7 +37,7 @@ def isonet_deconv(
     n_cpu : int
         The number of CPUs to use.
     tomogram_idx_list : list
-        The list of tomogram indices to use.
+        The list of tomogram indices to use (these are found in the isonet_star_file).
 
     Returns
     -------

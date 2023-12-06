@@ -58,7 +58,7 @@ def isonet_deconv(
     ),
     voltage: int = Option(
         default=300,
-        help="The voltage of the microscope.",
+        help="The voltage of the microscope in keV.",
         **PKWARGS,
     ),
     cs: float = Option(
@@ -68,12 +68,12 @@ def isonet_deconv(
     ),
     snr_falloff: float = Option(
         default=0.7,
-        help="The signal to noise ratio falloff.",
+        help="The signal to noise ratio falloff. Start with 0.7 and adjust as needed between 0.5 and 1.0. Increasing this has previously improved results.",
         **PKWARGS,
     ),
     deconv_strength: float = Option(
         default=1.0,
-        help="The deconvolution strength.",
+        help="The deconvolution strength. Usually 1.0 is fine.",
         **PKWARGS,
     ),
     n_cpu: int = Option(
@@ -109,16 +109,16 @@ def isonet_mask(
     ),
     density_percentage: int = Option(
         default=50,
-        help="The density percentage.",
+        help="The density percentage. Start with 50 and adjust as needed between 0 and 100. Increasing this has previously improved results.",
         **PKWARGS,
     ),
     std_percentage: int = Option(
         default=50,
-        help="The standard deviation percentage.",
+        help="The standard deviation percentage. Start with 50 and adjust as needed between 0 and 100. Increasing this has previously improved results.",
         **PKWARGS,
     ),
     tomogram_idx_list: str = Option(
-        default="0,1,2,3,4",
+        default="1,2,3,4,5",
         help="The list of tomogram indices to use.",
         **PKWARGS,
     ),
@@ -153,7 +153,7 @@ def isonet_extract(
         **PKWARGS,
     ),
     tomogram_idx_list: str = Option(
-        default="0,1,2,3,4",
+        default="1,2,3,4,5",
         help="The list of tomogram indices to use.",
         **PKWARGS,
     ),
