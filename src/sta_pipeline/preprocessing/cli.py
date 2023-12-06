@@ -28,7 +28,7 @@ def alignframes_mp(
     ),
     num_processes: int = Option(
         default=4,
-        help="Number of parallel processes.",
+        help="Number of parallel processes. If you have, say, 24 cpus available and specify num_processes=4, then 6 tilt series will be processed in parallel.",
         **PKWARGS,
     ),
 ) -> None:
@@ -47,8 +47,8 @@ def batchruntomo(
         **PKWARGS,
     ),
     n_cpus: int = Option(
-        default=1,
-        help="Number of parallel processes.",
+        default=4,
+        help="Number of cpus to use. Note: this will still only process 1 tilt series at a time, so this will only affect the number of cpus used by IMOD programs called by batchruntomo.",
         **PKWARGS,
     ),
     starting_step: float = Option(
@@ -63,7 +63,7 @@ def batchruntomo(
     ),
     binning: int = Option(
         default=10,
-        help="Binning to be used for movie frame alignment.",
+        help="Binning of the reconstructed tomogram.",
         **PKWARGS,
     ),
     force: bool = Option(
@@ -82,13 +82,13 @@ def ctfplotter(
         **PKWARGS,
     ),
     axis_angle: float = Option(
-        default=178.9,
+        default=...,
         help="Tilt axis angle in degrees.",
         **PKWARGS,
     ),
     pixel_size: float = Option(
-        default=1.0825,
-        help="Pixel size in ångströms.",
+        default=...,
+        help="Pixel size in ångströms of the stacks output from alignframes (e.g., ts_001.mrc).",
         **PKWARGS,
     ),
 ) -> None:
