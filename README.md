@@ -1,28 +1,12 @@
 # Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Development notes](#development-notes)
 - [STA Pipeline description](#sta-pipeline-description)
-  - [Installation (Linux-based system)](#installation-linux-based-system)
-  - [Directory structure](#directory-structure)
-  - [Example commands](#example-commands)
-  - [Software requirements\*](#software-requirements)
-  - [Software versions](#software-versions)
+- [Installation (Linux-based system)](#installation)
+- [Directory structure](#directory-structure)
+- [Example commmands](#example-commands)
+- [Software requirements](#software-requirements)
 - [Outline of the pipeline](#outline-of-the-pipeline)
-  - [I. Preprocessing](#i-preprocessing)
-  - [II a. Particle picking](#ii-a-particle-picking)
-  - [II b. Structural Heterogeneity](#ii-b-structural-heterogeneity)
-  - [III. Refinement](#iii-refinement)
-- [Helpful references](#helpful-references)
-    - [Segmenting filaments in 3dmod](#segmenting-filaments-in-3dmod)
-    - [IMOD](#imod)
-    - [IsoNet](#isonet)
-    - [EMAN2](#eman2)
-    - [RELION-4.0](#relion-40)
-    - [Dynamo](#dynamo)
-    - [Visualiziation software](#visualiziation-software)
-    - [Misc.](#misc)
-    - [Potentially useful tools](#potentially-useful-tools)
 
 # Development notes
 
@@ -52,7 +36,7 @@ data/
 ``frames/`` contains all tilt movies in the data batch.
 ``mdoc/`` contains all of the mdoc files for each tilt series dataset.
 
-After running ``alignframes``, the structure within ``data/batch001`` will be
+After running ``sta_alignframes``, the structure within ``data/batch001`` will be
     frames/
     mdoc/
     ts001/
@@ -62,75 +46,48 @@ After running ``alignframes``, the structure within ``data/batch001`` will be
 where ``ts###`` will refer to each tilt series found in ``mdoc/``.
 
 ## Example commands
-``sta_pipeline alignframes``\
-``sta_pipeline batchruntomo``\
-``sta_pipeline ctfplotter``\
-``sta_pipeline isonet_setup``\
-``sta_pipeline isonet_mask``
+All commands should have help text available by calling the function with ``--help``.\
+\
+``sta_alignframes --batchdir ./ --framesdir ./frames/ -ab 8 -sb 8``\
+``sta_batchruntomo -d ./directives.adoc -b . -n 48 -s 0 -e 8``\
+``sta_fidder -i ts001/test_ts001_bin8_ali.mrc -o ts001/ -p 8.66``\
 
-...
+For one tilt series, alignframes -> batchruntomo -> fidder took 1 hour 9 min 10 sec.
+``sta_batchruntomo -d ./directives.adoc -b . -n 48 -s 9 -e 20``\
+``3dmod ts001/test_ts001_bin8_rec.mrc``
 ## Software requirements*
 
 - ``Python 3+``
 - [``IMOD``](https://bio3d.colorado.edu/imod/)
+- [``fidder``](https://github.com/teamtomo/fidder)
 - [``IsoNet``](https://github.com/IsoNet-cryoET/IsoNet)
 - [``EMAN2``](https://blake.bcm.edu/emanwiki/EMAN2)
+- [``Dynamo``](https://wiki.dynamo.biozentrum.unibas.ch/w/index.php/Main_Page)
 - [``RELION``](https://relion.readthedocs.io/en/release-4.0/)
 
 *Scripts and the above software have only been tested on a Linux-based system so far
-
-## Software versions
-
--- nvidia-driver = 535.86.10
--- CUDA = 12.2
--- RELION = 4.0.1-commmit-0b03a6
 # Outline of the pipeline
 
 
 ## I. Preprocessing
 
-Software: ``IMOD``
+Software: ``IMOD``, ``fidder``
 
 - Align and sum tilt movies to generate a tilt stack.
-- Calculate CTF parameters for each tilt image
-- Reconstruct tomograms with a SIRT-like filter
-- Reconstruct tomograms with R-weighting (after particle picking)
+- Fiducial-based tilt series alignment
+- CTF correction
+- Mask and erase fiducials prior to reconstruction
+- Reconstruct tomograms with R-weighting
 
-## II a. Particle picking
+## II. Particle picking
 
-Software: ``dynamo``, ``IsoNet``, ``EMAN2``, ``RELION`` 
+Software: ``IsoNet``, ``EMAN2``, ``Dynamo``, ``RELION`` 
 
-- After initial alignment in ``dynamo``, ``sta-pipeline convert_tbl2star`` to convert ``dynamo`` tables to ``RELION`` star files
-- Import into ``RELION``
-
-- Classification with alignment in ``RELION``
-
-
-- Prepare tomograms for particle picking via denoising and modeling the missing wedge (``IsoNet``)
-- Train a neural network to automatically locate densities of interest in tomograms (``EMAN2``)
+- Prepare tomograms for particle picking via denoising and modeling the missing wedge
+- Train a neural network to automatically locate densities of interest in tomograms
 - Sample subtomogram positions from the trained model predictions
-- Clean the subtomogram dataset by removing duplicates, alignment, classification, etc. (``RELION``)
+- Clean the subtomogram dataset by removing duplicates, alignment, classification, etc.
 
-
-## II b. Structural Heterogeneity 
-Notes from "Processing of Structurally Heterogeneous Cryo-EM Data in RELION" - https://pubmed.ncbi.nlm.nih.gov/27572726/
-
-General workflow \
-1. 3D Classification (aka multireference refinement) with an exhaustive angular search
-  - If there is no prior knowledge about the relative orientations of particles, one must marginalize over all orientations during classification (i.e., perform an exhaustive angular search). 
-  - If there are large differencts between the particles in the dataset, 3D classif. with an exhaustive search can separate them into different classes. This can be iteratively repeated to remove "junk" particles.
-   - Example: cleaning a ribosome dataset
-     - spherical mask with 400 A diameter
-     - classification with exhaustive angular search
-     - vary the number of classes and the regularization parameter
-
-Once a set of "non-junk" particles has been identified, one can identify structural heterogeneity within the dataset.
-
-1. 3D auto-refinement
-   - Multiple structures found during classification can independantly be refined.
-   - If a resultant refinement has blurry regions, this may indicate structural heterogeneity.
-
-2. 3D Classification with finer, local angular searches
 ## III. Refinement
 
 Software: ``RELION``
@@ -143,44 +100,28 @@ Software: ``RELION``
     - Refine tilt series alignments
 - Postprocessing
 
-# Helpful references
+***
+<!---
+Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
+## Usage
+Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-### Segmenting filaments in 3dmod
+## Support
+Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
 
-### IMOD
-- [List of programs](https://bio3d.colorado.edu/imod/doc/program_listing.html)
-- [alignframes help page](https://bio3d.colorado.edu/imod/doc/man/alignframes.html)
-- [batchruntomo help page](https://bio3d.colorado.edu/imod/doc/man/batchruntomo.html)
+## Roadmap
+If you have ideas for releases in the future, it is a good idea to list them in the README.
 
-### IsoNet
-- [IsoNet Github](https://github.com/IsoNet-cryoET/IsoNet)
+## Contributing
+State if you are open to contributions and what your requirements are for accepting them.
 
-### EMAN2
-- [List of programs](https://blake.bcm.edu/doxygen/programs_help_html/)
-- [Neural network tutorial](https://blake.bcm.edu/emanwiki/EMAN2/Programs/tomoseg)
-- [Computationally friendly box-sizes](https://blake.bcm.edu/emanwiki/EMAN2/BoxSize) \
-24, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 84, 96, 100, 104, 112, 120, 128, 132, 140, 168, 180, 192, 196, 208, 216, 220, 224, 240, 256, 260, 288, 300, 320, 352, 360, 384, 416, 440, 448, 480, 512, 540, 560, 576, 588, 600, 630, 640, 648, 672, 686, 700, 720, 750, 756, 768, 784, 800, 810, 840, 864, 882, 896, 900, 960, 972, 980, 1000, 1008, 1024
+For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
 
-### RELION-4.0
-- [Subtomogram tutorial](https://relion.readthedocs.io/en/release-4.0/STA_tutorial/index.html)
-- [Reference pages](https://relion.readthedocs.io/en/release-4.0/Reference/index.html)
+You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
-### Dynamo
-- [Standalone installation](https://wiki.dynamo.biozentrum.unibas.ch/w/index.php/Standalone)
+## Authors and acknowledgment
+Show your appreciation to those who have contributed to the project.
 
-### Visualiziation software 
-- [Napari](https://napari.org/) - Python-based image viewer
-- [ChimeraX Tutorials](https://www.cgl.ucsf.edu/chimerax/tutorials.html)
-### Misc.
-- [TeamTomo website](https://teamtomo.org/)
-- [TeamTomo Github](https://github.com/teamtomo)
-
-### Potentially useful tools
-
-- (**untested**) [imod2relion](https://github.com/ZhenHuangLab/imod2relion) - A tool reading IMOD points, obtaining particles' info and generating .star file for RELION.
-- [dynamo2relion](https://github.com/EuanPyle/dynamo2relion) - Converts Dynamo tables to star files for coordinate import into RELION 4.0 
-- [relion2dynamo](https://github.com/EuanPyle/relion2dynamo) - Simple package to convert star files to Dynamo tables.
-- (**untested**) [membrain-seg](https://github.com/teamtomo/membrain-seg) - membrane segmentation in 3D for cryo-ET
-- [mdocfile](https://github.com/teamtomo/mdocfile) - SerielEM mdoc files as pandas dataframes
-- [yet-another-imod-wrapper](https://github.com/teamtomo/yet-another-imod-wrapper) - Simple API for automated tilt-series alignment in IMOD
+## License
+For open source projects, say how it is licensed.
