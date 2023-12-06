@@ -18,7 +18,7 @@ def alignframes(
     if mdoc_file.stat().st_size < 10 * 1024:
     # if the mdoc file is bigger than 10 kB, to make sure it corresponds to a full tilt series
         print(
-            "This mdoc doesn't seem to correspond to a tilt series. Skipping it..."
+            f"The mdoc {mdoc_file} doesn't seem to correspond to a tilt series. Skipping it..."
         )
         return
     ts_directory = batch_directory / Path(f"ts_{ts_number:03}").absolute()
