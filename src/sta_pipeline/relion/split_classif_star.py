@@ -10,7 +10,7 @@ def split_classif_star(
     """ Split up the run_it025_data.star file into separate star files for each class specified by rlnClassNumber.
 
         Args:
-                classif_directory (Path): Path to the classification directory created by RELION
+                classif_star (Path): Path to the classification star file (e.g, run_it025_data.star)
                 overwrite (bool): Whether to overwrite existing star files
 
         Returns:
@@ -19,6 +19,7 @@ def split_classif_star(
     """
 
     classif_directory = classif_star.parent#Path(classif_directory).absolute()
+    classif_star_name = classif_star.name
     classif_star = starfile.read(Path(classif_star).absolute())
     classif_particles_df = classif_star["particles"]
     classif_optics_df = classif_star["optics"]
@@ -34,7 +35,7 @@ def split_classif_star(
     for class_number in class_number_list:
         classes_dict[class_number] = {"optics": classif_optics_df}
         classes_dict[class_number]["particles"] = classif_particles_df[classif_particles_df["rlnClassNumber"] == class_number]
-        class_star_file = classif_directory / f"class{class_number:03}_it025_data.star"
+        class_star_file = classif_directory / f"class{class_number:03}_{classif_star_name}"
 
         starfile.write(classes_dict[class_number], class_star_file, overwrite=overwrite)
 
@@ -44,9 +45,9 @@ def split_classif_star(
     for ts in sorted(classes_dict[class_number_list[1]]["particles"]["rlnTomoName"].unique()):
         ts_dict[ts] = {"optics" : classif_optics_df}
         ts_dict[ts]["particles"] = classif_particles_df[classif_particles_df["rlnTomoName"] == ts]
-        ts_star_file = classif_directory / f"{ts}_it025_data.star"
+        ts_star_file = classif_directory / f"{ts}_{classif_star_name}"
 
         starfile.write(ts_dict[ts], ts_star_file, overwrite=overwrite)
 
 if __name__ == "__main__":
-    split_classif_star(classif_directory, overwrite)
+    split_classif_star(classif_star, overwrite)

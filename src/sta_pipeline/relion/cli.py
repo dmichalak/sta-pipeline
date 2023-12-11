@@ -25,9 +25,9 @@ def make_rln_tomo_star(
 
 @cli.command(name="rln_select_good_classes", no_args_is_help=True)
 def rln_select_good_classes(
-    classif_directory: Path = Option(
+    classif_star: Path = Option(
         default=...,
-        help="The path to the directory containing the class_*.star files.",
+        help="The path to the run_it*_data.star file to extract classes from.",
         **PKWARGS,
     ),
     good_classes: str = Option(
@@ -41,4 +41,4 @@ def rln_select_good_classes(
         **PKWARGS,
     ),
 ) -> None:
-    _rln_select_good_classes(classif_directory, good_classes, overwrite)
+    _rln_select_good_classes(classif_star, good_classes, overwrite)
