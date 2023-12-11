@@ -117,6 +117,11 @@ def isonet_mask(
         help="The standard deviation percentage. Start with 50 and adjust as needed between 0 and 100. Increasing this has previously improved results.",
         **PKWARGS,
     ),
+    z_crop: float = Option(
+        default=0.2,
+        help="The amount of the tomogram to mask on either side in the z-direction (e.g., z_crop = 0.2 means the top 20% and bottom 20% of the tomogram will be masked). ",
+        **PKWARGS,
+    ),
     tomogram_idx_list: str = Option(
         default="1,2,3,4,5",
         help="The list of tomogram indices to use.",
