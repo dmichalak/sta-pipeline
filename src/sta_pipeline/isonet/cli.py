@@ -16,7 +16,7 @@ from .isonet_predict import isonet_predict as _isonet_predict
 @cli.command(name="isonet_setup", no_args_is_help=True)
 def isonet_setup(
     data_directory: Path = Option(
-        default=Path("../tomograms/"),
+        default=...,
         help="The path to the directory containing all ts directories.",
         **PKWARGS,
     ),
@@ -27,12 +27,12 @@ def isonet_setup(
     ),
     project_name: str = Option(
         default="isonet",
-        help="The name of the project.",
+        help="The name of the project. This will be used in naming subsequent files.",
         **PKWARGS,
     ),
     pixel_size: float = Option(
-        default=10.825,
-        help="The pixel size in angstrom.",
+        default=...,
+        help="The pixel size of the binned tomogram in ångströms.",
         **PKWARGS,
     ),
 ) -> None:
