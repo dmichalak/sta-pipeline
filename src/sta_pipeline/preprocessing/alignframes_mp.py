@@ -3,6 +3,7 @@ import time
 from pathlib import Path
 from multiprocessing import Pool
 from ..utilities.utils import *
+from .write_mdoc_to_ts_list import write_mdoc_to_ts_list
 
 def alignframes(
     stack_data
@@ -14,8 +15,6 @@ def alignframes(
     sum_binning = stack_data[3]
     ts_number = stack_data[4]
     frames_directory = batch_directory / "frames"
-
-    mdoc_ts_list = []
 
     if mdoc_file.stat().st_size < 10 * 1024:
     # if the mdoc file is bigger than 10 kB, to make sure it corresponds to a full tilt series
@@ -114,9 +113,4 @@ def alignframes_mp(
     with Pool(processes=int(num_processes)) as pool:
         pool.map(alignframes, stacks_to_process)
 
-    # Sort lines in mdoc_to_ts.txt alphanumerically by the first column
-    with open(batch_directory / "mdoc_to_ts.txt", "r") as ts_list:
-        lines = ts_list.readlines()
-        sorted_lines = sorted(lines)
-    with open(batch_directory / "mdoc_to_ts-sorted.txt", "w") as ts_list:
-        ts_list.writelines(sorted_lines)
+    write_mdoc_to_ts_list(batch_directory, overwrite=False)

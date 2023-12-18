@@ -8,6 +8,7 @@ from .._cli import cli, OPTION_PROMPT_KWARGS as PKWARGS
 from .alignframes_mp import alignframes_mp as _alignframes_mp
 from .batchruntomo import batchruntomo as _batchruntomo
 from .ctfplotter import ctfplotter as _ctfplotter
+from .write_mdoc_to_ts_list import write_mdoc_to_ts_list as _write_mdoc_to_ts_list
 
 @cli.command(name="alignframes_mp", no_args_is_help=True)
 def alignframes_mp(
@@ -160,3 +161,18 @@ def full_preprocess(
     _alignframes_mp(batch_directory, align_binning, sum_binning, n_procs_alignframes)
     _batchruntomo(batch_directory, directive_file, n_cpus_batchruntomo, starting_step, ending_step, binning, force)
     _ctfplotter(batch_directory, axis_angle, pixel_size)
+
+@cli.command(name="write_mdoc_to_ts_list", no_args_is_help=True)
+def write_mdoc_to_ts_list(
+    batch_directory: Path = Option(
+        default=...,
+        help="The path to the directory containing all ts directories.",
+        **PKWARGS,
+    ),
+    overwrite: bool = Option(
+        default=False,
+        help="Overwrite existing mdoc_to_ts.txt file.",
+        **PKWARGS,
+    ),
+) -> None:
+    _write_mdoc_to_ts_list(batch_directory, overwrite)
