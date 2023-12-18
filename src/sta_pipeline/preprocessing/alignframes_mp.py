@@ -15,10 +15,12 @@ def alignframes(
     ts_number = stack_data[4]
     frames_directory = batch_directory / "frames"
 
+    mdoc_ts_list = []
+
     if mdoc_file.stat().st_size < 10 * 1024:
     # if the mdoc file is bigger than 10 kB, to make sure it corresponds to a full tilt series
         print(
-            f"The mdoc {mdoc_file} doesn't seem to correspond to a tilt series. Skipping it..."
+            f"The mdoc {mdoc_file} is smaller than expected. Skipping it..."
         )
         return
     ts_directory = batch_directory / Path(f"ts_{ts_number:03}").absolute()
@@ -34,8 +36,12 @@ def alignframes(
         )
         ts_number += 1
         return
+    
+    # Copy the mdoc file to the ts directory
     command = ["cp", mdoc_file.as_posix(), ts_directory.as_posix()]
     result = subprocess.run(command)
+
+
     print(f"Processing {ts_directory.name}.")
     start_time = time.time()  # Start measuring the time for this iteration
     command = [
@@ -71,6 +77,11 @@ def alignframes(
     minutes, seconds = divmod(processing_time, 60)
     print(f"{ts_directory.name} took {int(minutes)} min {int(seconds)} sec.")
 
+    # Write/append mdoc file name and ts_*** to a text file in the batch_directory
+    with open(batch_directory / "mdoc_to_ts.txt", "a") as ts_list:
+        ts_list.write(f"{mdoc_file.name} {ts_directory.name}\n")
+
+
 def alignframes_mp(
     batch_directory: Path,
     align_binning: int,
@@ -102,3 +113,10 @@ def alignframes_mp(
 
     with Pool(processes=int(num_processes)) as pool:
         pool.map(alignframes, stacks_to_process)
+
+    # Sort lines in mdoc_to_ts.txt alphanumerically by the first column
+    with open(batch_directory / "mdoc_to_ts.txt", "r") as ts_list:
+        lines = ts_list.readlines()
+        sorted_lines = sorted(lines)
+    with open(batch_directory / "mdoc_to_ts-sorted.txt", "w") as ts_list:
+        ts_list.writelines(sorted_lines)
