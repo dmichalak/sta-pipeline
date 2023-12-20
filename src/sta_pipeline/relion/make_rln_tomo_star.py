@@ -15,7 +15,7 @@ def make_rln_tomo_star(
     columns = [
         "rlnTomoName",
         "rlnTomoTiltSeriesName",
-        "rlnTomoImportCtfFindFile",
+        "rlnTomoImportCtfPlotterFile",
         "rlnTomoImportImodDir",
         "rlnTomoImportFractionalDose",
         "rlnTomoImportOrderList"
@@ -27,7 +27,7 @@ def make_rln_tomo_star(
     # Find values for each of the columns
     rlnTomoName_list = []
     rlnTomoTiltSeriesName_list = []
-    rlnTomoImportCtfFindFile_list = []
+    rlnTomoImportCtfPlotterFile_list = []
     rlnTomoImportImodDir_list = []
     rlnTomoImportFractionalDose_list = []
     rlnTomoImportOrderList_list = []
@@ -43,7 +43,7 @@ def make_rln_tomo_star(
             print(f"Error: {ts_dir.name}.mrc not found in {ts_dir}.")
             raise SystemExit(0)
         if ts_dir / f"{ts_dir.name}.defocus" in ts_dir.glob("*.defocus"):
-            rlnTomoImportCtfFindFile_list.append(f"../tomograms/{ts_dir.name}/{ts_dir.name}.defocus")
+            rlnTomoImportCtfPlotterFile_list.append(f"../tomograms/{ts_dir.name}/{ts_dir.name}.defocus")
         else:
             print(f"Error: {ts_dir.name}.defocus not found in {ts_dir}.")
             raise SystemExit(0)
@@ -54,7 +54,7 @@ def make_rln_tomo_star(
     # Add the lists to the DataFrame
     tomo_star_df["rlnTomoName"] = rlnTomoName_list
     tomo_star_df["rlnTomoTiltSeriesName"] = rlnTomoTiltSeriesName_list
-    tomo_star_df["rlnTomoImportCtfFindFile"] = rlnTomoImportCtfFindFile_list
+    tomo_star_df["rlnTomoImportCtfPlotterFile"] = rlnTomoImportCtfPlotterFile_list
     tomo_star_df["rlnTomoImportImodDir"] = rlnTomoImportImodDir_list
     tomo_star_df["rlnTomoImportFractionalDose"] = rlnTomoImportFractionalDose_list
     tomo_star_df["rlnTomoImportOrderList"] = rlnTomoImportOrderList_list
