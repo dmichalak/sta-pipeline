@@ -128,7 +128,7 @@ def isonet_mask(
         **PKWARGS,
     ),
 ) -> None:
-    _isonet_mask(working_directory, isonet_star_file, project_name, density_percentage, std_percentage, tomogram_idx_list)
+    _isonet_mask(working_directory, isonet_star_file, project_name, density_percentage, std_percentage, z_crop, tomogram_idx_list)
 
 @cli.command(name="isonet_extract", no_args_is_help=True)
 def isonet_extract(
